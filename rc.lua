@@ -1,3 +1,5 @@
+-- awesome config file by luc {{{
+-- vim: foldmethod=marker
 -- Standard awesome library
 local gears = require("gears")
 local awful = require("awful")
@@ -10,6 +12,11 @@ local beautiful = require("beautiful")
 -- Notification library
 local naughty = require("naughty")
 local menubar = require("menubar")
+
+-- manually added
+local vicious = require("vicious")
+
+-- }}}
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -41,7 +48,9 @@ end
 beautiful.init("/usr/share/awesome/themes/default/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
-terminal = "urxvt"
+--awful.util.spawn("urxvtd -q -o -f")
+--terminal = "urxvtc"
+terminal = "term"
 editor = os.getenv("EDITOR") or "vim"
 editor_cmd = terminal .. " -e " .. editor
 
@@ -111,6 +120,157 @@ menubar.utils.terminal = terminal -- Set the terminal for applications that requ
 -- {{{ Wibox
 -- Create a textclock widget
 mytextclock = awful.widget.textclock()
+
+-- {{{ battery
+
+-- copied from the vicious readme
+--batwidget = awful.widget.progressbar()
+--batwidget:set_width(8)
+--batwidget:set_height(10)
+--batwidget:set_vertical(true)
+--batwidget:set_background_color("#494B4F")
+--batwidget:set_border_color(nil)
+--batwidget:set_color(
+--  {
+--    type = "linear",
+--    from = { 0, 0 },
+--    to = { 0, 10 },
+--    stops = {
+--      { 0, "#AECF96" },
+--      { 0.5, "#88A175" },
+--      { 1, "#FF5656" }
+--    }
+--  }
+--  )
+--vicious.register(batwidget, vicious.widgets.bat, "$2", 61, "BAT0")
+
+textbat=wibox.widget.textbox()
+vicious.register(textbat, vicious.widgets.bat,
+  function (widget, args)
+    local color = 'red'
+    if args[2] > 33 then
+      if args[2] > 66 then
+	color = 'green'
+      else
+	color = 'orange'
+      end
+    end
+    --"<span color='green'>power@$2%=$3</span>"
+    return '<span color="' .. color .. '">' .. args[3] .. '</span>'
+  end,
+  67, "BAT0")
+-- }}}
+
+-- custom mail check widget {{{
+mytextmailcheckwidget = wibox.widget.textbox()
+mymailbutton = awful.widget.button()
+
+local mail_format_function = function (widget, args)
+  if args[1] == 0 and args[2] == 0 then return "" end
+  local envolope = "<big>\226\156\137</big>" -- ✉
+  local s = ""
+  local red = '<span color="red">'
+  local orange = '<span color="orange">'
+  local tag = '</span>'
+  if args[1] ~= 0 then
+    s = red .. args[1] .. " new"
+  end
+  if args[2] ~= 0 then
+    if s ~= "" then s = s .. tag .. ", " end
+    s = s .. orange .. args[2] .. " unread" .. tag
+  end
+  local sum = args[1] + args[2]
+  if sum > 0 then
+    s = s .. " mail"
+    if sum > 1 then s = s .. "s" end
+  end
+  return envolope .. s
+end
+
+-- table with full paths to maildir structures
+local mail_paths = {
+  "/home/luc/mail/inbox",
+  --"/home/luc/mail/gmx",
+  --"/home/luc/mail/gmx",
+  --"/home/luc/mail/gmx",
+  "/home/luc/mail/gmx"
+}
+
+vicious.register(mytextmailcheckwidget, vicious.widgets.mdir,
+		 mail_format_function, 120, mail_paths)
+vicious.register(mymailbutton, vicious.widgets.mdir, mail_format_function, 120, mail_paths) -- TODO
+-- }}}
+
+-- wifi info box {{{
+mywifitext = wibox.widget.textbox()
+vicious.register(mywifitext, vicious.widgets.wifi,
+  -- 'ssid: ${ssid}, mode: ${mode}, chan: ${chan}, rate: ${rate}, link: ${link}, linp: ${linp}, sign: ${sign}',
+  ' ${ssid} ',
+  --' <span color="blue">${ssid}</span> ',
+  120, "wlan0")
+-- }}}
+
+-- Pacman Widget {{{
+-- copied from http://www.jasonmaur.com/awesome-wm-widgets-configuration/
+pacwidget = wibox.widget.textbox()
+
+pacwidget_t = awful.tooltip({ objects = { pacwidget},})
+
+vicious.register(pacwidget,
+		 function (widget, args)
+		   local str = ''
+		   local count = 0
+		   for line in io.popen('pacman -Qu'):lines() do
+		     str = str .. line .. '\n'
+		     count = count + 1
+		   end
+		   if count == 0 then
+		     return ''
+		   else
+		     pacwidget_t:set_text(string.sub(str, 1, -2))
+		     return "Updates available! "
+		   end
+		 end,
+		 '$1',
+
+                --vicious.widgets.pkg,
+                --function(widget,args)
+                --    local io = { popen = io.popen }
+                --    local s = io.popen("pacman -Qu")
+                --    local str = ''
+
+                --    for line in s:lines() do
+                --        str = str .. line .. "\n"
+                --    end
+                --    pacwidget_t:set_text(str)
+                --    s:close()
+                --    return "UPDATES: " .. args[1]
+                --end,
+		--function (widget, args)
+		--  if args[1] == 0 then
+		--    return ""
+		--  else
+		--    str = ""
+		--    for line in io.popen("pacman -Qu"):lines() do
+		--      str = str .. line .. "\n"
+		--    end
+                --    pacwidget_t:set_text(string.sub(str, 1, -2))
+		--    return "Updates available!"
+		--  end
+		--end,
+		1800, "Arch")
+                -- 1800 means check every 30 minutes
+-- }}}
+
+-- custom calendar and clock {{{
+-- Create a textclock widget
+mytextclock = awful.widget.textclock()
+
+-- Calendar widget to attach to the textclock
+require('calendar2')
+calendar2.addCalendarToWidget(mytextclock)
+-- TODO does not work?
+-- }}}
 
 -- Create a wibox for each screen and add it
 mywibox = {}
@@ -190,6 +350,13 @@ for s = 1, screen.count() do
 
     -- Widgets that are aligned to the right
     local right_layout = wibox.layout.fixed.horizontal()
+    -- add the custom mailcheck widget
+    right_layout:add(mywifitext)
+    right_layout:add(mytextmailcheckwidget)
+    right_layout:add(pacwidget)
+    right_layout:add(mymailbutton)
+    right_layout:add(textbat)
+    --right_layout:add(batwidget)
     if s == 1 then right_layout:add(wibox.widget.systray()) end
     right_layout:add(mytextclock)
     right_layout:add(mylayoutbox[s])
@@ -246,6 +413,11 @@ globalkeys = awful.util.table.join(
 
     -- Standard program
     awful.key({ modkey,           }, "Return", function () awful.util.spawn(terminal) end),
+    awful.key({ modkey, "Shift"   }, "Return",
+      function ()
+	awful.tag.viewonly(tags[mouse.screen][9])
+	awful.util.spawn(terminal)
+      end),
     awful.key({ modkey, "Control" }, "r", awesome.restart),
     awful.key({ modkey, "Shift"   }, "q", awesome.quit),
 
