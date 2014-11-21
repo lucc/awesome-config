@@ -165,6 +165,36 @@ vicious.register(textbat, vicious.widgets.bat,
 mytextmailcheckwidget = wibox.widget.textbox()
 mymailbutton = awful.widget.button()
 
+local envolope_formatter = function (widget, args)
+  if args[1] == 0 and args[2] == 0 then return "" end
+  local envolope = "\226\156\137" -- ✉
+  return '<big><span color="red">' ..
+         string.rep(envolope, args[1]) ..
+	 '</span><span color="orange">' ..
+	 string.rep(envolope, args[2]) ..
+	 '</span></big>'
+--  local red = '<span color="red">'
+--  local orange = '<span color="orange">'
+--  local tag = '</span>'
+--  local i = 1
+--  local s = ""
+--  if args[1] ~= 0 then
+--    s = red
+--    for i = 1, args[1] do
+--      s = s .. envolope
+--    end
+--    s = s .. tag
+--  end
+--  if args[2] ~= 0 then
+--    s = s .. orange
+--    for i = 1, args[2] do
+--      s = s .. envolope
+--    end
+--    s = s .. tag
+--  end
+--  return '<big>' .. s .. '</big>'
+end
+
 local mail_format_function = function (widget, args)
   if args[1] == 0 and args[2] == 0 then return "" end
   local envolope = "<big>\226\156\137</big>" -- ✉
@@ -173,7 +203,7 @@ local mail_format_function = function (widget, args)
   local orange = '<span color="orange">'
   local tag = '</span>'
   if args[1] ~= 0 then
-    s = red .. args[1] .. " new"
+    s = red .. args[1] .. " new" .. tag
   end
   if args[2] ~= 0 then
     if s ~= "" then s = s .. tag .. ", " end
@@ -197,7 +227,7 @@ local mail_paths = {
 }
 
 vicious.register(mytextmailcheckwidget, vicious.widgets.mdir,
-		 mail_format_function, 120, mail_paths)
+		 envolope_formatter, 120, mail_paths)
 vicious.register(mymailbutton, vicious.widgets.mdir, mail_format_function, 120, mail_paths) -- TODO
 -- }}}
 
