@@ -1,6 +1,7 @@
--- awesome config file by luc {{{
+-- awesome config file by luc {{{1
 -- vim: foldmethod=marker
--- Standard awesome library
+
+-- Standard awesome library {{{1
 local gears = require("gears")
 local awful = require("awful")
 awful.rules = require("awful.rules")
@@ -16,9 +17,8 @@ local menubar = require("menubar")
 -- manually added
 local vicious = require("vicious")
 
--- }}}
 
--- {{{ Error handling
+-- Error handling {{{1
 -- Check if awesome encountered an error during startup and fell back to
 -- another config (This code will only ever execute for the fallback config)
 if awesome.startup_errors then
@@ -41,9 +41,8 @@ do
         in_error = false
     end)
 end
--- }}}
 
--- {{{ Variable definitions
+-- Variable definitions {{{1
 -- Themes define colours, icons, font and wallpapers.
 beautiful.init("/usr/share/awesome/themes/default/theme.lua")
 
@@ -77,26 +76,23 @@ local layouts =
     awful.layout.suit.max.fullscreen,
     awful.layout.suit.magnifier
 }
--- }}}
 
--- {{{ Wallpaper
+-- Wallpaper {{{1
 if beautiful.wallpaper then
     for s = 1, screen.count() do
         gears.wallpaper.maximized(beautiful.wallpaper, s, true)
     end
 end
--- }}}
 
--- {{{ Tags
+-- Tags {{{1
 -- Define a tag table which hold all screen tags.
 tags = {}
 for s = 1, screen.count() do
     -- Each screen has its own tag table.
     tags[s] = awful.tag({ 1, 2, 3, 4, 5, 6, 7, 8, 9 }, s, layouts[8])
 end
--- }}}
 
--- {{{ Menu
+-- Menu {{{1
 -- Create a laucher widget and a main menu
 myawesomemenu = {
    { "manual", terminal .. " -e man awesome" },
@@ -115,13 +111,11 @@ mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
 
 -- Menubar configuration
 menubar.utils.terminal = terminal -- Set the terminal for applications that require it
--- }}}
-
--- {{{ Wibox
 -- Create a textclock widget
 mytextclock = awful.widget.textclock()
 
--- {{{ battery
+-- Wibox {{{1
+-- battery {{{2
 
 -- copied from the vicious readme
 --batwidget = awful.widget.progressbar()
@@ -159,9 +153,8 @@ vicious.register(textbat, vicious.widgets.bat,
     return '<span color="' .. color .. '">' .. args[3] .. '</span>'
   end,
   67, "BAT0")
--- }}}
 
--- custom mail check widget {{{
+-- custom mail check widget {{{2
 mytextmailcheckwidget = wibox.widget.textbox()
 mymailbutton = awful.widget.button()
 
@@ -229,18 +222,16 @@ local mail_paths = {
 vicious.register(mytextmailcheckwidget, vicious.widgets.mdir,
 		 envolope_formatter, 120, mail_paths)
 vicious.register(mymailbutton, vicious.widgets.mdir, mail_format_function, 120, mail_paths) -- TODO
--- }}}
 
--- wifi info box {{{
+-- wifi info box {{{2
 mywifitext = wibox.widget.textbox()
 vicious.register(mywifitext, vicious.widgets.wifi,
   -- 'ssid: ${ssid}, mode: ${mode}, chan: ${chan}, rate: ${rate}, link: ${link}, linp: ${linp}, sign: ${sign}',
   ' ${ssid} ',
   --' <span color="blue">${ssid}</span> ',
   120, "wlan0")
--- }}}
 
--- Pacman Widget {{{
+-- Pacman Widget {{{2
 -- copied from http://www.jasonmaur.com/awesome-wm-widgets-configuration/
 pacwidget = wibox.widget.textbox()
 
@@ -290,9 +281,8 @@ vicious.register(pacwidget,
 		--end,
 		1800, "Arch")
                 -- 1800 means check every 30 minutes
--- }}}
 
--- custom calendar and clock {{{
+-- custom calendar and clock {{{2
 -- Create a textclock widget
 mytextclock = awful.widget.textclock()
 
@@ -300,9 +290,8 @@ mytextclock = awful.widget.textclock()
 require('calendar2')
 calendar2.addCalendarToWidget(mytextclock)
 -- TODO does not work?
--- }}}
 
--- Create a wibox for each screen and add it
+-- Create a wibox for each screen and add it {{{2
 mywibox = {}
 mypromptbox = {}
 mylayoutbox = {}
@@ -399,17 +388,15 @@ for s = 1, screen.count() do
 
     mywibox[s]:set_widget(layout)
 end
--- }}}
 
--- {{{ Mouse bindings
+-- Mouse bindings {{{1
 root.buttons(awful.util.table.join(
     awful.button({ }, 3, function () mymainmenu:toggle() end),
     awful.button({ }, 4, awful.tag.viewnext),
     awful.button({ }, 5, awful.tag.viewprev)
 ))
--- }}}
 
--- {{{ Key bindings
+-- Key bindings {{{1
 globalkeys = awful.util.table.join(
     awful.key({ modkey,           }, "Left",   awful.tag.viewprev       ),
     awful.key({ modkey,           }, "Right",  awful.tag.viewnext       ),
@@ -561,9 +548,8 @@ clientbuttons = awful.util.table.join(
 
 -- Set keys
 root.keys(globalkeys)
--- }}}
 
--- {{{ Rules
+-- Rules {{{1
 -- Rules to apply to new clients (through the "manage" signal).
 awful.rules.rules = {
     -- All clients will match this rule.
@@ -587,9 +573,8 @@ awful.rules.rules = {
     { rule = { class = "Gvim" },
       properties = { tag = tags[1][2] } },
 }
--- }}}
 
--- {{{ Signals
+-- Signals {{{1
 -- Signal function to execute when a new client appears.
 client.connect_signal("manage", function (c, startup)
     -- Enable sloppy focus
@@ -660,4 +645,3 @@ end)
 
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
--- }}}
