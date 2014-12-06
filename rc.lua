@@ -123,8 +123,6 @@ mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
 
 -- Menubar configuration
 menubar.utils.terminal = terminal -- Set the terminal for applications that require it
--- Create a textclock widget
-mytextclock = awful.widget.textclock()
 
 -- Wibox {{{1
 -- battery {{{2
@@ -151,6 +149,8 @@ mytextclock = awful.widget.textclock()
 --vicious.register(batwidget, vicious.widgets.bat, "$2", 61, "BAT0")
 
 textbat=wibox.widget.textbox()
+textbat_tooltip = awful.tooltip({ objects = { textbat } })
+
 vicious.register(textbat, vicious.widgets.bat,
   function (widget, args)
     local col = 'red'
@@ -162,6 +162,11 @@ vicious.register(textbat, vicious.widgets.bat,
       end
     end
     --"<span color='green'>power@$2%=$3</span>"
+    textbat_tooltip:set_text(
+      'Connected: ' .. args[1] .. '\n' ..
+      'Level: ' .. args[2] .. '%\n' ..
+      'Time: ' .. args[3]
+      )
     return color(col, args[3])
   end,
   67, "BAT0")
@@ -271,9 +276,19 @@ vicious.register(pacwidget,
 -- custom calendar and clock {{{2
 -- Create a textclock widget
 mytextclock = awful.widget.textclock()
+-- calendar_tooltip = awful.tooltip({objects = {mytextclock}})
+-- --calendar_tooltip:set_text('<span font_desc="monospace">' .. io.popen('cal -3') .. '</span>')
+-- calendar_tooltip:set_text((function ()
+--   local s = ''
+--   for line in io.popen('cal -3'):lines() do
+--     s = s .. line .. '\n'
+--   end
+--   return s
+--   --return '<span font="monospace">' ..s.. '</span>'
+-- end)())
 
 -- Calendar widget to attach to the textclock
-require('calendar2')
+calenda2 = require('calendar2')
 calendar2.addCalendarToWidget(mytextclock)
 -- TODO does not work?
 
