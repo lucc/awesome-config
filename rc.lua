@@ -17,6 +17,10 @@ local menubar = require("menubar")
 -- manually added
 local vicious = require("vicious")
 
+-- local helper functions {{{1
+local pango_color = function (color, text)
+  return '<span color="' .. color .. '">' .. text .. '</span>'
+end
 
 -- Error handling {{{1
 -- Check if awesome encountered an error during startup and fell back to
@@ -150,7 +154,7 @@ vicious.register(textbat, vicious.widgets.bat,
       end
     end
     --"<span color='green'>power@$2%=$3</span>"
-    return '<span color="' .. color .. '">' .. args[3] .. '</span>'
+    return pango_color(color, args[3])
   end,
   67, "BAT0")
 
@@ -161,11 +165,10 @@ mymailbutton = awful.widget.button()
 local envolope_formatter = function (widget, args)
   if args[1] == 0 and args[2] == 0 then return "" end
   local envolope = "\226\156\137" -- ✉
-  return '<big><span color="red">' ..
-         string.rep(envolope, args[1]) ..
-	 '</span><span color="orange">' ..
-	 string.rep(envolope, args[2]) ..
-	 '</span></big>'
+  return '<big>' ..
+         pango_color('red', string.rep(envolope, args[1])) ..
+	 pango_color('orange', string.rep(envolope, args[2])) ..
+	 '</big>'
 --  local red = '<span color="red">'
 --  local orange = '<span color="orange">'
 --  local tag = '</span>'
@@ -192,15 +195,12 @@ local mail_format_function = function (widget, args)
   if args[1] == 0 and args[2] == 0 then return "" end
   local envolope = "<big>\226\156\137</big>" -- ✉
   local s = ""
-  local red = '<span color="red">'
-  local orange = '<span color="orange">'
-  local tag = '</span>'
   if args[1] ~= 0 then
-    s = red .. args[1] .. " new" .. tag
+    s = pango_color('red', args[1] .. ' new')
   end
   if args[2] ~= 0 then
-    if s ~= "" then s = s .. tag .. ", " end
-    s = s .. orange .. args[2] .. " unread" .. tag
+    if s ~= "" then s = s .. ", " end
+    s = s .. pango_color('orange', args[2] .. " unread")
   end
   local sum = args[1] + args[2]
   if sum > 0 then
