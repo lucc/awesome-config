@@ -57,6 +57,8 @@ end
 -- Variable definitions {{{1
 -- Themes define colours, icons, font and wallpapers.
 beautiful.init("/usr/share/awesome/themes/default/theme.lua")
+--beautiful.init("/usr/share/awesome/themes/sky/theme.lua")
+--beautiful.init("/usr/share/awesome/themes/zenburn/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
 --awful.util.spawn("urxvtd -q -o -f")
