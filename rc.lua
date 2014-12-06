@@ -18,8 +18,16 @@ local menubar = require("menubar")
 local vicious = require("vicious")
 
 -- local helper functions {{{1
-local pango_color = function (color, text)
-  return '<span color="' .. color .. '">' .. text .. '</span>'
+local markup = function (tag, text)
+  local first = tag
+  local index = string.find(tag, ' ')
+  if index ~= nil then
+    first = string.sub(tag, 1, index - 1)
+  end
+  return '<' .. tag .. '>' .. text .. '</' .. first .. '>'
+end
+local color = function (col, text)
+  return markup ('span color="' .. col .. '"', text)
 end
 
 -- Error handling {{{1
@@ -145,16 +153,16 @@ mytextclock = awful.widget.textclock()
 textbat=wibox.widget.textbox()
 vicious.register(textbat, vicious.widgets.bat,
   function (widget, args)
-    local color = 'red'
+    local col = 'red'
     if args[2] > 33 then
       if args[2] > 66 then
-	color = 'green'
+	col = 'green'
       else
-	color = 'orange'
+	col = 'orange'
       end
     end
     --"<span color='green'>power@$2%=$3</span>"
-    return pango_color(color, args[3])
+    return color(col, args[3])
   end,
   67, "BAT0")
 
@@ -165,30 +173,8 @@ mymailbutton = awful.widget.button()
 local envolope_formatter = function (widget, args)
   if args[1] == 0 and args[2] == 0 then return "" end
   local envolope = "\226\156\137" -- ✉
-  return '<big>' ..
-         pango_color('red', string.rep(envolope, args[1])) ..
-	 pango_color('orange', string.rep(envolope, args[2])) ..
-	 '</big>'
---  local red = '<span color="red">'
---  local orange = '<span color="orange">'
---  local tag = '</span>'
---  local i = 1
---  local s = ""
---  if args[1] ~= 0 then
---    s = red
---    for i = 1, args[1] do
---      s = s .. envolope
---    end
---    s = s .. tag
---  end
---  if args[2] ~= 0 then
---    s = s .. orange
---    for i = 1, args[2] do
---      s = s .. envolope
---    end
---    s = s .. tag
---  end
---  return '<big>' .. s .. '</big>'
+  return markup('big', color('red',    string.rep(envolope, args[1])) ..
+		       color('orange', string.rep(envolope, args[2])))
 end
 
 local mail_format_function = function (widget, args)
@@ -196,11 +182,11 @@ local mail_format_function = function (widget, args)
   local envolope = "<big>\226\156\137</big>" -- ✉
   local s = ""
   if args[1] ~= 0 then
-    s = pango_color('red', args[1] .. ' new')
+    s = color('red', args[1] .. ' new')
   end
   if args[2] ~= 0 then
     if s ~= "" then s = s .. ", " end
-    s = s .. pango_color('orange', args[2] .. " unread")
+    s = s .. color('orange', args[2] .. " unread")
   end
   local sum = args[1] + args[2]
   if sum > 0 then
