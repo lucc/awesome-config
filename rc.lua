@@ -127,6 +127,27 @@ mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
 menubar.utils.terminal = terminal -- Set the terminal for applications that require it
 
 -- Wibox {{{1
+-- MPD information {{{2
+mpdwidget = wibox.widget.textbox()
+function mpd_status_formatter(widget, args)
+  local state = args['{state}']
+  local artist = args['{Artist}']
+  local album = args['{Album}']
+  local title = args['{Title}']
+  --args['{}']
+  local col = ''
+  if state == 'Play' then
+    col = 'yellow'
+  elseif state == 'Pause' then
+    col = 'orange'
+  elseif state == 'Stop' then
+    return color('blue', 'MPD: stopped')
+  else
+    return ''
+  end
+  return color(col, artist..'---'..album..'---'..title)
+end
+vicious.register(mpdwidget, vicious.widgets.mpd, mpd_status_formatter, 101, nil)
 -- battery {{{2
 
 -- copied from the vicious readme
@@ -373,6 +394,7 @@ for s = 1, screen.count() do
     -- Widgets that are aligned to the right
     local right_layout = wibox.layout.fixed.horizontal()
     -- add the custom mailcheck widget
+    right_layout:add(mpdwidget)
     right_layout:add(mywifitext)
     right_layout:add(mytextmailcheckwidget)
     right_layout:add(pacwidget)
