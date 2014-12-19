@@ -497,6 +497,18 @@ globalkeys = awful.util.table.join(
     --awful.key({ }, "XF86AudioMute",        function () awful.util.spawn("amixer set Master toggle")       end),
     --awful.key({ }, "XF86KbdBrightnessDown", function () awful.util.spawn("kbdlight down") end),
     --awful.key({ }, "XF86KbdBrightnessUp", function () awful.util.spawn("kbdlight up") end),
+    awful.key({ }, "XF86AudioPlay", function ()
+      awful.util.spawn("mpc toggle")
+      mpdwidget:set_markup(mpd_status_formatter(nil, vicious.widgets.mpd()))
+    end),
+    awful.key({ }, "XF86AudioNext", function ()
+      awful.util.spawn("mpc next")
+      mpdwidget:set_markup(mpd_status_formatter(nil, vicious.widgets.mpd()))
+    end),
+    awful.key({ }, "XF86AudioPrev", function ()
+      awful.util.spawn("mpc previous")
+      mpdwidget:set_markup(mpd_status_formatter(nil, vicious.widgets.mpd()))
+    end),
     awful.key({modkey}, "XF86MonBrightnessDown", function () awful.util.spawn(terminal .. " -e man awesome") end),
     awful.key({modkey}, "F1", function () awful.util.spawn(terminal .. " -e man awesome") end)
 )
