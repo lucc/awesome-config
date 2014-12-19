@@ -682,3 +682,9 @@ end)
 
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
+
+-- helper functions for awesome-client {{{1
+function update_mpd_widget()
+  mpdwidget:set_markup(mpd_status_formatter(nil,vicious.widgets.mpd()))
+end
+function test() mpdwidget:set_text('hans') end
