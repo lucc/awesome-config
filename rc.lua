@@ -510,7 +510,13 @@ globalkeys = awful.util.table.join(
       mpdwidget:set_markup(mpd_status_formatter(nil, vicious.widgets.mpd()))
     end),
     awful.key({modkey}, "XF86MonBrightnessDown", function () awful.util.spawn(terminal .. " -e man awesome") end),
-    awful.key({modkey}, "F1", function () awful.util.spawn(terminal .. " -e man awesome") end)
+    awful.key({modkey}, "F1", function () awful.util.spawn(terminal .. " -e man awesome") end),
+    awful.key({ }, "XF86LaunchB", function ()
+      awful.tag.viewonly(tags[mouse.screen][9])
+      awful.util.spawn(terminal .. " -e htop")
+      --awful.util.spawn(terminal .. " -e nload wlan0")
+      --awful.util.spawn(terminal .. " -e ping luc42.lima-city.de")
+    end)
 )
 
 clientkeys = awful.util.table.join(
