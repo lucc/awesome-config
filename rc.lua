@@ -114,9 +114,14 @@ myawesomemenu = {
    { "restart", awesome.restart },
    { "quit", awesome.quit }
 }
+mykeyboardmenu = {
+  { "german", "sh -c 'setxkbmap de && xmodmap ~/.config/xinit/Xmodmap'" },
+  { "german neo", "setxkbmap de neo" },
+}
 
 mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesome_icon },
-                                    { "open terminal", terminal }
+                                    { "open terminal", terminal },
+				    { "switch keyboard layout", mykeyboardmenu }
                                   }
                         })
 
