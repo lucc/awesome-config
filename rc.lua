@@ -516,7 +516,8 @@ globalkeys = awful.util.table.join(
       awful.util.spawn(terminal .. " -e htop")
       --awful.util.spawn(terminal .. " -e nload wlan0")
       --awful.util.spawn(terminal .. " -e ping luc42.lima-city.de")
-    end)
+    end),
+    awful.key({modkey}, "XF86Eject", function () awful.util.spawn('slock') end)
 )
 
 clientkeys = awful.util.table.join(
