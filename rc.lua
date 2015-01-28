@@ -16,6 +16,9 @@ local menubar = require("menubar")
 
 -- manually added
 local vicious = require("vicious")
+--package.path = package.path .. ';/usr/lib/python3.4/site-packages/powerline/bindings/awesome/?.lua'
+--require('powerline')
+
 
 -- local helper functions {{{1
 local markup = function (tag, text)
@@ -409,6 +412,7 @@ for s = 1, screen.count() do
     if s == 1 then right_layout:add(wibox.widget.systray()) end
     right_layout:add(mytextclock)
     right_layout:add(mylayoutbox[s])
+    --right_layout:add(powerline_widget)
 
     -- Now bring it all together (with the tasklist in the middle)
     local layout = wibox.layout.align.horizontal()
