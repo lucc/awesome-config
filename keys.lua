@@ -6,7 +6,7 @@ local awful = require("awful")
 local vicious = require("vicious")
 
 -- Key bindings {{{1
-globalkeys = awful.util.table.join(
+local globalkeys = awful.util.table.join(
     awful.key({ modkey,           }, "Left",   awful.tag.viewprev       ),
     awful.key({ modkey,           }, "Right",  awful.tag.viewnext       ),
     awful.key({ modkey,           }, "Escape", awful.tag.history.restore),
@@ -104,7 +104,7 @@ globalkeys = awful.util.table.join(
     awful.key({modkey}, "XF86Eject", function () awful.util.spawn('slock') end)
 )
 
-clientkeys = awful.util.table.join(
+local clientkeys = awful.util.table.join(
     awful.key({ modkey,           }, "f",      function (c) c.fullscreen = not c.fullscreen  end),
     awful.key({ modkey, "Shift"   }, "c",      function (c) c:kill()                         end),
     awful.key({ modkey, "Control" }, "space",  awful.client.floating.toggle                     ),
@@ -169,5 +169,5 @@ for i = 1, 9 do
                   end))
 end
 
--- Set keys
-root.keys(globalkeys)
+-- return global and client keys
+return { global = globalkeys, client = clientkeys }

@@ -436,7 +436,8 @@ clientbuttons = awful.util.table.join(
     awful.button({ modkey }, 3, awful.mouse.client.resize))
 
 -- keys {{{1
-require('keys')
+keys = require('keys')
+root.keys(keys.global)
 
 -- Rules {{{1
 -- Rules to apply to new clients (through the "manage" signal).
@@ -447,7 +448,7 @@ awful.rules.rules = {
                      border_color = beautiful.border_normal,
                      focus = awful.client.focus.filter,
                      raise = true,
-                     keys = clientkeys,
+                     keys = keys.client,
                      buttons = clientbuttons } },
     { rule = { class = "MPlayer" },
       properties = { floating = true } },
