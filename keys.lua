@@ -4,12 +4,15 @@
 -- required modules {{{1
 local awful = require("awful")
 local vicious = require("vicious")
+local keydoc = require("keydoc")
 
 -- global key bindings {{{1
 local globalkeys = awful.util.table.join(
+    keydoc.group('Tag movement'), -- {{{2
     awful.key({ modkey,           }, "Left",   awful.tag.viewprev       ),
     awful.key({ modkey,           }, "Right",  awful.tag.viewnext       ),
-    awful.key({ modkey,           }, "Escape", awful.tag.history.restore),
+    awful.key({ modkey,           }, "Escape", awful.tag.history.restore,
+	      'switch to last used tag'),
 
     awful.key({ modkey,           }, "j",
         function ()
@@ -23,12 +26,12 @@ local globalkeys = awful.util.table.join(
         end),
     awful.key({ modkey,           }, "w", function () mymainmenu:show() end),
 
-    -- Layout manipulation
-    awful.key({ modkey, "Shift"   }, "j", function () awful.client.swap.byidx(  1)    end),
-    awful.key({ modkey, "Shift"   }, "k", function () awful.client.swap.byidx( -1)    end),
-    awful.key({ modkey, "Control" }, "j", function () awful.screen.focus_relative( 1) end),
-    awful.key({ modkey, "Control" }, "k", function () awful.screen.focus_relative(-1) end),
-    awful.key({ modkey,           }, "u", awful.client.urgent.jumpto),
+    -- Layout manipulation {{{2
+    awful.key({ modkey, "Shift"   }, "j", function () awful.client.swap.byidx(  1)    end, 'swap with next client'),
+    awful.key({ modkey, "Shift"   }, "k", function () awful.client.swap.byidx( -1)    end, 'swap with previous client'),
+    awful.key({ modkey, "Control" }, "j", function () awful.screen.focus_relative( 1) end, 'focus next monitor'),
+    awful.key({ modkey, "Control" }, "k", function () awful.screen.focus_relative(-1) end, 'focus previous monitor'),
+    awful.key({ modkey,           }, "u", awful.client.urgent.jumpto, 'jump to urgent client'),
     awful.key({ modkey,           }, "Tab",
         function ()
             awful.client.focus.history.previous()
@@ -47,14 +50,14 @@ local globalkeys = awful.util.table.join(
     awful.key({ modkey, "Control" }, "r", awesome.restart),
     awful.key({ modkey, "Shift"   }, "q", awesome.quit),
 
-    awful.key({ modkey,           }, "l",     function () awful.tag.incmwfact( 0.05)    end),
-    awful.key({ modkey,           }, "h",     function () awful.tag.incmwfact(-0.05)    end),
-    awful.key({ modkey, "Shift"   }, "h",     function () awful.tag.incnmaster( 1)      end),
-    awful.key({ modkey, "Shift"   }, "l",     function () awful.tag.incnmaster(-1)      end),
-    awful.key({ modkey, "Control" }, "h",     function () awful.tag.incncol( 1)         end),
-    awful.key({ modkey, "Control" }, "l",     function () awful.tag.incncol(-1)         end),
-    awful.key({ modkey,           }, "space", function () awful.layout.inc(layouts,  1) end),
-    awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(layouts, -1) end),
+    awful.key({ modkey,           }, "l",     function () awful.tag.incmwfact( 0.05)    end, 'TODO'),
+    awful.key({ modkey,           }, "h",     function () awful.tag.incmwfact(-0.05)    end, 'TODO'),
+    awful.key({ modkey, "Shift"   }, "h",     function () awful.tag.incnmaster( 1)      end, 'TODO'),
+    awful.key({ modkey, "Shift"   }, "l",     function () awful.tag.incnmaster(-1)      end, 'TODO'),
+    awful.key({ modkey, "Control" }, "h",     function () awful.tag.incncol( 1)         end, 'TODO'),
+    awful.key({ modkey, "Control" }, "l",     function () awful.tag.incncol(-1)         end, 'TODO'),
+    awful.key({ modkey,           }, "space", function () awful.layout.inc(layouts,  1) end, 'next layout'),
+    awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(layouts, -1) end, 'previous layout'),
 
     awful.key({ modkey, "Control" }, "n", awful.client.restore),
 
@@ -93,8 +96,10 @@ local globalkeys = awful.util.table.join(
       awful.util.spawn("mpc previous")
       mpdwidget:set_markup(mpd_status_formatter(nil, vicious.widgets.mpd()))
     end),
-    awful.key({modkey}, "XF86MonBrightnessDown", function () awful.util.spawn(terminal .. " -e man awesome") end),
-    awful.key({modkey}, "F1", function () awful.util.spawn(terminal .. " -e man awesome") end),
+    --awful.key({modkey}, "XF86MonBrightnessDown", function () awful.util.spawn(terminal .. " -e man awesome") end),
+    awful.key({modkey}, "XF86MonBrightnessDown", keydoc.display),
+    --awful.key({modkey}, "F1", function () awful.util.spawn(terminal .. " -e man awesome") end),
+    awful.key({modkey}, "F1", keydoc.display, 'display this help'),
     awful.key({ }, "XF86LaunchB", function ()
       awful.tag.viewonly(tags[mouse.screen][9])
       awful.util.spawn(terminal .. " -e htop")

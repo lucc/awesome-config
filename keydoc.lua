@@ -94,9 +94,9 @@ local function markup(keys)
 	 local help, group = doc[key].help, doc[key].group
 	 local skey = key2str(key)
 	 result[group] = (result[group] or "") ..
-	    '<span font="DejaVu Sans Mono 10" color="' .. beautiful.fg_widget_clock .. '"> ' ..
+	    '<span font="DejaVu Sans Mono 10" color="#AAAAAA"> ' ..
 	    string.format("%" .. (longest - unilen(skey)) .. "s  ", "") .. skey ..
-	    '</span>  <span color="' .. beautiful.fg_widget_value .. '">' .. -- if
+	    '</span>  <span color="#E0E0D1">' .. -- if
    -- beautiful.fg_widget_value is not specified in your theme.lua, try changing it to "#E0E0D1"
    -- and include the quotes, because it is a string.
 	    help .. '</span>\n'
@@ -142,7 +142,7 @@ function display()
    for group, res in spairs(strings) do
       if #result > 0 then result = result .. "\n" end
       result = result ..
-	 '<span weight="bold" color="' .. beautiful.fg_widget_value_important .. '">' ..
+	 '<span weight="bold" color="#FFF0D1">' ..
 	 group .. "</span>\n" .. res
    end
    nid = naughty.notify({ text = result,
