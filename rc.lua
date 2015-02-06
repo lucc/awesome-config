@@ -105,8 +105,16 @@ end
 -- Define a tag table which hold all screen tags.
 tags = {}
 for s = 1, screen.count() do
-    -- Each screen has its own tag table.
-    tags[s] = awful.tag({ 1, 2, 3, 4, 5, 6, 7, 8, 9 }, s, layouts[8])
+  -- Each screen has its own tag table.
+  tags[s] = awful.tag(
+    { 1, 2, 3, 4, 5, 6, 7, 8, 9 },
+    -- some alternatives from http://awesome.naquadah.org/wiki/Symbolic_tag_names
+    --{ "➊", "➋", "➌", "➍", "➎", "➏", "➐", "➑", "➒" },
+    --{ "♨", "⌨", "⚡", "✉", "☕", "❁", "☃", "☭", "⚢" },
+    --{ "☠", "⌥", "✇", "⌤", "⍜", "✣", "⌨", "⌘", "☕" },
+    s,
+    layouts[8]
+  )
 end
 
 -- Menu {{{1
