@@ -423,21 +423,11 @@ for s = 1, screen.count() do
     mywibox[s]:set_widget(layout)
 end
 
--- Mouse bindings {{{1
-root.buttons(awful.util.table.join(
-    awful.button({ }, 3, function () mymainmenu:toggle() end),
-    awful.button({ }, 4, awful.tag.viewnext),
-    awful.button({ }, 5, awful.tag.viewprev)
-))
-
-clientbuttons = awful.util.table.join(
-    awful.button({ }, 1, function (c) client.focus = c; c:raise() end),
-    awful.button({ modkey }, 1, awful.mouse.client.move),
-    awful.button({ modkey }, 3, awful.mouse.client.resize))
-
--- keys {{{1
+-- key and mouse bindings {{{1
 keys = require('keys')
 root.keys(keys.global)
+buttons = require('mouse')
+root.buttons(buttons.root)
 
 -- Rules {{{1
 -- Rules to apply to new clients (through the "manage" signal).
@@ -449,7 +439,7 @@ awful.rules.rules = {
                      focus = awful.client.focus.filter,
                      raise = true,
                      keys = keys.client,
-                     buttons = clientbuttons } },
+                     buttons = buttons.client } },
     { rule = { class = "MPlayer" },
       properties = { floating = true } },
     { rule = { class = "pinentry" },
