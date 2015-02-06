@@ -16,5 +16,5 @@ local clientbuttons = awful.util.table.join(
     awful.button({ modkey }, 1, awful.mouse.client.move),
     awful.button({ modkey }, 3, awful.mouse.client.resize))
 
--- return client and root buttons
+-- return client and root buttons {{{1
 return { client = clientbuttons, root = rootbuttons }
