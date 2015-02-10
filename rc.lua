@@ -69,9 +69,9 @@ menubar.utils.terminal = terminal -- Set the terminal for applications that requ
 require('bar')
 
 -- key and mouse bindings {{{1
-keys = require('keys')
+local keys = require("keys")
 root.keys(keys.global)
-buttons = require('mouse')
+local buttons = require("mouse")
 root.buttons(buttons.root)
 
 -- Rules {{{1
