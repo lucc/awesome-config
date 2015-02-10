@@ -3,7 +3,6 @@
 
 -- Standard awesome library {{{1
 local gears = require("gears")
-local awful = require("awful")
 require("awful.autofocus")
 local beautiful = require("beautiful") -- Theme handling library
 local naughty = require("naughty") -- Notification library
@@ -51,14 +50,11 @@ if beautiful.wallpaper then
     end
 end
 
--- Tags {{{1
-local tags = require("tags")
-
 -- Menubar configuration {{{1
 menubar.utils.terminal = terminal -- Set the terminal for applications that require it
 
 -- bar at the top of the screen {{{1
-require('bar')
+require("bar")
 
 -- key and mouse bindings {{{1
 local keys = require("keys")

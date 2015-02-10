@@ -32,4 +32,4 @@ for s = 1, screen.count() do
     layouts[8]
   )
 end
-return tags
+return tags, layouts
