@@ -5,10 +5,8 @@
 local gears = require("gears")
 local awful = require("awful")
 require("awful.autofocus")
--- Theme handling library
-local beautiful = require("beautiful")
--- Notification library
-local naughty = require("naughty")
+local beautiful = require("beautiful") -- Theme handling library
+local naughty = require("naughty") -- Notification library
 local menubar = require("menubar")
 
 -- manually added
@@ -56,13 +54,7 @@ end
 -- Tags {{{1
 local tags = require("tags")
 
--- Menu {{{1
--- Create a laucher widget and a main menu
-local mymainmenu = require("menu")
-mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
-                                     menu = mymainmenu })
-
--- Menubar configuration
+-- Menubar configuration {{{1
 menubar.utils.terminal = terminal -- Set the terminal for applications that require it
 
 -- bar at the top of the screen {{{1

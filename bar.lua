@@ -2,9 +2,10 @@
 -- vim: foldmethod=marker
 
 -- required modules {{{1
-local wibox = require("wibox")
 local awful = require("awful")
+local beautiful = require("beautiful")
 local vicious = require("vicious")
+local wibox = require("wibox")
 
 -- local helper functions {{{1
 local markup = function (tag, text)
@@ -19,6 +20,12 @@ end
 local color = function (col, text)
   return markup ('span color="' .. col .. '"', text)
 end
+
+-- Menu {{{1
+-- Create a laucher widget and a main menu
+local mymainmenu = require("menu")
+local mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
+                                     menu = mymainmenu })
 
 -- Wibox {{{1
 -- MPD information {{{2
