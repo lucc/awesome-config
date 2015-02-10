@@ -10,7 +10,6 @@ local math      = math
 local string    = string
 local type      = type
 local modkey    = "Mod4"
-local beautiful = require("beautiful")
 local naughty   = require("naughty")
 local capi      = {
    root = root,

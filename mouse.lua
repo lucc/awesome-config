@@ -2,6 +2,7 @@
 -- vim: foldmethod=marker
 
 local awful = require("awful")
+local mymainmenu = require("menu")
 
 -- Mouse bindings {{{1
 local rootbuttons = awful.util.table.join(

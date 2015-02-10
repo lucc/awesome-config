@@ -6,8 +6,6 @@ local gears = require("gears")
 local awful = require("awful")
 awful.rules = require("awful.rules")
 require("awful.autofocus")
--- Widget and layout library
-local wibox = require("wibox")
 -- Theme handling library
 local beautiful = require("beautiful")
 -- Notification library
@@ -91,14 +89,14 @@ end
 
 -- Menu {{{1
 -- Create a laucher widget and a main menu
-mymainmenu = require("menu")
+local mymainmenu = require("menu")
 mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
                                      menu = mymainmenu })
 
 -- Menubar configuration
 menubar.utils.terminal = terminal -- Set the terminal for applications that require it
 
--- Wibox {{{1
+-- bar at the top of the screen {{{1
 require('bar')
 
 -- key and mouse bindings {{{1
