@@ -17,6 +17,7 @@ local menubar = require("menubar")
 -- manually added
 --package.path = package.path .. ';/usr/lib/python3.4/site-packages/powerline/bindings/awesome/?.lua'
 --require('powerline')
+require("globals")
 
 -- Error handling {{{1
 -- Check if awesome encountered an error during startup and fell back to
@@ -47,20 +48,6 @@ end
 beautiful.init("/usr/share/awesome/themes/default/theme.lua")
 --beautiful.init("/usr/share/awesome/themes/sky/theme.lua")
 --beautiful.init("/usr/share/awesome/themes/zenburn/theme.lua")
-
--- This is used later as the default terminal and editor to run.
---awful.util.spawn("urxvtd -q -o -f")
---terminal = "urxvtc"
-terminal = "term"
-editor = os.getenv("EDITOR") or "vim"
-editor_cmd = terminal .. " -e " .. editor
-
--- Default modkey.
--- Usually, Mod4 is the key with a logo between Control and Alt.
--- If you do not like this or do not have such a key,
--- I suggest you to remap Mod4 to another key using xmodmap or other tools.
--- However, you can use another modifier like Mod1, but it may interact with others.
-modkey = "Mod4"
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
 local layouts =
