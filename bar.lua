@@ -212,9 +212,8 @@ mytextclock = awful.widget.textclock()
 -- end)())
 
 -- Calendar widget to attach to the textclock
-calenda2 = require('calendar2')
-calendar2.addCalendarToWidget(mytextclock)
--- TODO does not work?
+cal = require('cal')
+cal.register(mytextclock)
 
 -- Create a wibox for each screen and add it {{{2
 mywibox = {}
