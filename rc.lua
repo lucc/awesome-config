@@ -7,11 +7,7 @@ require("awful.autofocus")
 local beautiful = require("beautiful") -- Theme handling library
 local naughty = require("naughty") -- Notification library
 local menubar = require("menubar")
-
--- manually added
---package.path = package.path .. ';/usr/lib/python3.4/site-packages/powerline/bindings/awesome/?.lua'
---require('powerline')
-require("globals")
+menubar.utils = require("menubar.utils")
 
 -- Error handling {{{1
 -- Check if awesome encountered an error during startup and fell back to
@@ -49,6 +45,11 @@ if beautiful.wallpaper then
         gears.wallpaper.maximized(beautiful.wallpaper, s, true)
     end
 end
+
+-- manually added {{{1
+--package.path = package.path .. ';/usr/lib/python3.4/site-packages/powerline/bindings/awesome/?.lua'
+--require('powerline')
+require("globals")
 
 -- Menubar configuration {{{1
 menubar.utils.terminal = terminal -- Set the terminal for applications that require it

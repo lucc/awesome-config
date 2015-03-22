@@ -27,7 +27,16 @@ local function mpd_status_formatter(widget, args)
   end
   return pango.color(col, artist..'---'..album..'---'..title)
 end
-vicious.register(mpdwidget, vicious.widgets.mpd, mpd_status_formatter, 101, nil)
+vicious.register(mpdwidget, vicious.widgets.mpd, mpd_status_formatter, 101,
+		 nil)
+-- add an refresh function to the mpd widgets to update the text and such
+mpdwidget.refresh = function (widget)
+  widget:set_markup(mpd_status_formatter(nil, vicious.widgets.mpd()))
+end
+mpdwidget.toggle = function (widget) awful.util.spawn("mpc toggle") end
+mpdwidget.next = function (widget) awful.util.spawn("mpc next") end
+mpdwidget.previous = function (widget) awful.util.spawn("mpc previous") end
+
 
 -- battery {{{1
 
@@ -82,8 +91,9 @@ local mymailbutton = awful.widget.button()
 local envolope_formatter = function (widget, args)
   if args[1] == 0 and args[2] == 0 then return "" end
   local envolope = "\226\156\137" -- ✉
-  return pango.markup('big', pango.color('red',    string.rep(envolope, args[1])) ..
-		       pango.color('orange', string.rep(envolope, args[2])))
+  return pango.markup('big',
+                      pango.color('red', string.rep(envolope, args[1])) ..
+		      pango.color('orange', string.rep(envolope, args[2])))
 end
 
 local mail_format_function = function (widget, args)
@@ -116,12 +126,14 @@ local mail_paths = {
 
 vicious.register(mytextmailcheckwidget, vicious.widgets.mdir,
 		 envolope_formatter, 120, mail_paths)
-vicious.register(mymailbutton, vicious.widgets.mdir, mail_format_function, 120, mail_paths) -- TODO
+vicious.register(mymailbutton, vicious.widgets.mdir, mail_format_function,
+		 120, mail_paths) -- TODO
 
 -- wifi info box {{{1
 local mywifitext = wibox.widget.textbox()
 vicious.register(mywifitext, vicious.widgets.wifi,
-  -- 'ssid: ${ssid}, mode: ${mode}, chan: ${chan}, rate: ${rate}, link: ${link}, linp: ${linp}, sign: ${sign}',
+  -- 'ssid: ${ssid}, mode: ${mode}, chan: ${chan}, rate: ${rate},
+  -- link: ${link}, linp: ${linp}, sign: ${sign}',
   ' ${ssid} ',
   --' <span color="blue">${ssid}</span> ',
   120, "wlan0")
@@ -148,49 +160,12 @@ vicious.register(pacwidget,
 		   end
 		 end,
 		 '$1',
-
-                --vicious.widgets.pkg,
-                --function(widget,args)
-                --    local io = { popen = io.popen }
-                --    local s = io.popen("pacman -Qu")
-                --    local str = ''
-
-                --    for line in s:lines() do
-                --        str = str .. line .. "\n"
-                --    end
-                --    pacwidget_t:set_text(str)
-                --    s:close()
-                --    return "UPDATES: " .. args[1]
-                --end,
-		--function (widget, args)
-		--  if args[1] == 0 then
-		--    return ""
-		--  else
-		--    str = ""
-		--    for line in io.popen("pacman -Qu"):lines() do
-		--      str = str .. line .. "\n"
-		--    end
-                --    pacwidget_t:set_text(string.sub(str, 1, -2))
-		--    return "Updates available!"
-		--  end
-		--end,
 		1800, "Arch")
                 -- 1800 means check every 30 minutes
 
 -- custom calendar and clock {{{1
 -- Create a textclock widget
 local mytextclock = awful.widget.textclock()
--- calendar_tooltip = awful.tooltip({objects = {mytextclock}})
--- --calendar_tooltip:set_text('<span font_desc="monospace">' .. io.popen('cal -3') .. '</span>')
--- calendar_tooltip:set_text((function ()
---   local s = ''
---   for line in io.popen('cal -3'):lines() do
---     s = s .. line .. '\n'
---   end
---   return s
---   --return '<span font="monospace">' ..s.. '</span>'
--- end)())
-
 -- Calendar widget to attach to the textclock
 local cal = require('cal')
 cal.register(mytextclock)

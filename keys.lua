@@ -9,6 +9,8 @@ local mymainmenu = require("menu")
 local tags = require("tags")
 local layouts = tags.layouts
 tags = tags.tags
+local widgets = require("widgets")
+local menubar = require("menubar")
 
 -- global key bindings {{{1
 local globalkeys = awful.util.table.join(
@@ -89,16 +91,16 @@ local globalkeys = awful.util.table.join(
     --awful.key({ }, "XF86KbdBrightnessDown", function () awful.util.spawn("kbdlight down") end),
     --awful.key({ }, "XF86KbdBrightnessUp", function () awful.util.spawn("kbdlight up") end),
     awful.key({ }, "XF86AudioPlay", function ()
-      awful.util.spawn("mpc toggle")
-      mpdwidget:set_markup(mpd_status_formatter(nil, vicious.widgets.mpd()))
+      widgets.music.toggle()
+      widgets.music:refresh()
     end),
     awful.key({ }, "XF86AudioNext", function ()
-      awful.util.spawn("mpc next")
-      mpdwidget:set_markup(mpd_status_formatter(nil, vicious.widgets.mpd()))
+      widgets.music.next()
+      widgets.music:refresh()
     end),
     awful.key({ }, "XF86AudioPrev", function ()
-      awful.util.spawn("mpc previous")
-      mpdwidget:set_markup(mpd_status_formatter(nil, vicious.widgets.mpd()))
+      widgets.music.previous()
+      widgets.music:refresh()
     end),
     --awful.key({modkey}, "XF86MonBrightnessDown", function () awful.util.spawn(terminal .. " -e man awesome") end),
     awful.key({modkey}, "XF86MonBrightnessDown", keydoc.display),
