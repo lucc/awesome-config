@@ -6,6 +6,9 @@ local awful = require("awful")
 local beautiful = require("beautiful")
 local vicious = require("vicious")
 local wibox = require("wibox")
+local tags = require("tags")
+local layouts = tags.layouts
+tags = tags.tags
 
 -- local helper functions {{{1
 local markup = function (tag, text)

@@ -4,7 +4,9 @@ awful.rules = require("awful.rules")
 local beautiful = require("beautiful")
 local buttons = require("mouse")
 local keys = require("keys")
-local tags, layouts = require("tags")
+local tags = require("tags")
+local layouts = tags.layouts
+tags = tags.tags
 
 -- Rules {{{1
 -- Rules to apply to new clients (through the "manage" signal).

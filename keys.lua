@@ -6,7 +6,9 @@ local awful = require("awful")
 local vicious = require("vicious")
 local keydoc = require("keydoc")
 local mymainmenu = require("menu")
-local tags, layouts = require("tags")
+local tags = require("tags")
+local layouts = tags.layouts
+tags = tags.tags
 
 -- global key bindings {{{1
 local globalkeys = awful.util.table.join(
