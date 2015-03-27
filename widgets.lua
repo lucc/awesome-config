@@ -7,36 +7,7 @@ local wibox = require("wibox")
 local vicious = require("vicious")
 local pango = require("pango")
 
--- MPD information {{{1
-local mpdwidget = wibox.widget.textbox()
-local function mpd_status_formatter(widget, args)
-  local state = args['{state}']
-  local artist = args['{Artist}']
-  local album = args['{Album}']
-  local title = args['{Title}']
-  --args['{}']
-  local col = ''
-  if state == 'Play' then
-    col = 'yellow'
-  elseif state == 'Pause' then
-    col = 'orange'
-  elseif state == 'Stop' then
-    return pango.color('blue', 'MPD: stopped')
-  else
-    return ''
-  end
-  return pango.color(col, artist..'---'..album..'---'..title)
-end
-vicious.register(mpdwidget, vicious.widgets.mpd, mpd_status_formatter, 101,
-		 nil)
--- add an refresh function to the mpd widgets to update the text and such
-mpdwidget.refresh = function (widget)
-  widget:set_markup(mpd_status_formatter(nil, vicious.widgets.mpd()))
-end
-mpdwidget.toggle = function (widget) awful.util.spawn("mpc toggle") end
-mpdwidget.next = function (widget) awful.util.spawn("mpc next") end
-mpdwidget.previous = function (widget) awful.util.spawn("mpc previous") end
-
+local music = require("widgets/mpd")
 
 -- battery {{{1
 
@@ -176,7 +147,7 @@ return {
   battery = textbat,
   clock = mytextclock,
   mail = mytextmailcheckwidget,
-  music = mpdwidget,
+  music = music,
   updates = pacwidget,
   wifi = mywifitext,
   mailbutton = mymailbutton,
