@@ -56,12 +56,12 @@ local globalkeys = awful.util.table.join(
     awful.key({ modkey, "Control" }, "r", awesome.restart),
     awful.key({ modkey, "Shift"   }, "q", awesome.quit),
 
-    awful.key({ modkey,           }, "l",     function () awful.tag.incmwfact( 0.05)    end, 'TODO'),
-    awful.key({ modkey,           }, "h",     function () awful.tag.incmwfact(-0.05)    end, 'TODO'),
-    awful.key({ modkey, "Shift"   }, "h",     function () awful.tag.incnmaster( 1)      end, 'TODO'),
-    awful.key({ modkey, "Shift"   }, "l",     function () awful.tag.incnmaster(-1)      end, 'TODO'),
-    awful.key({ modkey, "Control" }, "h",     function () awful.tag.incncol( 1)         end, 'TODO'),
-    awful.key({ modkey, "Control" }, "l",     function () awful.tag.incncol(-1)         end, 'TODO'),
+    awful.key({ modkey,           }, "l",     function () awful.tag.incmwfact( 0.05)    end, 'Increase master width factor'),
+    awful.key({ modkey,           }, "h",     function () awful.tag.incmwfact(-0.05)    end, 'Decrease master width factor'),
+    awful.key({ modkey, "Shift"   }, "h",     function () awful.tag.incnmaster( 1)      end, 'Increase number of master windows'),
+    awful.key({ modkey, "Shift"   }, "l",     function () awful.tag.incnmaster(-1)      end, 'Decrease number of master windows'),
+    awful.key({ modkey, "Control" }, "h",     function () awful.tag.incncol( 1)         end, 'Increase number of column windows'),
+    awful.key({ modkey, "Control" }, "l",     function () awful.tag.incncol(-1)         end, 'Decrease number of column windows'),
     awful.key({ modkey,           }, "space", function () awful.layout.inc(layouts,  1) end, 'next layout'),
     awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(layouts, -1) end, 'previous layout'),
 
