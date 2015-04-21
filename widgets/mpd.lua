@@ -42,12 +42,15 @@ end
 widget.refresh = function (self)
   local data = self.get_data()
   self:set_markup(self.formatter(self, data))
-  naughty.notify({title = 'MPD', text = self.format_text(data)})
+  --naughty.notify({title = 'MPD', text = self.format_text(data)})
 end
 
 widget:buttons(awful.util.table.join(
   awful.button({ }, 1, function () widget:refresh() end)))
 
 vicious.register(widget, widget.get_data, widget.formatter, 101, nil)
+
+-- set the default icon size for mpd-notifcation(1)
+naughty.config.defaults.icon_size = 64
 
 return widget
