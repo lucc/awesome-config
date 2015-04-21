@@ -32,11 +32,9 @@ local globalkeys = awful.util.table.join(
         end),
     awful.key({ modkey,           }, "w", function () mymainmenu:show() end),
 
-    -- Layout manipulation {{{2
+    keydoc.group('Client movement'), -- {{{2
     awful.key({ modkey, "Shift"   }, "j", function () awful.client.swap.byidx(  1)    end, 'swap with next client'),
     awful.key({ modkey, "Shift"   }, "k", function () awful.client.swap.byidx( -1)    end, 'swap with previous client'),
-    awful.key({ modkey, "Control" }, "j", function () awful.screen.focus_relative( 1) end, 'focus next monitor'),
-    awful.key({ modkey, "Control" }, "k", function () awful.screen.focus_relative(-1) end, 'focus previous monitor'),
     awful.key({ modkey,           }, "u", awful.client.urgent.jumpto, 'jump to urgent client'),
     awful.key({ modkey,           }, "Tab",
         function ()
@@ -44,7 +42,10 @@ local globalkeys = awful.util.table.join(
             if client.focus then
                 client.focus:raise()
             end
-        end),
+        end, "switch to last client"),
+    keydoc.group('Monitor movement'), -- {{{2
+    awful.key({ modkey, "Control" }, "j", function () awful.screen.focus_relative( 1) end, 'focus next monitor'),
+    awful.key({ modkey, "Control" }, "k", function () awful.screen.focus_relative(-1) end, 'focus previous monitor'),
 
     -- Standard program
     awful.key({ modkey,           }, "Return", function () awful.util.spawn(terminal) end),
@@ -56,6 +57,7 @@ local globalkeys = awful.util.table.join(
     awful.key({ modkey, "Control" }, "r", awesome.restart),
     awful.key({ modkey, "Shift"   }, "q", awesome.quit),
 
+    keydoc.group('Layout management'), -- {{{2
     awful.key({ modkey,           }, "l",     function () awful.tag.incmwfact( 0.05)    end, 'Increase master width factor'),
     awful.key({ modkey,           }, "h",     function () awful.tag.incmwfact(-0.05)    end, 'Decrease master width factor'),
     awful.key({ modkey, "Shift"   }, "h",     function () awful.tag.incnmaster( 1)      end, 'Increase number of master windows'),
@@ -105,6 +107,7 @@ local globalkeys = awful.util.table.join(
     --awful.key({modkey}, "XF86MonBrightnessDown", function () awful.util.spawn(terminal .. " -e man awesome") end),
     awful.key({modkey}, "XF86MonBrightnessDown", keydoc.display),
     --awful.key({modkey}, "F1", function () awful.util.spawn(terminal .. " -e man awesome") end),
+    keydoc.group('Misc'), -- {{{2
     awful.key({modkey}, "F1", keydoc.display, 'display this help'),
     awful.key({ }, "XF86LaunchB", function ()
       awful.tag.viewonly(tags[mouse.screen][9])
@@ -112,7 +115,9 @@ local globalkeys = awful.util.table.join(
       --awful.util.spawn(terminal .. " -e nload wlan0")
       --awful.util.spawn(terminal .. " -e ping luc42.lima-city.de")
     end),
-    awful.key({modkey}, "XF86Eject", function () awful.util.spawn('slock') end)
+    awful.key({modkey}, "XF86Eject", function () awful.util.spawn('slock') end),
+    -- paste x clipboard everywhere
+    awful.key({ modkey }, "v", function () return selection() end, "paste the clipboard buffer")
 )
 
 -- Bind all key numbers to tags. {{{2
