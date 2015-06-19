@@ -117,7 +117,13 @@ local globalkeys = awful.util.table.join(
     end),
     awful.key({modkey}, "XF86Eject", function () awful.util.spawn('slock') end),
     -- paste x clipboard everywhere
-    awful.key({ modkey }, "v", function () return selection() end, "paste the clipboard buffer")
+    awful.key({ modkey }, "v", function () return selection() end, "paste the clipboard buffer"),
+    awful.key({ modkey }, "d", function () awful.prompt.run(
+	{ prompt = 'Look up ' }, mypromptbox[mouse.screen].widget,
+	function (string)
+	  awful.util.spawn('dict-pager.sh '..string:gsub("'", "\\'"))
+	end, nil, awful.util.getdir("cache") .. "/history_dict_lookup")
+      end, "prompt for a text to look up in a dictionary")
 )
 
 -- Bind all key numbers to tags. {{{2
