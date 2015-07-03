@@ -33,9 +33,13 @@ local globalkeys = awful.util.table.join(
     awful.key({ modkey,           }, "w", function () mymainmenu:show() end),
 
     keydoc.group('Client movement'), -- {{{2
-    awful.key({ modkey, "Shift"   }, "j", function () awful.client.swap.byidx(  1)    end, 'swap with next client'),
-    awful.key({ modkey, "Shift"   }, "k", function () awful.client.swap.byidx( -1)    end, 'swap with previous client'),
-    awful.key({ modkey,           }, "u", awful.client.urgent.jumpto, 'jump to urgent client'),
+    awful.key({ modkey, "Shift"   }, "j",
+      function () awful.client.swap.byidx(1) end, 'swap with next client'),
+    awful.key({ modkey, "Shift"   }, "k",
+      function () awful.client.swap.byidx(-1) end,
+      'swap with previous client'),
+    awful.key({ modkey,           }, "u",
+      awful.client.urgent.jumpto, 'jump to urgent client'),
     awful.key({ modkey,           }, "Tab",
         function ()
             awful.client.focus.history.previous()
@@ -44,11 +48,15 @@ local globalkeys = awful.util.table.join(
             end
         end, "switch to last client"),
     keydoc.group('Monitor movement'), -- {{{2
-    awful.key({ modkey, "Control" }, "j", function () awful.screen.focus_relative( 1) end, 'focus next monitor'),
-    awful.key({ modkey, "Control" }, "k", function () awful.screen.focus_relative(-1) end, 'focus previous monitor'),
+    awful.key({ modkey, "Control" }, "j",
+      function () awful.screen.focus_relative(1) end, 'focus next monitor'),
+    awful.key({ modkey, "Control" }, "k",
+      function () awful.screen.focus_relative(-1) end,
+      'focus previous monitor'),
 
     -- Standard program
-    awful.key({ modkey,           }, "Return", function () awful.util.spawn(terminal) end),
+    awful.key({ modkey,           }, "Return",
+      function () awful.util.spawn(terminal) end),
     awful.key({ modkey, "Shift"   }, "Return",
       function ()
 	awful.tag.viewonly(tags[mouse.screen][9])
