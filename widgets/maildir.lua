@@ -50,4 +50,7 @@ vicious.register(mytextmailcheckwidget, vicious.widgets.mdir,
 vicious.register(mymailbutton, vicious.widgets.mdir, mail_format_function,
 		 120, mail_paths) -- TODO
 
-return {widget = mytextmailcheckwidget, button = mymailbutton}
+return {
+  widget = mytextmailcheckwidget,
+  --button = mymailbutton,
+}

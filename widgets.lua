@@ -106,5 +106,5 @@ return {
   music = music,
   updates = pacwidget,
   wifi = mywifitext,
-  mailbutton = mail.button,
+  --mailbutton = mail.button,
 }
