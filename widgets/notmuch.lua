@@ -6,6 +6,11 @@ local json = require("json")
 local pango = require("pango")
 local vicious = require("vicious")
 local wibox = require("wibox")
+local naughty = require('naughty')
+
+local function display(title, text)
+  naughty.notify({text = text, title=title ,timeout=0})
+end
 
 local query = 'tag:inbox AND tag:unread AND NOT tag:spam'
 
