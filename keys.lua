@@ -123,6 +123,11 @@ local globalkeys = awful.util.table.join(
       --awful.util.spawn(terminal .. " -e nload wlan0")
       --awful.util.spawn(terminal .. " -e ping luc42.lima-city.de")
     end),
+    awful.key({}, "XF86LaunchA", function ()
+      awful.tag.viewonly(tags[mouse.screen][8])
+      os.execute('notmuch new')
+      awful.util.spawn(terminal .. " -e alot")
+    end),
     awful.key({modkey}, "XF86Eject", function () awful.util.spawn('slock') end),
     -- paste x clipboard everywhere
     awful.key({ modkey }, "v", function () return selection() end, "paste the clipboard buffer"),
