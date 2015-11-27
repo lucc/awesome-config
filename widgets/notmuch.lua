@@ -39,6 +39,7 @@ local function format_summary (summary)
 end
 
 local function worker (format, warg)
+  os.execute('notmuch new')
   local count = notmuch_count(warg)
   if count == 0 then
     return { count = 0, summary = {} }
