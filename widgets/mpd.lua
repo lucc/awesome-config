@@ -46,7 +46,10 @@ widget.refresh = function (self)
 end
 
 widget:buttons(awful.util.table.join(
-  awful.button({ }, 1, function () widget:refresh() end)))
+  awful.button({ }, 1, function () widget:toggle(); widget:refresh() end),
+  awful.button({ }, 3, function () widget:next(); widget:refresh() end)
+  ))
+widget:connect_signal("mouse::enter", function () widget:refresh() end)
 
 vicious.register(widget, widget.get_data, widget.formatter, 101, nil)
 
