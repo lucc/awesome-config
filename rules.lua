@@ -31,4 +31,7 @@ awful.rules.rules = {
     -- Set Gvim to always map on tags number 2 of screen 1.
     { rule = { class = "Gvim" },
       properties = { tag = tags[1][2] } },
+    { rule = { class = "URxvt", instance = "calculator" },
+      properties = { floating = true, ontop = true }
+    }
 }

@@ -136,7 +136,8 @@ local globalkeys = awful.util.table.join(
 	function (string)
 	  awful.util.spawn('dict-pager.sh '..string:gsub("'", "\\'"))
 	end, nil, awful.util.getdir("cache") .. "/history_dict_lookup")
-      end, "prompt for a text to look up in a dictionary")
+      end, "prompt for a text to look up in a dictionary"),
+    awful.key({modkey}, "c", function () awful.util.spawn('urxvtc -name calculator -e bc') end)
 )
 
 -- Bind all key numbers to tags. {{{2
