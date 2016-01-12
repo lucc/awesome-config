@@ -12,6 +12,12 @@ tags = tags.tags
 local widgets = require("widgets")
 local menubar = require("menubar")
 
+-- helper functions {{{1
+local function run_on_tag_and_return (prog, tag)
+  awful.tag.viewonly(tag)
+  awful.util.spawn(terminal .. [[ -e sh -c "]] .. prog .. [[ && echo \"require('awful').tag.history.restore()\" | awesome-client"]])
+end
+
 -- global key bindings {{{1
 local globalkeys = awful.util.table.join(
     keydoc.group('Tag movement'), -- {{{2
@@ -119,14 +125,13 @@ local globalkeys = awful.util.table.join(
     awful.key({modkey}, "F1", keydoc.display, 'display this help'),
     awful.key({ }, "XF86LaunchB", function ()
       awful.tag.viewonly(tags[mouse.screen][9])
-      awful.util.spawn(terminal .. " -e htop")
+      run_on_tag_and_return("htop", tags[mouse.screen][9])
       --awful.util.spawn(terminal .. " -e nload wlan0")
       --awful.util.spawn(terminal .. " -e ping luc42.lima-city.de")
     end),
     awful.key({}, "XF86LaunchA", function ()
-      awful.tag.viewonly(tags[mouse.screen][8])
-      os.execute('notmuch new')
-      awful.util.spawn(terminal .. " -e alot")
+      awful.util.spawn('notmuch new') -- This should be in the background.
+      run_on_tag_and_return("alot", tags[mouse.screen][8])
     end),
     awful.key({modkey}, "XF86Eject", function () awful.util.spawn('slock') end),
     -- paste x clipboard everywhere
