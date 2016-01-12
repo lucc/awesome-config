@@ -18,6 +18,10 @@ local function run_on_tag_and_return (prog, tag)
   awful.util.spawn(terminal .. [[ -e sh -c "]] .. prog .. [[ && echo \"require('awful').tag.history.restore()\" | awesome-client"]])
 end
 
+local function run_in_centeral_terminal (prog)
+  awful.util.spawn('urxvtc -name center -e ' .. prog)
+end
+
 -- global key bindings {{{1
 local globalkeys = awful.util.table.join(
     keydoc.group('Tag movement'), -- {{{2
@@ -124,14 +128,13 @@ local globalkeys = awful.util.table.join(
     keydoc.group('Misc'), -- {{{2
     awful.key({modkey}, "F1", keydoc.display, 'display this help'),
     awful.key({ }, "XF86LaunchB", function ()
-      awful.tag.viewonly(tags[mouse.screen][9])
-      run_on_tag_and_return("htop", tags[mouse.screen][9])
+      run_in_centeral_terminal("htop")
       --awful.util.spawn(terminal .. " -e nload wlan0")
       --awful.util.spawn(terminal .. " -e ping luc42.lima-city.de")
     end),
     awful.key({}, "XF86LaunchA", function ()
       awful.util.spawn('notmuch new') -- This should be in the background.
-      run_on_tag_and_return("alot", tags[mouse.screen][8])
+      run_in_centeral_terminal("alot")
     end),
     awful.key({modkey}, "XF86Eject", function () awful.util.spawn('slock') end),
     -- paste x clipboard everywhere
@@ -142,7 +145,7 @@ local globalkeys = awful.util.table.join(
 	  awful.util.spawn('dict-pager.sh '..string:gsub("'", "\\'"))
 	end, nil, awful.util.getdir("cache") .. "/history_dict_lookup")
       end, "prompt for a text to look up in a dictionary"),
-    awful.key({modkey}, "c", function () awful.util.spawn('urxvtc -name calculator -e bc') end)
+    awful.key({modkey}, "c", function () run_in_centeral_terminal('bc') end)
 )
 
 -- Bind all key numbers to tags. {{{2
