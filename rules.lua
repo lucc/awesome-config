@@ -34,7 +34,7 @@ awful.rules.rules = {
     { rule = { class = "URxvt", instance = "calculator" },
       properties = { floating = true, ontop = true } },
     { rule = { class = "URxvt", instance = "center" },
-      properties = { floating = true, ontop = true },
+      properties = { floating = true },
       callback = function(c)
 	local screen = screen[mouse.screen].geometry
 	local x = screen.width / 8
