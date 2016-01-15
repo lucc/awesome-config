@@ -64,16 +64,17 @@ local globalkeys = awful.util.table.join(
       function () awful.screen.focus_relative(-1) end,
       'focus previous monitor'),
 
+    keydoc.group('Misc'), --
     -- Standard program
     awful.key({ modkey,           }, "Return",
-      function () awful.util.spawn(terminal) end),
+      function () awful.util.spawn(terminal) end, 'open terminal'),
     awful.key({ modkey, "Shift"   }, "Return",
       function ()
 	awful.tag.viewonly(tags[mouse.screen][9])
 	awful.util.spawn(terminal)
-      end),
-    awful.key({ modkey, "Control" }, "r", awesome.restart),
-    awful.key({ modkey, "Shift"   }, "q", awesome.quit),
+      end, 'open terminal on tag 9'),
+    awful.key({ modkey, "Control" }, "r", awesome.restart, 'restart awesome'),
+    awful.key({ modkey, "Shift"   }, "q", awesome.quit, 'quit awesome'),
 
     keydoc.group('Layout management'), -- {{{2
     awful.key({ modkey,           }, "l",     function () awful.tag.incmwfact( 0.05)    end, 'Increase master width factor'),
@@ -88,7 +89,7 @@ local globalkeys = awful.util.table.join(
     awful.key({ modkey, "Control" }, "n", awful.client.restore),
 
     -- Prompt
-    awful.key({ modkey },            "r",     function () mypromptbox[mouse.screen]:run() end),
+    awful.key({ modkey },            "r",     function () mypromptbox[mouse.screen]:run() end, 'run prompt'),
 
     awful.key({ modkey }, "x",
               function ()
@@ -96,14 +97,14 @@ local globalkeys = awful.util.table.join(
                   mypromptbox[mouse.screen].widget,
                   awful.util.eval, nil,
                   awful.util.getdir("cache") .. "/history_eval")
-              end),
+              end, 'lua prompt'),
     -- Menubar
-    awful.key({ modkey }, "p", function() menubar.show() end),
+    awful.key({ modkey }, "p", function() menubar.show() end, 'program menu'),
     -- copied from the FAQ
     -- toggle the visibleity of the bar at the top of the screen
     awful.key({ modkey }, "b", function ()
       mywibox[mouse.screen].visible = not mywibox[mouse.screen].visible
-    end),
+    end, 'toggle screen bar'),
     -- some media keys on the mac book pro
     --awful.key({ }, "XF86AudioRaiseVolume", function () awful.util.spawn("amixer set Master playback 1%+") end),
     --awful.key({ }, "XF86AudioLowerVolume", function () awful.util.spawn("amixer set Master playback 1%-") end),
@@ -145,7 +146,7 @@ local globalkeys = awful.util.table.join(
 	  awful.util.spawn('dict-pager.sh '..string:gsub("'", "\\'"))
 	end, nil, awful.util.getdir("cache") .. "/history_dict_lookup")
       end, "prompt for a text to look up in a dictionary"),
-    awful.key({modkey}, "c", function () run_in_centeral_terminal('bc') end)
+    awful.key({modkey}, "c", function () run_in_centeral_terminal('bc') end, 'open calculator')
 )
 
 -- Bind all key numbers to tags. {{{2
