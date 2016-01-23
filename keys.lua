@@ -137,6 +137,9 @@ local globalkeys = awful.util.table.join(
       awful.util.spawn('notmuch new') -- This should be in the background.
       run_in_centeral_terminal("alot")
     end),
+    awful.key({modkey}, "XF86AudioPlay", function ()
+      run_in_centeral_terminal("ncmpcpp")
+    end),
     awful.key({modkey}, "XF86Eject", function () awful.util.spawn('slock') end),
     -- paste x clipboard everywhere
     awful.key({ modkey }, "v", function () return selection() end, "paste the clipboard buffer"),
