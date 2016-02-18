@@ -58,8 +58,13 @@ local function formatter (widget, args)
   return pango.markup('big', pango.color('red', string.rep(envolope, args.count)))
 end
 
+local function update(widget)
+  widget:set_markup(formatter(widget, worker('', query)))
+end
+
 local widget = wibox.widget.textbox()
 widget.tooltip = awful.tooltip({objects = {widget}})
+widget.update = update
 
 vicious.register(widget, worker, formatter, 97, query)
 
