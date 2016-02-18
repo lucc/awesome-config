@@ -26,7 +26,7 @@ awful.rules.rules = {
     { rule = { class = "gimp" },
       properties = { floating = true } },
     -- Set Firefox to always map on tags number 1 of screen 1.
-    { rule = { class = "Firefox" },
+    { rule = { class = "Firefox", instance = "Navigator" },
       properties = { tag = tags[1][1] } },
     -- Set Gvim to always map on tags number 2 of screen 1.
     { rule = { class = "Gvim" },
