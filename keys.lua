@@ -128,6 +128,7 @@ local globalkeys = awful.util.table.join(
     --awful.key({modkey}, "F1", function () awful.util.spawn(terminal .. " -e man awesome") end),
     keydoc.group('Misc'), -- {{{2
     awful.key({modkey}, "F1", keydoc.display, 'display this help'),
+    awful.key({modkey, "Mod1"}, "h", keydoc.display, 'display this help'),
     awful.key({ }, "XF86LaunchB", function ()
       run_in_centeral_terminal("htop")
       --awful.util.spawn(terminal .. " -e nload wlan0")
@@ -199,12 +200,13 @@ end
 
 -- client keys {{{1
 local clientkeys = awful.util.table.join(
+    keydoc.group('Clients'),
     awful.key({ modkey,           }, "f",      function (c) c.fullscreen = not c.fullscreen  end),
-    awful.key({ modkey, "Shift"   }, "c",      function (c) c:kill()                         end),
-    awful.key({ modkey, "Control" }, "space",  awful.client.floating.toggle                     ),
-    awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end),
+    awful.key({ modkey, "Shift"   }, "c",      function (c) c:kill()                         end, "kill client"),
+    awful.key({ modkey, "Control" }, "space",  awful.client.floating.toggle                     , "toggle floating"),
+    awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end, "switch with master"),
     awful.key({ modkey,           }, "o",      awful.client.movetoscreen                        ),
-    awful.key({ modkey,           }, "t",      function (c) c.ontop = not c.ontop            end),
+    awful.key({ modkey,           }, "t",      function (c) c.ontop = not c.ontop            end, "toggle ontop"),
     awful.key({ modkey,           }, "n",
         function (c)
             -- The client currently has the input focus, so it cannot be
