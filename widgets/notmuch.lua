@@ -13,6 +13,9 @@ local function display(title, text)
 end
 
 local query = 'tag:inbox AND tag:unread AND NOT tag:spam'
+query = io.popen('notmuch config get private.inbox_query'):read('*all'):sub(1, -2)
+query = 'tag:unread and ( ' .. query .. ' )'
+query = query:gsub([=[['"$()\<>{}*?#!&`]]=], '\\%0')
 
 local function notmuch_count (query)
   return tonumber(io.popen('notmuch count -- '..query):read('*all'))
