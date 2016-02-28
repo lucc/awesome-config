@@ -28,7 +28,7 @@ local globalkeys = awful.util.table.join(
     awful.key({ modkey,           }, "Left",   awful.tag.viewprev       ),
     awful.key({ modkey,           }, "Right",  awful.tag.viewnext       ),
     awful.key({ modkey,           }, "Escape", awful.tag.history.restore,
-	      'switch to last used tag'),
+              'switch to last used tag'),
 
     awful.key({ modkey,           }, "j",
         function ()
@@ -70,8 +70,8 @@ local globalkeys = awful.util.table.join(
       function () awful.util.spawn(terminal) end, 'open terminal'),
     awful.key({ modkey, "Shift"   }, "Return",
       function ()
-	awful.tag.viewonly(tags[mouse.screen][9])
-	awful.util.spawn(terminal)
+        awful.tag.viewonly(tags[mouse.screen][9])
+        awful.util.spawn(terminal)
       end, 'open terminal on tag 9'),
     awful.key({ modkey, "Control" }, "r", awesome.restart, 'restart awesome'),
     awful.key({ modkey, "Shift"   }, "q", awesome.quit, 'quit awesome'),
@@ -145,10 +145,10 @@ local globalkeys = awful.util.table.join(
     -- paste x clipboard everywhere
     awful.key({ modkey }, "v", function () return selection() end, "paste the clipboard buffer"),
     awful.key({ modkey }, "d", function () awful.prompt.run(
-	{ prompt = 'Look up ' }, mypromptbox[mouse.screen].widget,
-	function (string)
-	  awful.util.spawn('dict-pager.sh '..string:gsub("'", "\\'"))
-	end, nil, awful.util.getdir("cache") .. "/history_dict_lookup")
+        { prompt = 'Look up ' }, mypromptbox[mouse.screen].widget,
+        function (string)
+          awful.util.spawn('dict-pager.sh '..string:gsub("'", "\\'"))
+        end, nil, awful.util.getdir("cache") .. "/history_dict_lookup")
       end, "prompt for a text to look up in a dictionary"),
     awful.key({modkey}, "c", function () run_in_centeral_terminal('bc') end, 'open calculator')
 )
