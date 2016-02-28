@@ -138,6 +138,9 @@ local globalkeys = awful.util.table.join(
       awful.util.spawn('notmuch new') -- This should be in the background.
       run_in_centeral_terminal("alot")
     end),
+    awful.key({modkey}, "XF86LaunchA", function ()
+      run_in_centeral_terminal("zsh -c 'khal && read -q'")
+    end),
     awful.key({modkey}, "XF86AudioPlay", function ()
       run_in_centeral_terminal("ncmpcpp")
     end),
