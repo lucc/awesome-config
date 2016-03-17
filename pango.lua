@@ -1,5 +1,7 @@
 -- helper functions to deal with pango markup
 
+local theme = require("beautiful")
+
 local markup = function (tag, text)
   local first = tag
   local index = string.find(tag, ' ')
@@ -10,6 +12,9 @@ local markup = function (tag, text)
 end
 
 local color = function (col, text)
+  if theme.colors[col] then
+    col = theme.colors[col]
+  end
   return markup ('span color="' .. col .. '"', text)
 end
 

@@ -3,6 +3,7 @@
 
 -- Standard awesome library {{{1
 local gears = require("gears")
+local getdir = require("awful").util.getdir
 require("awful.autofocus")
 local beautiful = require("beautiful") -- Theme handling library
 local naughty = require("naughty") -- Notification library
@@ -35,9 +36,11 @@ end
 
 -- Variable definitions {{{1
 -- Themes define colours, icons, font and wallpapers.
-beautiful.init("/usr/share/awesome/themes/default/theme.lua")
+--beautiful.init("/usr/share/awesome/themes/default/theme.lua")
 --beautiful.init("/usr/share/awesome/themes/sky/theme.lua")
 --beautiful.init("/usr/share/awesome/themes/zenburn/theme.lua")
+beautiful.init(getdir("config") .. "/themes/awesome-solarized/dark/theme.lua")
+beautiful.border_width = 1
 
 -- Wallpaper {{{1
 if beautiful.wallpaper then
