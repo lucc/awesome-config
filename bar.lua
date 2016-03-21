@@ -91,7 +91,8 @@ for s = 1, screen.count() do
 
     -- Widgets that are aligned to the left
     local left_layout = wibox.layout.fixed.horizontal()
-    left_layout:add(mylauncher)
+    --left_layout:add(mylauncher)
+    left_layout:add(mylayoutbox[s])
     left_layout:add(mytaglist[s])
     left_layout:add(mypromptbox[s])
 
@@ -107,7 +108,7 @@ for s = 1, screen.count() do
     --right_layout:add(batwidget)
     if s == 1 then right_layout:add(wibox.widget.systray()) end
     right_layout:add(widgets.clock)
-    right_layout:add(mylayoutbox[s])
+    --right_layout:add(mylayoutbox[s])
     --right_layout:add(powerline_widget)
 
     -- Now bring it all together (with the tasklist in the middle)

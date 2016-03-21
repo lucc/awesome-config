@@ -29,7 +29,7 @@ for s = 1, screen.count() do
     --{ "♨", "⌨", "⚡", "✉", "☕", "❁", "☃", "☭", "⚢" },
     --{ "☠", "⌥", "✇", "⌤", "⍜", "✣", "⌨", "⌘", "☕" },
     s,
-    layouts[8]
+    layouts[2]
   )
 end
 return { tags = tags, layouts = layouts }
