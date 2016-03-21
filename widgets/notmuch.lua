@@ -27,21 +27,18 @@ local function notmuch_summary (query)
     query):read('*all'))
 end
 
-local function rep_envelope (count)
-end
-
 local function format_summary (summary)
   local str = pango.markup('b', pango.color('green',
 					       'Summary of new mail:'))
   --local keys = {'date_relative', 'authors', 'subject', 'tags'}
-  for index, entry in pairs(summary) do
+  for _, entry in pairs(summary) do
     str = str..'\n'..pango.color('blue', entry['authors'])..': '..
       pango.color('red', entry['subject'])
   end
   return str
 end
 
-local function worker (format, warg)
+local function worker (_, warg)
   os.execute('notmuch new')
   local count = notmuch_count(warg)
   if count == 0 then
