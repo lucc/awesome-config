@@ -20,10 +20,10 @@ local mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
 -- Wibox {{{1
 
 -- Create a wibox for each screen and add it {{{2
-mywibox = {}
-mypromptbox = {}
-mylayoutbox = {}
-mytaglist = {}
+local mywibox = {}
+local mypromptbox = {}
+local mylayoutbox = {}
+local mytaglist = {}
 mytaglist.buttons = awful.util.table.join(
                     awful.button({ }, 1, awful.tag.viewonly),
                     awful.button({ modkey }, 1, awful.client.movetotag),
@@ -32,7 +32,7 @@ mytaglist.buttons = awful.util.table.join(
                     awful.button({ }, 4, function(t) awful.tag.viewnext(awful.tag.getscreen(t)) end),
                     awful.button({ }, 5, function(t) awful.tag.viewprev(awful.tag.getscreen(t)) end)
                     )
-mytasklist = {}
+local mytasklist = {}
 mytasklist.buttons = awful.util.table.join(
                      awful.button({ }, 1, function (c)
                                               if c == client.focus then
