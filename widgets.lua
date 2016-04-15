@@ -34,17 +34,27 @@ batwidget:set_color(
 --vicious.register(batwidget, vicious.widgets.bat, "$2", 61, "BAT0")
 
 local textbat=wibox.widget.textbox()
-local textbat_tooltip = awful.tooltip({ objects = { textbat } })
+local baticon = wibox.widget.textbox()
+local textbat_tooltip = awful.tooltip({ objects = { baticon } })
 
-vicious.register(textbat, vicious.widgets.bat,
+vicious.register(baticon, vicious.widgets.bat,
   function (widget, args)
+    local icon = symbols.battery0
     local col = 'red'
-    if args[2] > 33 then
-      if args[2] > 66 then
-	col = 'green'
-      else
-	col = 'orange'
-      end
+    local percent = args[2]
+    if percent > 33 then
+      col = 'yellow'
+      icon = symbols.battery1
+    end
+    if percent > 50 then
+      icon = symbols.battery2
+    end
+    if percent > 66 then
+      col = 'green'
+      icon = symbols.battery3
+    end
+    if percent > 95 then
+      icon = symbols.battery4
     end
     --"<span color='green'>power@$2%=$3</span>"
     textbat_tooltip:set_text(
@@ -52,7 +62,7 @@ vicious.register(textbat, vicious.widgets.bat,
       'Level: ' .. args[2] .. '%\n' ..
       'Time: ' .. args[3]
       )
-    return pango.color(col, args[3])
+    return pango.color(col, pango.font('Awesome', icon)) .. ' '
   end,
   67, "BAT0")
 
@@ -100,7 +110,7 @@ cal.register(mytextclock)
 
 -- return {{{1
 return {
-  battery = textbat,
+  battery = baticon,
   clock = mytextclock,
   mail = mail.widget,
   music = music,
