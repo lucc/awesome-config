@@ -21,6 +21,8 @@ local mywibox = {}
 mypromptbox = {}
 local mylayoutbox = {}
 local mytaglist = {}
+local space = wibox.widget.textbox()
+space:set_text(" ")
 mytaglist.buttons = awful.util.table.join(
                     awful.button({ }, 1, awful.tag.viewonly),
                     awful.button({ modkey }, 1, awful.client.movetotag),
@@ -96,6 +98,7 @@ for s = 1, screen.count() do
     -- Widgets that are aligned to the right
     local right_layout = wibox.layout.fixed.horizontal()
     -- add the custom mailcheck widget
+    right_layout:add(space)
     right_layout:add(widgets.music)
     right_layout:add(widgets.wifi)
     right_layout:add(widgets.mail)
