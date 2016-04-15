@@ -4,11 +4,8 @@
 -- required modules {{{1
 local awful = require("awful")
 local beautiful = require("beautiful")
-local vicious = require("vicious")
 local wibox = require("wibox")
-local tags = require("tags")
-local layouts = tags.layouts
-tags = tags.tags
+local layouts = require("tags").layouts
 local widgets = require("widgets")
 
 -- Menu {{{1
