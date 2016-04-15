@@ -21,7 +21,7 @@ local mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
 
 -- Create a wibox for each screen and add it {{{2
 local mywibox = {}
-local mypromptbox = {}
+mypromptbox = {}
 local mylayoutbox = {}
 local mytaglist = {}
 mytaglist.buttons = awful.util.table.join(
