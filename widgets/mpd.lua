@@ -6,6 +6,7 @@ local vicious = require("vicious")
 local wibox = require("wibox")
 
 local pango = require("pango")
+local symbols = require("symbols")
 
 local widget = wibox.widget.textbox()
 widget.get_data = vicious.widgets.mpd
@@ -13,15 +14,20 @@ widget.tooltip = awful.tooltip({ objects = { widget } })
 
 widget.format_symbol = function (data)
   local state = data['{state}']
+  local color = 'yellow'
+  local icon
   if state == 'Play' then
-    return pango.color('yellow', ' ▶ ') -- alt: "\xE2\x8F\xB5" = "⏵"
+    icon = symbols.play2
   elseif state == 'Pause' then
-    return pango.color('yellow', ' \xE2\x8F\xB8 ') -- alt:
+    icon = symbols.pause2
   elseif state == 'Stop' then
-    return pango.color('blue', ' ◼ ') -- alt: "\xE2\x8F\xB9" = "⏹"
+    color = 'blue'
+    icon = symbols.stop2
   else
-    return pango.color('red', ' MPD: Error! ')
+    color = 'red'
+    icon = 'MPD: Error!'
   end
+  return pango.color(color, pango.font('Awesome', icon)) .. ' '
 end
 
 widget.format_text = function (data)

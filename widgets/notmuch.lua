@@ -6,13 +6,9 @@ local json = require("json")
 local pango = require("pango")
 local vicious = require("vicious")
 local wibox = require("wibox")
-local naughty = require('naughty')
+local symbols = require("symbols")
 
-local function display(title, text)
-  naughty.notify({text = text, title=title ,timeout=0})
-end
-
-local query = 'tag:inbox AND tag:unread AND NOT tag:spam'
+local query --= 'tag:inbox AND tag:unread AND NOT tag:spam'
 query = io.popen('notmuch config get private.inbox_query'):read('*all'):sub(1, -2)
 query = 'tag:unread and ( ' .. query .. ' )'
 query = query:gsub([=[['"$()\<>{}*?#!&`]]=], '\\%0')
@@ -54,8 +50,7 @@ local function formatter (widget, args)
     return ""
   end
   widget.tooltip:set_text(format_summary(args.summary))
-  local envolope = "\226\156\137" -- ✉
-  return pango.markup('big', pango.color('red', string.rep(envolope, args.count)))
+  return pango.color('red', pango.font('Awesome', string.rep(symbols.envolope2, args.count))) .. ' '
 end
 
 local function update(widget)
