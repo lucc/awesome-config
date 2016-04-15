@@ -10,6 +10,7 @@ local pango = require("pango")
 local music = require("widgets/mpd")
 local mail = require("widgets/notmuch")
 
+local symbols = require("symbols")
 -- battery {{{1
 
 -- copied from the vicious readme
@@ -68,11 +69,27 @@ vicious.register(baticon, vicious.widgets.bat,
 
 -- wifi info box {{{1
 local mywifitext = wibox.widget.textbox()
+local wifi_widget_tooltip = awful.tooltip({ objects = {mywifitext},})
 vicious.register(mywifitext, vicious.widgets.wifi,
-  -- 'ssid: ${ssid}, mode: ${mode}, chan: ${chan}, rate: ${rate},
-  -- link: ${link}, linp: ${linp}, sign: ${sign}',
-  ' ${ssid} ',
+  function (widget, args)
+  --' <span color="red" font="Awesome 14">'..symbols.wifi..'</span> ${ssid} ',
   --' <span color="blue">${ssid}</span> ',
+    local color = 'red'
+    local ssid = args['{ssid}']
+    local symbol = pango.font('Awesome', symbols.wifi)
+    if ssid == 'N/A' then
+      wifi_widget_tooltip:set_text('\n Not connected! \n')
+    else
+      if args['{linp}'] >= 50 then
+	color = 'green'
+      else
+	color = 'yellow'
+      end
+      wifi_widget_tooltip:set_text(ssid)
+    end
+    return pango.color(color, pango.font('Awesome', symbols.wifi)) .. ' '
+  end,
+  --'ssid: ${ssid}, mode: ${mode}, chan: ${chan}, rate: ${rate}, link: ${link}, linp: ${linp}, sign: ${sign}',
   120, "wlan0")
 
 -- Pacman Widget {{{1
