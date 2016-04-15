@@ -4,9 +4,7 @@ awful.rules = require("awful.rules")
 local beautiful = require("beautiful")
 local buttons = require("mouse")
 local keys = require("keys")
-local tags = require("tags")
-local layouts = tags.layouts
-tags = tags.tags
+local tags = require("tags").tags
 
 -- Rules {{{1
 -- Rules to apply to new clients (through the "manage" signal).
@@ -19,15 +17,16 @@ awful.rules.rules = {
                      raise = true,
                      keys = keys.client,
                      buttons = buttons.client } },
-    { rule = { class = "MPlayer" },
+    { rule = { class = "mpv" },
       properties = { floating = true } },
     { rule = { class = "pinentry" },
       properties = { floating = true } },
     { rule = { class = "gimp" },
       properties = { floating = true } },
-    -- Set Firefox to always map on tags number 1 of screen 1.
+    -- Set the browser to always map on tags number 1 of screen 1.
     { rule = { class = "Firefox", instance = "Navigator" },
       properties = { tag = tags[1][1] } },
+    { rule = { class = "qutebrowser" }, properties = { tag = tags[1][1] } },
     -- Set Gvim to always map on tags number 2 of screen 1.
     { rule = { class = "Gvim" },
       properties = { tag = tags[1][2] } },
