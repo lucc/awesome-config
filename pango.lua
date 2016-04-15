@@ -2,7 +2,9 @@
 
 local theme = require("beautiful")
 
-local markup = function (tag, text)
+local pango = {}
+
+pango.markup = function (tag, text)
   local first = tag
   local index = string.find(tag, ' ')
   if index ~= nil then
@@ -11,11 +13,15 @@ local markup = function (tag, text)
   return '<' .. tag .. '>' .. text .. '</' .. first .. '>'
 end
 
-local color = function (col, text)
+pango.color = function (col, text)
   if theme.colors[col] then
     col = theme.colors[col]
   end
-  return markup ('span color="' .. col .. '"', text)
+  return pango.markup('span color="' .. col .. '"', text)
 end
 
-return { color = color, markup = markup }
+pango.font = function (font, text)
+  return pango.markup('span font="' ..font.. '"', text)
+end
+
+return setmetatable(pango, { __call = function(_, ...) return pango.markup(...) end })
