@@ -139,7 +139,7 @@ local globalkeys = awful.util.table.join(
       run_in_centeral_terminal("alot")
     end),
     awful.key({modkey}, "XF86LaunchA", function ()
-      run_in_centeral_terminal("zsh -c 'khal && read -q'")
+      run_in_centeral_terminal("calendar-window.sh")
     end),
     awful.key({modkey}, "XF86AudioPlay", function ()
       run_in_centeral_terminal("ncmpcpp")
