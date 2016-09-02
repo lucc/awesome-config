@@ -70,8 +70,8 @@ local globalkeys = awful.util.table.join(
       function () awful.util.spawn(terminal) end, 'open terminal'),
     awful.key({ modkey, "Shift"   }, "Return",
       function ()
-        awful.tag.viewonly(tags[mouse.screen][9])
-        awful.util.spawn(terminal)
+        --awful.tag.viewonly(tags[mouse.screen][9])
+        awful.util.spawn(terminal..' -b')
       end, 'open terminal on tag 9'),
     awful.key({ modkey, "Control" }, "r", awesome.restart, 'restart awesome'),
     awful.key({ modkey, "Shift"   }, "q", awesome.quit, 'quit awesome'),
