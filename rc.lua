@@ -2,10 +2,7 @@
 -- vim: foldmethod=marker
 
 -- Standard awesome library {{{1
-local gears = require("gears")
-local getdir = require("awful").util.getdir
 require("awful.autofocus")
-local beautiful = require("beautiful") -- Theme handling library
 local naughty = require("naughty") -- Notification library
 local menubar = require("menubar")
 menubar.utils = require("menubar.utils")
@@ -34,40 +31,19 @@ do
     end)
 end
 
--- Variable definitions {{{1
--- Themes define colours, icons, font and wallpapers.
---beautiful.init("/usr/share/awesome/themes/default/theme.lua")
---beautiful.init("/usr/share/awesome/themes/sky/theme.lua")
---beautiful.init("/usr/share/awesome/themes/zenburn/theme.lua")
-beautiful.init(getdir("config") .. "/themes/awesome-solarized/dark/theme.lua")
-beautiful.border_width = 1
-
--- Wallpaper {{{1
-if beautiful.wallpaper then
-    for s = 1, screen.count() do
-        gears.wallpaper.maximized(beautiful.wallpaper, s, true)
-    end
-end
-
--- manually added {{{1
---package.path = package.path .. ';/usr/lib/python3.4/site-packages/powerline/bindings/awesome/?.lua'
---require('powerline')
+-- custom stuff {{{1
+require("theme")
 require("globals")
-
--- Menubar configuration {{{1
+--
+-- Menubar configuration
 menubar.utils.terminal = terminal -- Set the terminal for applications that require it
+require("bar") -- bar at the top of the screen
 
--- bar at the top of the screen {{{1
-require("bar")
-
--- key and mouse bindings {{{1
+-- key and mouse bindings
 local keys = require("keys")
 root.keys(keys.global)
 local buttons = require("mouse")
 root.buttons(buttons.root)
 
--- Rules {{{1
 require("rules")
-
--- Signals {{{1
 require("signals")
