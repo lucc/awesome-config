@@ -101,10 +101,6 @@ local globalkeys = awful.util.table.join(
     -- Menubar
     awful.key({ modkey }, "p", function() menubar.show() end, 'program menu'),
     -- copied from the FAQ
-    -- toggle the visibleity of the bar at the top of the screen
-    awful.key({ modkey }, "b", function ()
-      mywibox[mouse.screen].visible = not mywibox[mouse.screen].visible
-    end, 'toggle screen bar'),
     -- some media keys on the mac book pro
     --awful.key({ }, "XF86AudioRaiseVolume", function () awful.util.spawn("amixer set Master playback 1%+") end),
     --awful.key({ }, "XF86AudioLowerVolume", function () awful.util.spawn("amixer set Master playback 1%-") end),
