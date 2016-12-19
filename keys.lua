@@ -102,9 +102,9 @@ local globalkeys = awful.util.table.join(
     awful.key({ modkey }, "p", function() menubar.show() end, 'program menu'),
     -- copied from the FAQ
     -- some media keys on the mac book pro
-    --awful.key({ }, "XF86AudioRaiseVolume", function () awful.util.spawn("amixer set Master playback 1%+") end),
-    --awful.key({ }, "XF86AudioLowerVolume", function () awful.util.spawn("amixer set Master playback 1%-") end),
-    --awful.key({ }, "XF86AudioMute",        function () awful.util.spawn("amixer set Master toggle")       end),
+    awful.key({ }, "XF86AudioRaiseVolume", function () awful.util.spawn("amixer set Master playback 1%+") end),
+    awful.key({ }, "XF86AudioLowerVolume", function () awful.util.spawn("amixer set Master playback 1%-") end),
+    awful.key({ }, "XF86AudioMute",        function () awful.util.spawn("amixer set Master toggle")       end),
     --awful.key({ }, "XF86KbdBrightnessDown", function () awful.util.spawn("kbdlight down") end),
     --awful.key({ }, "XF86KbdBrightnessUp", function () awful.util.spawn("kbdlight up") end),
     awful.key({ }, "XF86AudioPlay", function ()
