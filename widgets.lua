@@ -90,7 +90,9 @@ vicious.register(mywifitext, vicious.widgets.wifi,
     return pango.color(color, pango.font('Awesome', symbols.wifi)) .. ' '
   end,
   --'ssid: ${ssid}, mode: ${mode}, chan: ${chan}, rate: ${rate}, link: ${link}, linp: ${linp}, sign: ${sign}',
-  120, "wlan0")
+  120,
+  "wlp3s0" --"wlan0"
+  )
 
 -- Pacman Widget {{{1
 -- copied from http://www.jasonmaur.com/awesome-wm-widgets-configuration/
