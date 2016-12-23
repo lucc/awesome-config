@@ -63,4 +63,4 @@ widget.update = update
 
 vicious.register(widget, worker, formatter, 97, query)
 
-return {widget = widget}
+return widget
