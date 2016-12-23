@@ -6,6 +6,7 @@ local json = require("json")
 local pango = require("pango")
 local vicious = require("vicious")
 local wibox = require("wibox")
+
 local symbols = require("symbols")
 local run_in_centeral_terminal = require("functions").run_in_centeral_terminal
 
@@ -54,16 +55,20 @@ local function formatter (widget, args)
   return pango.color('red', pango.font('Awesome', string.rep(symbols.envolope2, args.count))) .. ' '
 end
 
-local function update(widget)
-  widget:set_markup(formatter(widget, worker('', query)))
-end
-
+-- Define the widget that will hold the info about new mail (summary in
+-- tooltip)
 local widget = wibox.widget.textbox()
 widget.tooltip = awful.tooltip({objects = {widget}})
-widget.update = update
+
+widget.update = function (self)
+  self:set_markup(formatter(self, worker('', query)))
+end
+
 widget:buttons(awful.util.table.join(
-  awful.button({ }, 1, function () os.execute("notmuch new"); run_in_centeral_terminal("alot") end)
-  ))
+  awful.button({ }, 1, function ()
+    os.execute("notmuch new")
+    run_in_centeral_terminal("alot")
+  end)))
 
 vicious.register(widget, worker, formatter, 97, query)
 
