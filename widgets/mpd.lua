@@ -7,6 +7,7 @@ local wibox = require("wibox")
 
 local pango = require("pango")
 local symbols = require("symbols")
+local run_in_centeral_terminal = require("functions").run_in_centeral_terminal
 
 local widget = wibox.widget.textbox()
 widget.get_data = vicious.widgets.mpd
@@ -53,6 +54,7 @@ end
 
 widget:buttons(awful.util.table.join(
   awful.button({ }, 1, function () widget:toggle(); widget:refresh() end),
+  awful.button({ }, 2, function () run_in_centeral_terminal("ncmpcpp") end),
   awful.button({ }, 3, function () widget:next(); widget:refresh() end)
   ))
 widget:connect_signal("mouse::enter", function () widget:refresh() end)
