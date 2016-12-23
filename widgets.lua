@@ -130,7 +130,7 @@ cal.register(mytextclock)
 return {
   battery = baticon,
   clock = mytextclock,
-  mail = mail
+  mail = mail,
   music = music,
   updates = pacwidget,
   wifi = mywifitext,
