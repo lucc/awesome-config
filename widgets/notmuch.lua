@@ -7,6 +7,7 @@ local pango = require("pango")
 local vicious = require("vicious")
 local wibox = require("wibox")
 local symbols = require("symbols")
+local run_in_centeral_terminal = require("functions").run_in_centeral_terminal
 
 local query --= 'tag:inbox AND tag:unread AND NOT tag:spam'
 query = io.popen('notmuch config get private.inbox_query'):read('*all'):sub(1, -2)
@@ -60,6 +61,9 @@ end
 local widget = wibox.widget.textbox()
 widget.tooltip = awful.tooltip({objects = {widget}})
 widget.update = update
+widget:buttons(awful.util.table.join(
+  awful.button({ }, 1, function () os.execute("notmuch new"); run_in_centeral_terminal("alot") end)
+  ))
 
 vicious.register(widget, worker, formatter, 97, query)
 

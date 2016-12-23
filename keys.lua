@@ -11,15 +11,12 @@ local layouts = tags.layouts
 tags = tags.tags
 local widgets = require("widgets")
 local menubar = require("menubar")
+local run_in_centeral_terminal = require("functions").run_in_centeral_terminal
 
 -- helper functions {{{1
 local function run_on_tag_and_return (prog, tag)
   awful.tag.viewonly(tag)
   awful.util.spawn(terminal .. [[ -e sh -c "]] .. prog .. [[ && echo \"require('awful').tag.history.restore()\" | awesome-client"]])
-end
-
-local function run_in_centeral_terminal (prog)
-  awful.util.spawn('urxvtc -name center -e ' .. prog)
 end
 
 -- global key bindings {{{1
