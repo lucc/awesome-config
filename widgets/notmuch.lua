@@ -15,16 +15,6 @@ query = io.popen('notmuch config get private.inbox_query'):read('*all'):sub(1, -
 query = 'tag:unread and ( ' .. query .. ' )'
 query = query:gsub([=[['"$()\<>{}*?#!&`]]=], '\\%0')
 
-local function notmuch_count (query)
-  return tonumber(io.popen('notmuch count -- '..query):read('*all'))
-end
-
-local function notmuch_summary (query)
-  return json.decode(io.popen(
-    'notmuch search --format=json --sort=newest-first -- '..
-    query):read('*all'))
-end
-
 local function format_summary (summary)
   local str = pango.markup('b', pango.color('green',
 					       'Summary of new mail:'))
@@ -37,12 +27,19 @@ local function format_summary (summary)
 end
 
 local function worker (_, warg)
+  local query = warg
   os.execute('notmuch new')
-  local count = notmuch_count(warg)
+  local count = tonumber(io.popen('notmuch count -- '..query):read('*all'))
   if count == 0 then
     return { count = 0, summary = {} }
   else
-    return { count = count, summary = notmuch_summary(warg) }
+    return {
+      count = count,
+      summary = json.decode(
+        io.popen(
+	  'notmuch search --format=json --sort=newest-first -- '..
+	  query
+	):read('*all')) }
   end
 end
 
