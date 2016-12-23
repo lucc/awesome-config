@@ -38,7 +38,7 @@ end
 
 widget.toggle = function () awful.util.spawn("mpc toggle") end
 widget.next = function () awful.util.spawn("mpc next") end
-widget.previous = function () awful.util.spawn("mpc previous") end
+widget.previous = function () awful.util.spawn("mpc prev") end
 
 widget.formatter = function (widget, args)
   widget.tooltip:set_text(widget.format_text(args))
