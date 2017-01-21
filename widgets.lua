@@ -8,7 +8,7 @@ local vicious = require("vicious")
 local pango = require("pango")
 
 local music = require("widgets/mpd")
-local mail = require("widgets/notmuch")
+--local mail = require("widgets/notmuch")
 
 local symbols = require("symbols")
 -- battery {{{1
