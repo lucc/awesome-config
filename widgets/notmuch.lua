@@ -16,8 +16,7 @@ query = 'tag:unread and ( ' .. query .. ' )'
 query = query:gsub([=[['"$()\<>{}*?#!&`]]=], '\\%0')
 
 local function format_summary (summary)
-  local str = pango.markup('b', pango.color('green',
-					       'Summary of new mail:'))
+  local str = pango.markup('b', pango.color('green', 'Summary of new mail:'))
   --local keys = {'date_relative', 'authors', 'subject', 'tags'}
   for _, entry in pairs(summary) do
     str = str..'\n'..pango.color('blue', entry['authors'])..': '..
