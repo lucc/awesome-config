@@ -10,10 +10,7 @@ local wibox = require("wibox")
 local symbols = require("symbols")
 local run_in_centeral_terminal = require("functions").run_in_centeral_terminal
 
-local query --= 'tag:inbox AND tag:unread AND NOT tag:spam'
-query = io.popen('notmuch config get private.inbox_query'):read('*all'):sub(1, -2)
-query = 'tag:unread and ( ' .. query .. ' )'
-query = query:gsub([=[['"$()\<>{}*?#!&`]]=], '\\%0')
+local query = 'query:inbox_notification'
 
 local function format_summary (summary)
   local str = pango.markup('b', pango.color('green', 'Summary of new mail:'))
