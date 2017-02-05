@@ -321,7 +321,10 @@ globalkeys = awful.util.table.join(
               {description = "lua execute prompt", group = "awesome"}),
     -- Menubar
     awful.key({ modkey }, "p", function() menubar.show() end,
-              {description = "show the menubar", group = "launcher"})
+              {description = "show the menubar", group = "launcher"}),
+    -- some more keys
+    awful.key({        }, "XF86Launch1", function () os.execute('slock') end,
+	      {description = "lock the screen", group = "screen" })
 )
 
 clientkeys = awful.util.table.join(
