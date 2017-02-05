@@ -10,7 +10,7 @@ local wibox = require("wibox")
 local symbols = require("symbols")
 local run_in_centeral_terminal = require("functions").run_in_centeral_terminal
 
-local query = 'query:inbox_notification'
+local query = 'query:inbox_notification or query:listbox_notification'
 
 local function format_summary (summary)
   local str = pango.markup('b', pango.color('green', 'Summary of new mail:'))
@@ -45,7 +45,11 @@ local function formatter (widget, args)
     return ""
   end
   widget.tooltip:set_text(format_summary(args.summary))
-  return pango.color('red', pango.font('Awesome', string.rep(symbols.envolope2, args.count))) .. ' '
+  local text = symbols.envolope2
+  if args.count > 1 then
+    text = args.count .. ' ' .. text
+  end
+  return pango.color('red', pango.font('Awesome', text)) .. ' '
 end
 
 -- Define the widget that will hold the info about new mail (summary in
