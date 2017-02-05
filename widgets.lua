@@ -13,28 +13,6 @@ local music = require("widgets/mpd")
 local symbols = require("symbols")
 -- battery {{{1
 
--- copied from the vicious readme
-local batwidget = awful.widget.progressbar()
-batwidget:set_width(8)
-batwidget:set_height(10)
-batwidget:set_vertical(true)
-batwidget:set_background_color("#494B4F")
-batwidget:set_border_color(nil)
-batwidget:set_color(
-  {
-    type = "linear",
-    from = { 0, 0 },
-    to = { 0, 10 },
-    stops = {
-      { 0, "#AECF96" },
-      { 0.5, "#88A175" },
-      { 1, "#FF5656" }
-    }
-  }
-  )
---vicious.register(batwidget, vicious.widgets.bat, "$2", 61, "BAT0")
-
-local textbat=wibox.widget.textbox()
 local baticon = wibox.widget.textbox()
 local textbat_tooltip = awful.tooltip({ objects = { baticon } })
 
