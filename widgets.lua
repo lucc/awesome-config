@@ -8,7 +8,7 @@ local vicious = require("vicious")
 local pango = require("pango")
 
 local music = require("widgets/mpd")
---local mail = require("widgets/notmuch")
+local mail = require("widgets/notmuch")
 
 local symbols = require("symbols")
 -- battery {{{1
@@ -112,5 +112,5 @@ return {
   music = music,
   updates = pacwidget,
   wifi = mywifitext,
-  --mailbutton = mail.button,
+  mailbutton = mail.button,
 }
