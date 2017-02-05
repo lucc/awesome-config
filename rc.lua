@@ -99,9 +99,6 @@ mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
 menubar.utils.terminal = terminal -- Set the terminal for applications that require it
 -- }}}
 
--- Keyboard map indicator and switcher
-mykeyboardlayout = awful.widget.keyboardlayout()
-
 -- {{{ Wibar
 widgets = require("widgets")
 
@@ -205,7 +202,6 @@ awful.screen.connect_for_each_screen(function(s)
 	    widgets.music,
 	    widgets.updates,
 	    widgets.wifi,
-            mykeyboardlayout,
             wibox.widget.systray(),
 	    widgets.clock,
             s.mylayoutbox,
