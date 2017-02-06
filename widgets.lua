@@ -5,6 +5,7 @@
 local awful = require("awful")
 local wibox = require("wibox")
 local vicious = require("vicious")
+local naughty = require("naughty")
 local pango = require("pango")
 
 local music = require("widgets/mpd")
@@ -41,6 +42,11 @@ vicious.register(baticon, vicious.widgets.bat,
       'Level: ' .. args[2] .. '%\n' ..
       'Time: ' .. args[3]
       )
+    if percent < 10 then
+      naughty.notify({ preset = naughty.config.presets.critical,
+		       title="Battery low!",
+		       text='Only '..percent..' remaining!'})
+    end
     return pango.color(col, pango.font('Awesome', icon)) .. ' '
   end,
   67, "BAT0")
