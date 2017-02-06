@@ -110,6 +110,10 @@ local mytextclock = wibox.widget.textclock(" %a %b %d, %H:%M:%S " , 1)
 local cal = require('cal')
 cal.register(mytextclock)
 
+-- spacing between widgets {{{1
+local space = wibox.widget.textbox()
+space:set_text(" ")
+
 -- return {{{1
 return {
   battery = baticon,
@@ -119,4 +123,5 @@ return {
   updates = pacwidget,
   wifi = mywifitext,
   mailbutton = mail.button,
+  space = space,
 }
