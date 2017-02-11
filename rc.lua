@@ -324,8 +324,29 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey }, "p", function() menubar.show() end,
               {description = "show the menubar", group = "launcher"}),
     -- some more keys
-    awful.key({        }, "XF86Launch1", function () os.execute('slock') end,
-	      {description = "lock the screen", group = "screen" })
+    awful.key({ }, "XF86Launch1", function () os.execute('slock') end,
+	      {description = "lock the screen", group = "screen" }),
+    awful.key({ }, "XF86AudioMute",
+	      function () os.execute('pactl set-sink-mute 0 toggle') end,
+	      {description = "mute", group = "audio" }),
+    awful.key({ }, "XF86AudioRaiseVolume",
+	      function () os.execute('pactl set-sink-volume 0 +3%') end,
+	      {description = "increase volume", group = "audio" }),
+    awful.key({ }, "XF86AudioLowerVolume",
+	      function () os.execute('pactl set-sink-volume 0 -3%') end,
+	      {description = "decrease volume", group = "audio" }),
+    awful.key({ }, "XF86AudioPlay",
+	      function () os.execute('mpc toggle') end,
+	      {description = "play/pause mpd", group = "audio" }),
+    awful.key({ }, "XF86AudioStop",
+	      function () os.execute('mpc stop') end,
+	      {description = "stop mpd", group = "audio" }),
+    awful.key({ }, "XF86AudioNext",
+	      function () os.execute('mpc next') end,
+	      {description = "next song", group = "audio" }),
+    awful.key({ }, "XF86AudioPrev",
+	      function () os.execute('mpc prev') end,
+	      {description = "prev song", group = "audio" })
 )
 
 clientkeys = awful.util.table.join(
