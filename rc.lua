@@ -325,18 +325,19 @@ globalkeys = awful.util.table.join(
     awful.key({ }, "XF86AudioLowerVolume",
 	      function () os.execute('pactl set-sink-volume 0 -3%') end,
 	      {description = "decrease volume", group = "audio" }),
-    awful.key({ }, "XF86AudioPlay",
-	      function () os.execute('mpc toggle') end,
+    awful.key({ }, "XF86AudioPlay", function () os.execute('mpc toggle') end,
 	      {description = "play/pause mpd", group = "audio" }),
-    awful.key({ }, "XF86AudioStop",
-	      function () os.execute('mpc stop') end,
+    awful.key({ }, "XF86AudioStop", function () os.execute('mpc stop') end,
 	      {description = "stop mpd", group = "audio" }),
-    awful.key({ }, "XF86AudioNext",
-	      function () os.execute('mpc next') end,
+    awful.key({ }, "XF86AudioNext", function () os.execute('mpc next') end,
 	      {description = "next song", group = "audio" }),
-    awful.key({ }, "XF86AudioPrev",
-	      function () os.execute('mpc prev') end,
-	      {description = "prev song", group = "audio" })
+    awful.key({ }, "XF86AudioPrev", function () os.execute('mpc prev') end,
+	      {description = "prev song", group = "audio" }),
+    awful.key({ }, "XF86Display", function () os.execute('auto-xrandr') end,
+	      {description = "reset monitor settings", group = "screen" }),
+    awful.key({ }, "Menu",
+	      function () awful.screen.focused().mypromptbox:run() end,
+              {description = "run prompt", group = "launcher"})
 )
 
 clientkeys = awful.util.table.join(
