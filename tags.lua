@@ -1,5 +1,6 @@
 
 local awful = require("awful")
+local tags = require("awful.tag")
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
 local layouts =
@@ -15,21 +16,26 @@ local layouts =
     awful.layout.suit.spiral.dwindle,
     awful.layout.suit.max,
     awful.layout.suit.max.fullscreen,
-    awful.layout.suit.magnifier
+    awful.layout.suit.magnifier,
+    awful.layout.suit.corner.nw,
+    -- awful.layout.suit.corner.ne,
+    -- awful.layout.suit.corner.sw,
+    -- awful.layout.suit.corner.se,
 }
+awful.layout.layouts = layouts
 
 -- Define a tag table which hold all screen tags.
-local tags = {}
-for s = 1, screen.count() do
-  -- Each screen has its own tag table.
-  tags[s] = awful.tag(
-    { 1, 2, 3, 4, 5, 6, 7, 8, 9 },
-    -- some alternatives from http://awesome.naquadah.org/wiki/Symbolic_tag_names
-    --{ "➊", "➋", "➌", "➍", "➎", "➏", "➐", "➑", "➒" },
-    --{ "♨", "⌨", "⚡", "✉", "☕", "❁", "☃", "☭", "⚢" },
-    --{ "☠", "⌥", "✇", "⌤", "⍜", "✣", "⌨", "⌘", "☕" },
-    s,
-    layouts[2]
-  )
-end
+-- -- local tags = {}
+-- -- for s = 1, screen.count() do
+-- --   -- Each screen has its own tag table.
+-- --   tags[s] = awful.tag(
+-- --     { 1, 2, 3, 4, 5, 6, 7, 8, 9 },
+-- --     -- some alternatives from http://awesome.naquadah.org/wiki/Symbolic_tag_names
+-- --     --{ "➊", "➋", "➌", "➍", "➎", "➏", "➐", "➑", "➒" },
+-- --     --{ "♨", "⌨", "⚡", "✉", "☕", "❁", "☃", "☭", "⚢" },
+-- --     --{ "☠", "⌥", "✇", "⌤", "⍜", "✣", "⌨", "⌘", "☕" },
+-- --     s,
+-- --     layouts[2]
+-- --   )
+-- -- end
 return { tags = tags, layouts = layouts }

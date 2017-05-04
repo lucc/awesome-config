@@ -2,8 +2,8 @@
 local awful = require("awful")
 awful.rules = require("awful.rules")
 local beautiful = require("beautiful")
-local buttons = require("mouse")
-local keys = require("keys")
+--local buttons = require("mouse")
+--local keys = require("keys")
 local tags = require("tags").tags
 
 -- Rules {{{1
@@ -15,21 +15,56 @@ awful.rules.rules = {
                      border_color = beautiful.border_normal,
                      focus = awful.client.focus.filter,
                      raise = true,
-                     keys = keys.client,
-                     buttons = buttons.client } },
-    { rule = { class = "mpv" },
-      properties = { floating = true } },
-    { rule = { class = "pinentry" },
-      properties = { floating = true } },
-    { rule = { class = "gimp" },
-      properties = { floating = true } },
+                     keys = clientkeys,
+                     --keys = keys.client,
+                     buttons = clientbuttons,
+                     --buttons = buttons.client,
+                     screen = awful.screen.preferred,
+                     placement = awful.placement.no_overlap+awful.placement.no_offscreen
+     }
+    },
+
+    -- Floating clients.
+    { rule_any = {
+        instance = {
+          "DTA",  -- Firefox addon DownThemAll.
+          "copyq",  -- Includes session name in class.
+        },
+        class = {
+	  "Arandr",
+	  "gimp",
+	  "Gpick",
+	  "Kruler",
+	  "MessageWin",  -- kalarm.
+	  "mpv",
+	  "pinentry",
+	  "Sxiv",
+	  "veromix",
+	  "Wpa_gui",
+          "xtightvncviewer"},
+
+        name = {
+          "Event Tester",  -- xev.
+        },
+        role = {
+          "AlarmWindow",  -- Thunderbird's calendar.
+          "pop-up",       -- e.g. Google Chrome's (detached) Developer Tools.
+        }
+      }, properties = { floating = true }},
+
+    -- Add titlebars to normal clients and dialogs
+    --{ rule_any = {type = { "normal", "dialog" }
+    --  }, properties = { titlebars_enabled = true }
+    --},
+
+    -- Set Firefox to always map on the tag named "2" on screen 1.
+    -- { rule = { class = "Firefox" },
+    --   properties = { screen = 1, tag = "2" } },
+
     -- Set the browser to always map on tags number 1 of screen 1.
     { rule = { class = "Firefox", instance = "Navigator" },
-      properties = { tag = tags[1][1] } },
-    { rule = { class = "qutebrowser" }, properties = { tag = tags[1][1] } },
-    -- Set Gvim to always map on tags number 2 of screen 1.
-    { rule = { class = "Gvim" },
-      properties = { tag = tags[1][2] } },
+      properties = { tag = '1' } },
+    { rule = { class = "qutebrowser" }, properties = { tag = '1' } },
     { rule = { class = "URxvt", instance = "calculator" },
       properties = { floating = true, ontop = true } },
     { rule = { class = "URxvt", instance = "center" },
