@@ -3,22 +3,11 @@
 
 -- required modules {{{1
 local awful = require("awful")
-local vicious = require("vicious")
-local keydoc = require("keydoc")
 local mymainmenu = require("menu")
-local tags = require("tags")
-local layouts = tags.layouts
-tags = tags.tags
 local widgets = require("widgets")
 local menubar = require("menubar")
 local run_in_centeral_terminal = require("functions").run_in_centeral_terminal
 local hotkeys_popup = require("awful.hotkeys_popup").widget
-
--- helper functions {{{1
-local function run_on_tag_and_return (prog, tag)
-  awful.tag.viewonly(tag)
-  awful.util.spawn(terminal .. [[ -e sh -c "]] .. prog .. [[ && echo \"require('awful').tag.history.restore()\" | awesome-client"]])
-end
 
 -- global key bindings {{{1
 local globalkeys = awful.util.table.join(
@@ -123,7 +112,7 @@ local globalkeys = awful.util.table.join(
               end,
               {description = "lua execute prompt", group = "awesome"}),
     -- Menubar
-    awful.key({ modkey }, "p", function() menubar.show() end,
+    awful.key({ modkey }, "p", menubar.show,
               {description = "show the menubar", group = "launcher"}),
     -- some more keys
     awful.key({ }, "XF86Launch1", function () os.execute('slock') end,
@@ -137,70 +126,43 @@ local globalkeys = awful.util.table.join(
     awful.key({ }, "XF86AudioLowerVolume",
 	      function () os.execute('pactl set-sink-volume 0 -3%') end,
 	      {description = "decrease volume", group = "audio" }),
-    awful.key({ }, "XF86AudioPlay", function () os.execute('mpc toggle') end,
+    awful.key({ }, "XF86AudioPlay",
+	      function () widgets.music.toggle(); widgets.music:refresh() end,
 	      {description = "play/pause mpd", group = "audio" }),
-    awful.key({ }, "XF86AudioStop", function () os.execute('mpc stop') end,
+    awful.key({ }, "XF86AudioStop",
+	      function () widgets.music.stop(); widgets.music:refresh() end,
 	      {description = "stop mpd", group = "audio" }),
-    awful.key({ }, "XF86AudioNext", function () os.execute('mpc next') end,
+    awful.key({ }, "XF86AudioNext",
+	      function () widgets.music.next(); widgets.music:refresh() end,
 	      {description = "next song", group = "audio" }),
-    awful.key({ }, "XF86AudioPrev", function () os.execute('mpc prev') end,
+    awful.key({ }, "XF86AudioPrev",
+	      function () widgets.music.previous(); widgets.music:refresh() end,
 	      {description = "prev song", group = "audio" }),
+    awful.key({ modkey }, "XF86AudioPlay", widgets.music.tui,
+              {description = "open the TUI", group = "audio" }),
     awful.key({ }, "XF86Display", function () os.execute('auto-xrandr') end,
 	      {description = "reset monitor settings", group = "screen" }),
     awful.key({ }, "Menu",
 	      function () awful.screen.focused().mypromptbox:run() end,
               {description = "run prompt", group = "launcher"})
 )
+-- {{{1 old global keys
 local old_globalkeys = awful.util.table.join(
-    keydoc.group('Monitor movement'), -- {{{2
+    -- keydoc.group('Monitor movement'), -- {{{2
     awful.key({ modkey, "Control" }, "j",
       function () awful.screen.focus_relative(1) end, 'focus next monitor'),
     awful.key({ modkey, "Control" }, "k",
       function () awful.screen.focus_relative(-1) end,
       'focus previous monitor'),
 
-    -- Menubar
-    -- copied from the FAQ
     -- some media keys on the mac book pro
     awful.key({ }, "XF86AudioRaiseVolume", function () awful.util.spawn("amixer set Master playback 1%+") end),
     awful.key({ }, "XF86AudioLowerVolume", function () awful.util.spawn("amixer set Master playback 1%-") end),
     awful.key({ }, "XF86AudioMute",        function () awful.util.spawn("amixer set Master toggle")       end),
-    --awful.key({ }, "XF86KbdBrightnessDown", function () awful.util.spawn("kbdlight down") end),
-    --awful.key({ }, "XF86KbdBrightnessUp", function () awful.util.spawn("kbdlight up") end),
-    awful.key({ }, "XF86AudioPlay", function ()
-      widgets.music.toggle()
-      widgets.music:refresh()
-    end),
-    awful.key({ }, "XF86AudioNext", function ()
-      widgets.music.next()
-      widgets.music:refresh()
-    end),
-    awful.key({ }, "XF86AudioPrev", function ()
-      widgets.music.previous()
-      widgets.music:refresh()
-    end),
-    --awful.key({modkey}, "XF86MonBrightnessDown", function () awful.util.spawn(terminal .. " -e man awesome") end),
-    awful.key({modkey}, "XF86MonBrightnessDown", keydoc.display),
-    --awful.key({modkey}, "F1", function () awful.util.spawn(terminal .. " -e man awesome") end),
-    keydoc.group('Misc'), -- {{{2
-    awful.key({modkey}, "F1", keydoc.display, 'display this help'),
-    awful.key({modkey, "Mod1"}, "h", keydoc.display, 'display this help'),
-    awful.key({ }, "XF86LaunchB", function ()
-      run_in_centeral_terminal("htop")
-      --awful.util.spawn(terminal .. " -e nload wlan0")
-      --awful.util.spawn(terminal .. " -e ping luc42.lima-city.de")
-    end),
-    awful.key({}, "XF86LaunchA", function ()
-      awful.util.spawn('notmuch new') -- This should be in the background.
-      run_in_centeral_terminal("alot")
-    end),
+    -- keydoc.group('Misc'), -- {{{2
     awful.key({modkey}, "XF86LaunchA", function ()
       run_in_centeral_terminal("calendar-window.sh")
     end),
-    awful.key({modkey}, "XF86AudioPlay", function ()
-      run_in_centeral_terminal("ncmpcpp")
-    end),
-    awful.key({modkey}, "XF86Eject", function () awful.util.spawn('slock') end),
     -- paste x clipboard everywhere
     awful.key({ modkey }, "v", function () return selection() end, "paste the clipboard buffer"),
     awful.key({ modkey }, "d", function () awful.prompt.run(

@@ -40,6 +40,9 @@ end
 widget.toggle = function () awful.util.spawn("mpc toggle") end
 widget.next = function () awful.util.spawn("mpc next") end
 widget.previous = function () awful.util.spawn("mpc prev") end
+widget.stop = function () awful.util.spawn('mpc stop') end
+widget.tui = function () run_in_centeral_terminal('ncmpcpp') end
+widget.gui = function () awful.util.spawn('cantata') end
 
 widget.formatter = function (widget, args)
   widget.tooltip:set_text(widget.format_text(args))

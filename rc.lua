@@ -190,17 +190,13 @@ root.buttons(awful.util.table.join(
 
 -- {{{ Key bindings
 
-keys = require('keys')
-globalkeys = keys.global
-clientkeys = keys.client
-
 clientbuttons = awful.util.table.join(
     awful.button({ }, 1, function (c) client.focus = c; c:raise() end),
     awful.button({ modkey }, 1, awful.mouse.client.move),
     awful.button({ modkey }, 3, awful.mouse.client.resize))
 
 -- Set keys
-root.keys(globalkeys)
+root.keys(require('keys').global)
 -- }}}
 
 -- {{{ Signals

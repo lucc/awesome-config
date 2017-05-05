@@ -3,7 +3,7 @@ local awful = require("awful")
 awful.rules = require("awful.rules")
 local beautiful = require("beautiful")
 --local buttons = require("mouse")
---local keys = require("keys")
+local clientkeys = require("keys").client
 local tags = require("tags").tags
 
 -- Rules {{{1
@@ -16,7 +16,6 @@ awful.rules.rules = {
                      focus = awful.client.focus.filter,
                      raise = true,
                      keys = clientkeys,
-                     --keys = keys.client,
                      buttons = clientbuttons,
                      --buttons = buttons.client,
                      screen = awful.screen.preferred,
