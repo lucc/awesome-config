@@ -181,8 +181,6 @@ awful.screen.connect_for_each_screen(function(s)
 end)
 -- }}}
 
-require('rules')
-
 -- {{{ Mouse bindings
 root.buttons(awful.util.table.join(
     awful.button({ }, 3, function () mymainmenu:toggle() end),
@@ -482,3 +480,5 @@ end)
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
+
+require('rules')
