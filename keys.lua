@@ -144,7 +144,17 @@ local globalkeys = awful.util.table.join(
 	      {description = "reset monitor settings", group = "screen" }),
     awful.key({ }, "Menu",
 	      function () awful.screen.focused().mypromptbox:run() end,
-              {description = "run prompt", group = "launcher"})
+              {description = "run prompt", group = "launcher"}),
+    awful.key({ modkey }, "d",
+	      function ()
+		  awful.prompt.run {
+		    prompt       = 'Look up ',
+		    textbox      = awful.screen.focused().mypromptbox.widget,
+                    exe_callback = function (string) awful.util.spawn('dict-pager.sh '..string:gsub("'", "\\'")) end,
+                    history_path = awful.util.get_cache_dir() .. "/history_dict_lookup"
+		  }
+	      end,
+	      {description = "prompt for a text to look up in a dictionary", group = "launcher"})
 )
 -- {{{1 old global keys
 local old_globalkeys = awful.util.table.join(
@@ -165,12 +175,6 @@ local old_globalkeys = awful.util.table.join(
     end),
     -- paste x clipboard everywhere
     awful.key({ modkey }, "v", function () return selection() end, "paste the clipboard buffer"),
-    awful.key({ modkey }, "d", function () awful.prompt.run(
-        { prompt = 'Look up ' }, mypromptbox[mouse.screen].widget,
-        function (string)
-          awful.util.spawn('dict-pager.sh '..string:gsub("'", "\\'"))
-        end, nil, awful.util.getdir("cache") .. "/history_dict_lookup")
-      end, "prompt for a text to look up in a dictionary"),
     awful.key({modkey}, "c", function () run_in_centeral_terminal('bc') end, 'open calculator')
 )
 
