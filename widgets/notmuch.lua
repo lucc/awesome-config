@@ -13,11 +13,13 @@ local run_in_centeral_terminal = require("functions").run_in_centeral_terminal
 local query = 'query:inbox_notification or query:listbox_notification'
 
 local function format_summary (summary)
-  local str = pango.markup('b', pango.color('green', 'Summary of new mail:'))
+  --local str = pango.markup('b', pango.color('green', 'Summary of new mail:'))
+  local str = 'Summary of new mail:'
   --local keys = {'date_relative', 'authors', 'subject', 'tags'}
   for _, entry in pairs(summary) do
-    str = str..'\n'..pango.color('blue', entry['authors'])..': '..
-      pango.color('red', entry['subject'])
+    --str = str..'\n'..pango.color('blue', entry['authors'])..': '..
+    --  pango.color('red', entry['subject'])
+    str = str..'\n'..entry['authors']..': '..entry['subject']
   end
   return str
 end
