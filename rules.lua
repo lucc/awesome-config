@@ -36,6 +36,7 @@ awful.rules.rules = {
 	  "MessageWin",  -- kalarm.
 	  "mpv",
 	  "pinentry",
+	  "Pinentry",
 	  "Sxiv",
 	  "veromix",
 	  "Wpa_gui",
