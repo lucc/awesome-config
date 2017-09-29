@@ -103,6 +103,7 @@ for s = 1, screen.count() do
     right_layout:add(widgets.wifi)
     right_layout:add(widgets.mail)
     right_layout:add(widgets.updates)
+    right_layout:add(widgets.kernel_warning)
     --right_layout:add(widgets.mailbutton)
     right_layout:add(widgets.battery)
     --right_layout:add(batwidget)

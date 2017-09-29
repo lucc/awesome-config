@@ -103,6 +103,22 @@ vicious.register(pacwidget,
 		1800, "Arch")
                 -- 1800 means check every 30 minutes
 
+-- Warning about reboot after kernel update
+local kernel_warning = wibox.widget.textbox()
+local kernel_warning_t = awful.tooltip({ objects = { pacwidget},})
+kernel_warning.refresh = function (widget, args)
+  local installed = string.sub(io.popen('pacman -Q linux'):read(), 7)
+  local running = string.sub(io.popen('uname -r'):read(), 1, string.len(installed))
+  if running == installed then
+    return ''
+  else
+    kernel_warning_t:set_text("Kernel update installed, you should rebot!")
+    return pango.color('red', '!')
+  end
+end
+vicious.register(kernel_warning, kernel_warning.refresh, '$1', 3*3600, nil)
+
+
 -- custom calendar and clock {{{1
 -- Create a textclock widget
 local mytextclock = wibox.widget.textclock(" %a %b %d, %H:%M:%S " , 1)
@@ -124,4 +140,5 @@ return {
   wifi = mywifitext,
   mailbutton = mail.button,
   space = space,
+  kernel_warning = kernel_warning,
 }
