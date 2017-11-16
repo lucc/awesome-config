@@ -3,7 +3,7 @@
 local awful = require("awful")
 
 local function run_in_centeral_terminal (prog)
-  awful.util.spawn('urxvtc -name center -e ' .. prog)
+  awful.util.spawn('term -n center -e ' .. prog)
 end
 
 return {
