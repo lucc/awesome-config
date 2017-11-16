@@ -10,7 +10,7 @@ local wibox = require("wibox")
 local symbols = require("symbols")
 local run_in_centeral_terminal = require("functions").run_in_centeral_terminal
 
-local query = 'query:inbox_notification or query:listbox_notification'
+local query = '\\(query:inbox_notification or query:listbox_notification\\) and not \\(tag:lists/notmuch or tag:lists/password-store\\)'
 
 local function format_summary (summary)
   --local str = pango.markup('b', pango.color('green', 'Summary of new mail:'))
