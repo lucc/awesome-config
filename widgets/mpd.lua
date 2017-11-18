@@ -32,9 +32,8 @@ widget.format_symbol = function (data)
 end
 
 widget.format_text = function (data)
-  return 'Artist: ' .. data['{Artist}'] .. '\n' ..
-         'Album: '  .. data['{Album}']  .. '\n' ..
-	 'Title: '  .. data['{Title}']
+  return string.format('Artist: %s\nAlbum: %s\nTitle: %s',
+		       data['{Artist}'], data['{Album}'], data['{Title}'])
 end
 
 widget.toggle = function () awful.util.spawn("mpc toggle") end

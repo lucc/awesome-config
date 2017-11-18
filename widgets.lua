@@ -37,11 +37,8 @@ vicious.register(baticon, vicious.widgets.bat,
       icon = symbols.battery4
     end
     --"<span color='green'>power@$2%=$3</span>"
-    textbat_tooltip:set_text(
-      'Connected: ' .. args[1] .. '\n' ..
-      'Level: ' .. args[2] .. '%\n' ..
-      'Time: ' .. args[3]
-      )
+    textbat_tooltip:set_text(string.format(
+      'Connected: %s\nLevel: %s%%\nTime: %s', args[1], args[2], args[3]))
     if percent < 10 then
       naughty.notify({ preset = naughty.config.presets.critical,
 		       title="Battery low!",
