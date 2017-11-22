@@ -61,7 +61,7 @@ awful.rules.rules = {
     { rule = { class = "qutebrowser" }, properties = { tag = '1' } },
     { rule = { class = "URxvt", instance = "calculator" },
       properties = { floating = true, ontop = true } },
-    { rule = { class = "URxvt", instance = "center" },
+    { rule = { instance = "center" },
       properties = { floating = true },
       callback = function(c)
 	local screen = screen[mouse.screen].geometry
