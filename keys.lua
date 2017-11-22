@@ -6,8 +6,10 @@ local awful = require("awful")
 local mymainmenu = require("menu")
 local widgets = require("widgets")
 local menubar = require("menubar")
-local run_in_centeral_terminal = require("functions").run_in_centeral_terminal
 local hotkeys_popup = require("awful.hotkeys_popup").widget
+
+-- other environment
+local modkey, terminal, client, awesome = modkey, terminal, client, awesome
 
 -- global key bindings {{{1
 local globalkeys = awful.util.table.join(
@@ -120,12 +122,15 @@ local globalkeys = awful.util.table.join(
     awful.key({ }, "XF86AudioMute",
 	      function () os.execute('pactl set-sink-mute 0 toggle') end,
 	      {description = "mute", group = "audio" }),
+	      --awful.util.spawn("amixer set Master toggle")
     awful.key({ }, "XF86AudioRaiseVolume",
 	      function () os.execute('pactl set-sink-volume 0 +3%') end,
 	      {description = "increase volume", group = "audio" }),
+	      --awful.util.spawn("amixer set Master playback 1%+")
     awful.key({ }, "XF86AudioLowerVolume",
 	      function () os.execute('pactl set-sink-volume 0 -3%') end,
 	      {description = "decrease volume", group = "audio" }),
+	      --awful.util.spawn("amixer set Master playback 1%-")
     awful.key({ }, "XF86AudioPlay",
 	      function () widgets.music.toggle(); widgets.music:refresh() end,
 	      {description = "play/pause mpd", group = "audio" }),
@@ -145,6 +150,7 @@ local globalkeys = awful.util.table.join(
     awful.key({ }, "Menu",
 	      function () awful.screen.focused().mypromptbox:run() end,
               {description = "run prompt", group = "launcher"}),
+    --awful.key({modkey}, "c", function () run_in_centeral_terminal('bc') end, 'open calculator'),
     awful.key({ modkey }, "d",
 	      function ()
 		  awful.prompt.run {
@@ -155,27 +161,6 @@ local globalkeys = awful.util.table.join(
 		  }
 	      end,
 	      {description = "prompt for a text to look up in a dictionary", group = "launcher"})
-)
--- {{{1 old global keys
-local old_globalkeys = awful.util.table.join(
-    -- keydoc.group('Monitor movement'), -- {{{2
-    awful.key({ modkey, "Control" }, "j",
-      function () awful.screen.focus_relative(1) end, 'focus next monitor'),
-    awful.key({ modkey, "Control" }, "k",
-      function () awful.screen.focus_relative(-1) end,
-      'focus previous monitor'),
-
-    -- some media keys on the mac book pro
-    awful.key({ }, "XF86AudioRaiseVolume", function () awful.util.spawn("amixer set Master playback 1%+") end),
-    awful.key({ }, "XF86AudioLowerVolume", function () awful.util.spawn("amixer set Master playback 1%-") end),
-    awful.key({ }, "XF86AudioMute",        function () awful.util.spawn("amixer set Master toggle")       end),
-    -- keydoc.group('Misc'), -- {{{2
-    awful.key({modkey}, "XF86LaunchA", function ()
-      run_in_centeral_terminal("calendar-window.sh")
-    end),
-    -- paste x clipboard everywhere
-    awful.key({ modkey }, "v", function () return selection() end, "paste the clipboard buffer"),
-    awful.key({modkey}, "c", function () run_in_centeral_terminal('bc') end, 'open calculator')
 )
 
 -- Bind all key numbers to tags. {{{2
