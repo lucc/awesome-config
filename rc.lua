@@ -209,8 +209,21 @@ client.connect_signal("mouse::enter", function(c)
     end
 end)
 
-client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
-client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
+local update_client_border = function (client, color)
+    if client.maximized or (#client.screen.tiled_clients == 1) then
+        client.border_width = 0
+    else
+	client.border_color = color
+	client.border_width = beautiful.border_width
+    end
+end
+
+client.connect_signal("focus", function(c)
+    update_client_border(c, beautiful.border_focus)
+end)
+client.connect_signal("unfocus", function(c)
+    update_client_border(c, beautiful.border_normal)
+end)
 -- }}}
 
 require('rules')
