@@ -160,7 +160,32 @@ local globalkeys = awful.util.table.join(
                     history_path = awful.util.get_cache_dir() .. "/history_dict_lookup"
 		  }
 	      end,
-	      {description = "prompt for a text to look up in a dictionary", group = "launcher"})
+	      {description = "prompt for a text to look up in a dictionary", group = "launcher"}),
+
+        awful.key({ modkey, "Shift" }, "Left",
+                  function ()
+                      if client.focus then
+			  local old_index = awful.screen.focused().selected_tags[1].index
+			  local new_index = (old_index - 2) % 9 + 1
+                          local tag = client.focus.screen.tags[new_index]
+                          if tag then
+                              client.focus:move_to_tag(tag)
+                          end
+                     end
+                  end,
+                  {description = "move focused client to previous tag", group = "tag"}),
+        awful.key({ modkey, "Shift" }, "Right",
+                  function ()
+                      if client.focus then
+			  local old_index = awful.screen.focused().selected_tags[1].index
+			  local new_index = old_index % 9 + 1
+                          local tag = client.focus.screen.tags[new_index]
+                          if tag then
+                              client.focus:move_to_tag(tag)
+                          end
+                     end
+                  end,
+                  {description = "move focused client to next tag", group = "tag"})
 )
 
 -- Bind all key numbers to tags. {{{2
