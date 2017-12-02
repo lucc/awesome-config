@@ -210,7 +210,7 @@ client.connect_signal("mouse::enter", function(c)
 end)
 
 local update_client_border = function (client, color)
-    if client.maximized or (#client.screen.tiled_clients == 1) then
+    if client.maximized or (not client.floating and #client.screen.tiled_clients == 1) then
         client.border_width = 0
     else
 	client.border_color = color
