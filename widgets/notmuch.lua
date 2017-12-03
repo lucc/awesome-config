@@ -31,7 +31,6 @@ notmuch.widget.tooltip = awful.tooltip({objects = {notmuch.widget}})
 -- The default query will be used if no other query is given.
 notmuch.default_query = [[\(query:inbox_notification or query:listbox_notification\)]]
 
-local naughty=require "naughty"
 notmuch.update = function(container, force)
   local query = container.query or container.default_query
   local script = ''
@@ -52,12 +51,8 @@ notmuch.update = function(container, force)
       end
       markup = pango.color('red', pango.font('Awesome', markup)) .. ' '
       summary = string.sub(stdout, i+1)
-      naughty.notify{title="DEBUG", text=summary}
-      naughty.notify{title="DEBUG", text=tostring(count)}
       summary = json.decode(summary)
-      naughty.notify{title="DEBUG", text=tostring(summary)}
       summary = format_summary(summary)
-      naughty.notify{title="DEBUG", text=tostring(summary)}
     end
     container.widget:set_markup(markup)
     container.widget.tooltip.markup=summary
@@ -66,8 +61,6 @@ end
 
 notmuch.button1 = function () run_in_centeral_terminal("alot") end
 notmuch.widget:buttons(awful.util.table.join(awful.button({}, 1, notmuch.button1)))
-
---vicious.register(widget, worker, formatter, 97, query)
 
 notmuch:update()
 
