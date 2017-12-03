@@ -12,13 +12,11 @@ local symbols = require("symbols")
 local run_in_centeral_terminal = require("functions").run_in_centeral_terminal
 
 local function format_summary (summary)
-  --local str = pango.markup('b', pango.color('green', 'Summary of new mail:'))
-  local str = 'Summary of new mail:'
+  local str = pango.markup('b', pango.color('green', 'Summary of new mail:'))
   --local keys = {'date_relative', 'authors', 'subject', 'tags'}
   for _, entry in pairs(summary) do
-    --str = str..'\n'..pango.color('blue', entry['authors'])..': '..
-    --  pango.color('red', entry['subject'])
-    str = str..'\n'..entry['authors']..': '..entry['subject']
+    str = str..'\n'..pango.color('blue', entry['authors'])..':\t'..
+      pango.color('red', entry['subject'])
   end
   return str
 end
@@ -62,7 +60,7 @@ notmuch.update = function(container, force)
       naughty.notify{title="DEBUG", text=tostring(summary)}
     end
     container.widget:set_markup(markup)
-    container.widget.tooltip.text=summary
+    container.widget.tooltip.markup=summary
   end)
 end
 
