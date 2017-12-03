@@ -167,7 +167,7 @@ awful.screen.connect_for_each_screen(function(s)
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
 	    widgets.space,
-	    widgets.mail,
+	    widgets.mail.widget,
 	    widgets.battery,
 	    widgets.music,
 	    widgets.updates,

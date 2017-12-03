@@ -2,17 +2,14 @@
 -- notmuch.
 
 local awful = require("awful")
+local easy_async_with_shell = require("awful.spawn").easy_async_with_shell
 local json = require("json")
 local pango = require("pango")
-local vicious = require("vicious")
+--local vicious = require("vicious")
 local wibox = require("wibox")
 
 local symbols = require("symbols")
 local run_in_centeral_terminal = require("functions").run_in_centeral_terminal
-
-local query = '\\(query:inbox_notification or query:listbox_notification\\)'..
-	      ' and not \\(tag:lists/notmuch or tag:lists/password-store '..
-	      'or tag:lists/surfraw-devel\\)'
 
 local function format_summary (summary)
   --local str = pango.markup('b', pango.color('green', 'Summary of new mail:'))
@@ -26,51 +23,54 @@ local function format_summary (summary)
   return str
 end
 
-local function worker (_, warg)
-  local query = warg
-  os.execute('notmuch new')
-  local count = tonumber(io.popen('notmuch count -- '..query):read('*all'))
-  if count == 0 then
-    return { count = 0, summary = {} }
-  else
-    return {
-      count = count,
-      summary = json.decode(
-        io.popen(
-	  'notmuch search --format=json --sort=newest-first -- '..
-	  query
-	):read('*all')) }
-  end
-end
-
-local function formatter (widget, args)
-  if args.count == 0 then
-    widget.tooltip:set_text("")
-    return ""
-  end
-  widget.tooltip:set_text(format_summary(args.summary))
-  local text = symbols.envolope2
-  if args.count > 1 then
-    text = args.count .. ' ' .. text
-  end
-  return pango.color('red', pango.font('Awesome', text)) .. ' '
-end
-
+-- Define the contrainer that will hold the widget and all related data.
+local notmuch = {}
 -- Define the widget that will hold the info about new mail (summary in
 -- tooltip)
-local widget = wibox.widget.textbox()
-widget.tooltip = awful.tooltip({objects = {widget}})
+notmuch.widget = wibox.widget.textbox()
+notmuch.widget.tooltip = awful.tooltip({objects = {notmuch.widget}})
 
-widget.update = function (self)
-  self:set_markup(formatter(self, worker('', query)))
+-- The default query will be used if no other query is given.
+notmuch.default_query = [[\(query:inbox_notification or query:listbox_notification\)]]
+
+local naughty=require "naughty"
+notmuch.update = function(container, force)
+  local query = container.query or container.default_query
+  local script = ''
+  if force then
+    script = 'notmuch new;'
+  end
+  script = script .. 'notmuch count -- ' .. query .. ';'
+  script = script .. 'notmuch search --format=json --sort=newest-first -- '.. query
+  easy_async_with_shell(script, function (stdout, stderr, exitreason, exitcode)
+    local i, j = string.find(stdout, '\n', 1, true)
+    local count = tonumber(string.sub(stdout, 1, i))
+    local summary = ""
+    local markup = ""
+    if count ~= 0 then
+      markup = symbols.envolope2
+      if count > 1 then
+	markup = count .. ' ' .. markup
+      end
+      markup = pango.color('red', pango.font('Awesome', markup)) .. ' '
+      summary = string.sub(stdout, i+1)
+      naughty.notify{title="DEBUG", text=summary}
+      naughty.notify{title="DEBUG", text=tostring(count)}
+      summary = json.decode(summary)
+      naughty.notify{title="DEBUG", text=tostring(summary)}
+      summary = format_summary(summary)
+      naughty.notify{title="DEBUG", text=tostring(summary)}
+    end
+    container.widget:set_markup(markup)
+    container.widget.tooltip.text=summary
+  end)
 end
 
-widget:buttons(awful.util.table.join(
-  awful.button({ }, 1, function ()
-    os.execute("notmuch new")
-    run_in_centeral_terminal("alot")
-  end)))
+notmuch.button1 = function () run_in_centeral_terminal("alot") end
+notmuch.widget:buttons(awful.util.table.join(awful.button({}, 1, notmuch.button1)))
 
-vicious.register(widget, worker, formatter, 97, query)
+--vicious.register(widget, worker, formatter, 97, query)
 
-return widget
+notmuch:update()
+
+return notmuch
