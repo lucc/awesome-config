@@ -128,6 +128,19 @@ end
 -- Re-set wallpaper when a screen's geometry changes (e.g. different resolution)
 screen.connect_signal("property::geometry", set_wallpaper)
 
+-- some widgets
+local lain = require("lain")
+
+local weather = lain.widget.weather {
+  city_id = 2867714,
+  settings = function ()
+    local units = math.floor(weather_now["main"]["temp"])
+    widget:set_markup(units .. '°C ')
+  end
+}
+weather.attach(weather.icon)
+
+
 awful.screen.connect_for_each_screen(function(s)
     -- Wallpaper
     set_wallpaper(s)
@@ -173,6 +186,8 @@ awful.screen.connect_for_each_screen(function(s)
 	    widgets.battery,
 	    widgets.wifi,
             wibox.widget.systray(),
+	    weather.icon,
+	    weather.widget,
 	    widgets.clock,
             s.mylayoutbox,
         },
