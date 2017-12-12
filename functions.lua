@@ -1,9 +1,9 @@
 -- general helper functions
 
-local awful = require("awful")
+local with_shell = require("awful.spawn").with_shell
 
 local function run_in_centeral_terminal (prog)
-  awful.util.spawn('urxvtc -name center -e ' .. prog)
+  with_shell('env PATH=$PATH:$HOME/.config/awesome/bin term -n center -e ' .. prog)
 end
 
 return {

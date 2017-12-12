@@ -3,9 +3,12 @@
 
 -- required modules {{{1
 local awful = require("awful")
+local gears = require("gears")
 local wibox = require("wibox")
 local vicious = require("vicious")
+local naughty = require("naughty")
 local pango = require("pango")
+local async = require("awful.spawn").easy_async
 
 local music = require("widgets/mpd")
 local mail = require("widgets/notmuch")
@@ -13,28 +16,6 @@ local mail = require("widgets/notmuch")
 local symbols = require("symbols")
 -- battery {{{1
 
--- copied from the vicious readme
-local batwidget = awful.widget.progressbar()
-batwidget:set_width(8)
-batwidget:set_height(10)
-batwidget:set_vertical(true)
-batwidget:set_background_color("#494B4F")
-batwidget:set_border_color(nil)
-batwidget:set_color(
-  {
-    type = "linear",
-    from = { 0, 0 },
-    to = { 0, 10 },
-    stops = {
-      { 0, "#AECF96" },
-      { 0.5, "#88A175" },
-      { 1, "#FF5656" }
-    }
-  }
-  )
---vicious.register(batwidget, vicious.widgets.bat, "$2", 61, "BAT0")
-
-local textbat=wibox.widget.textbox()
 local baticon = wibox.widget.textbox()
 local textbat_tooltip = awful.tooltip({ objects = { baticon } })
 
@@ -58,11 +39,13 @@ vicious.register(baticon, vicious.widgets.bat,
       icon = symbols.battery4
     end
     --"<span color='green'>power@$2%=$3</span>"
-    textbat_tooltip:set_text(
-      'Connected: ' .. args[1] .. '\n' ..
-      'Level: ' .. args[2] .. '%\n' ..
-      'Time: ' .. args[3]
-      )
+    textbat_tooltip:set_text(string.format(
+      'Connected: %s\nLevel: %s%%\nTime: %s', args[1], args[2], args[3]))
+    if percent < 10 then
+      naughty.notify({ preset = naughty.config.presets.critical,
+		       title="Battery low!",
+		       text='Only '..percent..' remaining!'})
+    end
     return pango.color(col, pango.font('Awesome', icon)) .. ' '
   end,
   67, "BAT0")
@@ -96,35 +79,47 @@ vicious.register(mywifitext, vicious.widgets.wifi,
 
 -- Pacman Widget {{{1
 -- copied from http://www.jasonmaur.com/awesome-wm-widgets-configuration/
-local pacwidget = wibox.widget.textbox()
+local updates = {}
+updates.widget = wibox.widget.textbox()
+updates.tooltip = awful.tooltip({objects={updates.widget}})
+updates.update = function (container)
+  async({'pacman', '--query', '--upgrades'},
+    function (stdout, stderr, reason, code)
+      container.tooltip:set_text(stdout)
+      container.widget:set_markup('Updates available! ')
+    end)
+end
+updates.timer = gears.timer{
+  timeout = 30 * 60,
+  callback = function() updates:update() end,
+}
 
-local pacwidget_t = awful.tooltip({ objects = { pacwidget},})
+-- Warning about reboot after kernel update
+local kernel_warning = wibox.widget.textbox()
+local kernel_warning_t = awful.tooltip({ objects = { updates.widget },})
+kernel_warning.refresh = function (widget, args)
+  local installed = string.sub(io.popen('pacman -Q linux'):read(), 7)
+  local running = string.sub(io.popen('uname -r'):read(), 1, string.len(installed))
+  if running == installed then
+    return ''
+  else
+    kernel_warning_t:set_text("Kernel update installed, you should rebot!")
+    return pango.color('red', '!')
+  end
+end
+--vicious.register(kernel_warning, kernel_warning.refresh, '$1', 3*3600, nil)
 
-vicious.register(pacwidget,
-		 function (widget, args)
-		   local str = ''
-		   local count = 0
-		   for line in io.popen('pacman -Qu'):lines() do
-		     str = str .. line .. '\n'
-		     count = count + 1
-		   end
-		   if count == 0 then
-		     return ''
-		   else
-		     pacwidget_t:set_text(string.sub(str, 1, -2))
-		     return "Updates available! "
-		   end
-		 end,
-		 '$1',
-		1800, "Arch")
-                -- 1800 means check every 30 minutes
 
 -- custom calendar and clock {{{1
 -- Create a textclock widget
-local mytextclock = awful.widget.textclock(" %a %b %d, %H:%M:%S " , 1)
+local mytextclock = wibox.widget.textclock(" %a %b %d, %H:%M:%S " , 1)
 -- Calendar widget to attach to the textclock
 local cal = require('cal')
 cal.register(mytextclock)
+
+-- spacing between widgets {{{1
+local space = wibox.widget.textbox()
+space:set_text(" ")
 
 -- return {{{1
 return {
@@ -132,7 +127,9 @@ return {
   clock = mytextclock,
   mail = mail,
   music = music,
-  updates = pacwidget,
+  updates = updates,
   wifi = mywifitext,
   --mailbutton = mail.button,
+  space = space,
+  kernel_warning = kernel_warning,
 }

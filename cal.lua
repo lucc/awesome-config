@@ -25,6 +25,8 @@ local string = {format = string.format}
 local os = {date = os.date, time = os.time}
 local awful = require("awful")
 
+local run_in_centeral_terminal = require("functions").run_in_centeral_terminal
+
 local cal = {}
 
 local tooltip
@@ -95,6 +97,9 @@ function cal.register(mywidget, custom_current_day_format)
 	mywidget:connect_signal("mouse::enter",tooltip.update)
 
 	mywidget:buttons(awful.util.table.join(
+	awful.button({ }, 2, function()
+		cal.gui()
+	end),
 	awful.button({ }, 1, function()
 		switchMonth(-1)
 	end),
@@ -119,6 +124,10 @@ function cal.register(mywidget, custom_current_day_format)
 	awful.button({ 'Shift' }, 5, function()
 		switchMonth(12)
 	end)))
+end
+
+function cal.gui()
+    run_in_centeral_terminal("calendar-window.sh")
 end
 
 function switchMonth(delta)

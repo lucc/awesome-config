@@ -32,14 +32,16 @@ widget.format_symbol = function (data)
 end
 
 widget.format_text = function (data)
-  return 'Artist: ' .. data['{Artist}'] .. '\n' ..
-         'Album: '  .. data['{Album}']  .. '\n' ..
-	 'Title: '  .. data['{Title}']
+  return string.format('Artist: %s\nAlbum: %s\nTitle: %s',
+		       data['{Artist}'], data['{Album}'], data['{Title}'])
 end
 
 widget.toggle = function () awful.util.spawn("mpc toggle") end
 widget.next = function () awful.util.spawn("mpc next") end
 widget.previous = function () awful.util.spawn("mpc prev") end
+widget.stop = function () awful.util.spawn('mpc stop') end
+widget.tui = function () run_in_centeral_terminal('ncmpcpp') end
+widget.gui = function () awful.util.spawn('cantata') end
 
 widget.formatter = function (widget, args)
   widget.tooltip:set_text(widget.format_text(args))
@@ -54,7 +56,7 @@ end
 
 widget:buttons(awful.util.table.join(
   awful.button({ }, 1, function () widget:toggle(); widget:refresh() end),
-  awful.button({ }, 2, function () run_in_centeral_terminal("ncmpcpp") end),
+  awful.button({ }, 2, widget.tui),
   awful.button({ }, 3, function () widget:next(); widget:refresh() end)
   ))
 widget:connect_signal("mouse::enter", function () widget:refresh() end)
