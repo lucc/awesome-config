@@ -8,6 +8,8 @@ local widgets = require("widgets")
 local menubar = require("menubar")
 local hotkeys_popup = require("awful.hotkeys_popup").widget
 
+local term = require("functions").run_in_centeral_terminal
+
 -- other environment
 local modkey, terminal, client, awesome = modkey, terminal, client, awesome
 
@@ -25,6 +27,8 @@ local globalkeys = awful.util.table.join(
               {description = "view previous", group = "tag"}),
     awful.key({                   }, "XF86Forward",  awful.tag.viewnext,
               {description = "view next", group = "tag"}),
+    awful.key({ modkey,           }, "F2", function() term("task-window.sh") end,
+	      {description = "show current tasks (taskwarrior)", group = "utils"}),
 
     awful.key({ modkey,           }, "j",
         function ()
