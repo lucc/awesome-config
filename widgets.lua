@@ -3,10 +3,12 @@
 
 -- required modules {{{1
 local awful = require("awful")
+local gears = require("gears")
 local wibox = require("wibox")
 local vicious = require("vicious")
 local naughty = require("naughty")
 local pango = require("pango")
+local async = require("awful.spawn").easy_async
 
 local music = require("widgets/mpd")
 local mail = require("widgets/notmuch")
@@ -77,32 +79,24 @@ vicious.register(mywifitext, vicious.widgets.wifi,
 
 -- Pacman Widget {{{1
 -- copied from http://www.jasonmaur.com/awesome-wm-widgets-configuration/
-local pacwidget = wibox.widget.textbox()
-
-local pacwidget_t = awful.tooltip({ objects = { pacwidget},})
-
-vicious.register(pacwidget,
-		 function (widget, args)
-		   local str = ''
-		   local count = 0
-		   for line in io.popen('pacman -Qu'):lines() do
-		     str = str .. line .. '\n'
-		     count = count + 1
-		   end
-		   if count == 0 then
-		     return ''
-		   else
-		     pacwidget_t:set_text(string.sub(str, 1, -2))
-		     return "Updates available! "
-		   end
-		 end,
-		 '$1',
-		1800, "Arch")
-                -- 1800 means check every 30 minutes
+local updates = {}
+updates.widget = wibox.widget.textbox()
+updates.tooltip = awful.tooltip({objects={updates.widget}})
+updates.update = function (container)
+  async({'pacman', '--query', '--upgrades'},
+    function (stdout, stderr, reason, code)
+      container.tooltip:set_text(stdout)
+      container.widget:set_markup('Updates available! ')
+    end)
+end
+updates.timer = gears.timer{
+  timeout = 30 * 60,
+  callback = function() updates:update() end,
+}
 
 -- Warning about reboot after kernel update
 local kernel_warning = wibox.widget.textbox()
-local kernel_warning_t = awful.tooltip({ objects = { pacwidget},})
+local kernel_warning_t = awful.tooltip({ objects = { updates.widget },})
 kernel_warning.refresh = function (widget, args)
   local installed = string.sub(io.popen('pacman -Q linux'):read(), 7)
   local running = string.sub(io.popen('uname -r'):read(), 1, string.len(installed))
@@ -113,7 +107,7 @@ kernel_warning.refresh = function (widget, args)
     return pango.color('red', '!')
   end
 end
-vicious.register(kernel_warning, kernel_warning.refresh, '$1', 3*3600, nil)
+--vicious.register(kernel_warning, kernel_warning.refresh, '$1', 3*3600, nil)
 
 
 -- custom calendar and clock {{{1
@@ -133,7 +127,7 @@ return {
   clock = mytextclock,
   mail = mail,
   music = music,
-  updates = pacwidget,
+  updates = updates,
   wifi = mywifitext,
   --mailbutton = mail.button,
   space = space,
