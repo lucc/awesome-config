@@ -130,15 +130,20 @@ screen.connect_signal("property::geometry", set_wallpaper)
 
 -- some widgets
 local lain = require("lain")
-
 local weather = lain.widget.weather {
-  city_id = 2867714,
+  city_id = 2867714,  -- Munich
+  showpopup = "off",  -- do not attach to popup to this widget directly
   settings = function ()
     local units = math.floor(weather_now["main"]["temp"])
     widget:set_markup(units .. '°C ')
   end
 }
-weather.attach(weather.icon)
+local weather_container = wibox.widget {
+  weather.icon,
+  weather,
+  layout = wibox.layout.align.horizontal
+}
+weather.attach(weather_container)
 
 
 awful.screen.connect_for_each_screen(function(s)
@@ -188,8 +193,7 @@ awful.screen.connect_for_each_screen(function(s)
 	    widgets.taskwarriror,
 	    widgets.wifi,
             wibox.widget.systray(),
-	    weather.icon,
-	    weather.widget,
+	    weather_container,
 	    widgets.clock,
             s.mylayoutbox,
         },
