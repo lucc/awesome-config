@@ -40,11 +40,13 @@ vicious.register(baticon, vicious.widgets.bat,
     end
     --"<span color='green'>power@$2%=$3</span>"
     textbat_tooltip:set_text(string.format(
-      'Connected: %s\nLevel: %s%%\nTime: %s', args[1], args[2], args[3]))
-    if percent < 10 then
+      'Connected: %s\nLevel: %s%%\nTime: %s\nRate: %sW', args[1], args[2], args[3], args[5]))
+    if args[1] == '-' and (percent < 10 or
+	args[3] == '00:00' or args[3] == '00:01' or args[3] == '00:02' or
+	args[3] == '00:03' or args[3] == '00:04' or args[3] == '00:05') then
       naughty.notify({ preset = naughty.config.presets.critical,
 		       title="Battery low!",
-		       text='Only '..percent..' remaining!'})
+		       text='Only '..args[3]..' remaining!'})
     end
     return pango.color(col, pango.font('Awesome', icon)) .. ' '
   end,
