@@ -151,6 +151,8 @@ local globalkeys = awful.util.table.join(
               {description = "open the TUI", group = "audio" }),
     awful.key({ }, "XF86Display", function () os.execute('auto-xrandr') end,
 	      {description = "reset monitor settings", group = "screen" }),
+    awful.key({ }, "XF86Mail", widgets.mail.gui,
+	      {description = "start mail client", group = "launcher" }),
     awful.key({ }, "Menu",
 	      function () awful.screen.focused().mypromptbox:run() end,
               {description = "run prompt", group = "launcher"}),

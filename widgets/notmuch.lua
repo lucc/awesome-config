@@ -2,14 +2,15 @@
 -- notmuch.
 
 local awful = require("awful")
-local easy_async_with_shell = require("awful.spawn").easy_async_with_shell
+local spawn = require("awful.spawn")
+local shell = spawn.easy_async_with_shell
 local json = require("json")
 local pango = require("pango")
 --local vicious = require("vicious")
 local wibox = require("wibox")
 
 local symbols = require("symbols")
-local run_in_centeral_terminal = require("functions").run_in_centeral_terminal
+local terminal = require("functions").run_in_centeral_terminal
 
 local function format_summary (summary)
   local str = pango('b', pango.color('green', 'Summary of new mail:'))
@@ -23,6 +24,13 @@ end
 
 -- Define the contrainer that will hold the widget and all related data.
 local notmuch = {}
+
+-- some nice helper functions
+notmuch.tui = function() terminal("alot") end
+notmuch.gui = function()
+  spawn.with_line_callback("astroid", {exit = function() notmuch:update() end})
+end
+
 -- Define the widget that will hold the info about new mail (summary in
 -- tooltip)
 notmuch.widget = wibox.widget.textbox()
@@ -39,7 +47,7 @@ notmuch.update = function(container, force)
   end
   script = script .. 'notmuch count -- ' .. query .. ';'
   script = script .. 'notmuch search --format=json --sort=newest-first -- '.. query
-  easy_async_with_shell(script, function (stdout, stderr, exitreason, exitcode)
+  shell(script, function (stdout, stderr, exitreason, exitcode)
     local i, j = string.find(stdout, '\n', 1, true)
     local count = tonumber(string.sub(stdout, 1, i))
     local summary = ""
@@ -59,8 +67,12 @@ notmuch.update = function(container, force)
   end)
 end
 
-notmuch.button1 = function () run_in_centeral_terminal("alot") end
-notmuch.widget:buttons(awful.util.table.join(awful.button({}, 1, notmuch.button1)))
+notmuch.button1 = notmuch.gui
+notmuch.button3 = notmuch.tui
+notmuch.widget:buttons(awful.util.table.join(
+  awful.button({}, 1, notmuch.button1),
+  awful.button({}, 3, notmuch.button3)
+))
 
 notmuch:update()
 
