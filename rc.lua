@@ -184,6 +184,8 @@ awful.screen.connect_for_each_screen(function(s)
 	    widgets.music,
 	    widgets.updates.widget,
 	    widgets.battery,
+	    --widgets.battery_graph,
+	    widgets.taskwarriror,
 	    widgets.wifi,
             wibox.widget.systray(),
 	    weather.icon,
