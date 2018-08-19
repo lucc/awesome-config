@@ -8,15 +8,11 @@ local wibox = require("wibox")
 local vicious = require("vicious")
 local naughty = require("naughty")
 local pango = require("pango")
-local spawn = require("awful.spawn")
-local shell = spawn.easy_async_with_shell
-local async = spawn.easy_async
-
-local lain = require("lain")
+local async = require("awful.spawn").easy_async
 
 local music = require("widgets/mpd")
 local mail = require("widgets/notmuch")
-local term = require("functions").run_in_centeral_terminal
+local taskwarriror = require("widgets/taskwarrior")
 
 local symbols = require("symbols")
 -- battery {{{1
@@ -123,32 +119,6 @@ local mytextclock = wibox.widget.textclock(" %a %b %d, %H:%M:%S " , 1)
 local cal = require('cal')
 cal.register(mytextclock)
 
--- taskwarriror {{{1
-local taskicon = '/usr/share/awesome/lib/lain/icons/taskwarrior.png'
-local taskimg = wibox.widget.imagebox(taskicon)
-lain.widget.contrib.task.attach(taskimg, {
-  show_cmd = 'task rc.report.next.columns=id,due.relative,description.truncated_count,urgency rc.report.next.labels=ID,Due,Description,Urg rc.gc=off next',
-
-  notification_preset = {
-      font = "Monospace 10",
-      icon = taskicon,
-      timeout = 0,
-  },
-})
-
-function taskimg.show()
-  term("task-window.sh")
-end
-function taskimg.add()
-  shell([[x=$(zenity --entry --title=taskwarrior --text="New task") && [ -n "$x" ] && task add $x]])
-end
-taskimg.button1 = taskimg.show
-taskimg.button3 = taskimg.add
-taskimg:buttons(awful.util.table.join(
-  awful.button({}, 1, taskimg.button1),
-  awful.button({}, 3, taskimg.button3)
-))
-
 
 -- spacing between widgets {{{1
 local space = wibox.widget.textbox()
@@ -165,5 +135,5 @@ return {
   --mailbutton = mail.button,
   space = space,
   kernel_warning = kernel_warning,
-  taskwarriror = taskimg,
+  taskwarriror = taskwarriror,
 }
