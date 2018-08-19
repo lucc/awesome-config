@@ -12,7 +12,7 @@ local symbols = require("symbols")
 local run_in_centeral_terminal = require("functions").run_in_centeral_terminal
 
 local function format_summary (summary)
-  local str = pango.markup('b', pango.color('green', 'Summary of new mail:'))
+  local str = pango('b', pango.color('green', 'Summary of new mail:'))
   --local keys = {'date_relative', 'authors', 'subject', 'tags'}
   for _, entry in pairs(summary) do
     str = str..'\n'..pango.color('blue', entry['authors'])..':\t'..
@@ -45,7 +45,7 @@ notmuch.update = function(container, force)
     local summary = ""
     local markup = ""
     if count ~= 0 then
-      markup = symbols.envolope2
+      markup = pango('span rise="-2048"', pango.font('14', symbols.envolope2))
       if count > 1 then
 	markup = count .. ' ' .. markup
       end
