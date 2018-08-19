@@ -48,7 +48,7 @@ vicious.register(baticon, vicious.widgets.bat,
 		       title="Battery low!",
 		       text='Only '..args[3]..' remaining!'})
     end
-    return pango.color(col, pango.font('Awesome', icon)) .. ' '
+    return pango.color(col, pango.font('Awesome 18', icon)) .. ' '
   end,
   67, "BAT0")
 
@@ -61,7 +61,6 @@ vicious.register(mywifitext, vicious.widgets.wifi,
   --' <span color="blue">${ssid}</span> ',
     local color = 'red'
     local ssid = args['{ssid}']
-    local symbol = pango.font('Awesome', symbols.wifi)
     if ssid == 'N/A' then
       wifi_widget_tooltip:set_text('\n Not connected! \n')
     else
@@ -72,7 +71,7 @@ vicious.register(mywifitext, vicious.widgets.wifi,
       end
       wifi_widget_tooltip:set_text(ssid)
     end
-    return pango.color(color, pango.font('Awesome', symbols.wifi)) .. ' '
+    return pango.color(color, pango.font('Awesome 18', symbols.wifi)) .. ' '
   end,
   --'ssid: ${ssid}, mode: ${mode}, chan: ${chan}, rate: ${rate}, link: ${link}, linp: ${linp}, sign: ${sign}',
   120,
