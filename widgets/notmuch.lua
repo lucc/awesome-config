@@ -16,8 +16,12 @@ local function format_summary (summary)
   local str = pango('b', pango.color('green', 'Summary of new mail:'))
   --local keys = {'date_relative', 'authors', 'subject', 'tags'}
   for _, entry in pairs(summary) do
-    str = str..'\n'..pango.color('blue', entry['authors'])..':\t'..
-      pango.color('red', entry['subject'])
+    local authors = entry['authors']
+    if #authors >= 100 then
+      authors = string.sub(authors, 1, 99) .. '…'
+    end
+    str = str..'\n'..pango.color('blue', authors)..':\t'..pango.color(
+      'red', entry['subject'])
   end
   return str
 end
