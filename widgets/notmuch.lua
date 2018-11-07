@@ -27,24 +27,7 @@ local function format_summary (summary)
   return str
 end
 
--- Define the contrainer that will hold the widget and all related data.
-local notmuch = {}
-
--- some nice helper functions
-notmuch.tui = function() terminal("alot") end
-notmuch.gui = function()
-  spawn.with_line_callback("astroid", {exit = function() notmuch:update() end})
-end
-
--- Define the widget that will hold the info about new mail (summary in
--- tooltip)
-notmuch.widget = wibox.widget.textbox()
-notmuch.widget.tooltip = awful.tooltip({objects = {notmuch.widget}})
-
--- The default query will be used if no other query is given.
-notmuch.default_query = [[\(query:inbox_notification or query:listbox_notification\)]]
-
-notmuch.update = function(container, force)
+local function update(container, force)
   local query = container.query or container.default_query
   local script = ''
   if force then
@@ -89,7 +72,25 @@ local function notify(container, query)
   end)
 end
 
+-- Define the contrainer that will hold the widget and all related data.
+local notmuch = {}
+
+-- Define the widget that will hold the info about new mail (summary in
+-- tooltip)
+notmuch.widget = wibox.widget.textbox()
+notmuch.widget.tooltip = awful.tooltip({objects = {notmuch.widget}})
+
+-- The default query will be used if no other query is given.
+notmuch.default_query = [[\(query:inbox_notification or query:listbox_notification\)]]
+
+-- some nice helper functions
+notmuch.tui = function() terminal("alot") end
+notmuch.gui = function()
+  spawn.with_line_callback("astroid", {exit = function() notmuch:update() end})
+end
+
 notmuch.notify = notify
+notmuch.update = update
 notmuch.button1 = notmuch.gui
 notmuch.button3 = notmuch.tui
 notmuch.widget:buttons(awful.util.table.join(
