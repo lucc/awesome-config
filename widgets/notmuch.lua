@@ -58,7 +58,7 @@ end
 
 local function notify(container, query)
   local query = query or container.default_query
-  spawn.easy_async('notmuch search '..query,
+  shell('notmuch search '..query..' | cut -f2- -d " "',
     function(stdout, stderr, reason, exit_code)
       if exit_code == 0 and stdout ~= '' then
 	local notification = naughty.notify {
