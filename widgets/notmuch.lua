@@ -2,6 +2,7 @@
 -- notmuch.
 
 local awful = require("awful")
+local naughty = require("naughty")
 local spawn = require("awful.spawn")
 local shell = spawn.easy_async_with_shell
 local json = require("json")
@@ -68,6 +69,22 @@ notmuch.update = function(container, force)
     end
     container.widget:set_markup(markup)
     container.widget.tooltip.markup=summary
+  end)
+end
+
+notmuch.notify = function()
+  spawn.easy_async('notmuch search '..notmuch.default_query,
+    function(stdout, stderr, reason, exit_code)
+      --if exit_code == 0 and stdout ~= '' then
+	notification = naughty.notify {
+	  text = stdout,
+	  title = 'New mail (' .. os.date().. ')',
+	  timeout = 0,
+	  icon = '/usr/share/icons/Adwaita/256x256/emblems/emblem-mail.png',
+	  replaces_id = notmuch.last_id
+	}
+	notmuch.last_id = notification.id
+      --end
   end)
 end
 
