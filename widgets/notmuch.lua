@@ -33,10 +33,11 @@ local function update(container, force)
   if force then
     script = 'notmuch new;'
   end
-  script = script .. 'notmuch count -- ' .. query .. ';'
-  script = script .. 'notmuch search --format=json --sort=newest-first -- '.. query
+  script = script ..
+    'notmuch count -- ' .. query .. ';' ..
+    'notmuch search --format=json --sort=newest-first -- '.. query
   shell(script, function (stdout, stderr, exitreason, exitcode)
-    local i, j = string.find(stdout, '\n', 1, true)
+    local i, _ = string.find(stdout, '\n', 1, true)
     local count = tonumber(string.sub(stdout, 1, i))
     local summary = ""
     local markup = ""
@@ -81,12 +82,15 @@ notmuch.widget = wibox.widget.textbox()
 notmuch.widget.tooltip = awful.tooltip({objects = {notmuch.widget}})
 
 -- The default query will be used if no other query is given.
-notmuch.default_query = [[\(query:inbox_notification or query:listbox_notification\)]]
+notmuch.default_query =
+  [[\(query:inbox_notification or query:listbox_notification\)]]
 
 -- some nice helper functions
 notmuch.tui = function() terminal("alot") end
 notmuch.gui = function()
-  spawn.with_line_callback("astroid", {exit = function() notmuch:update() end})
+  spawn.with_line_callback(
+    "astroid", {exit = function() notmuch:update() end}
+  )
 end
 
 notmuch.notify = notify
