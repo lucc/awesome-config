@@ -72,22 +72,24 @@ notmuch.update = function(container, force)
   end)
 end
 
-notmuch.notify = function()
-  spawn.easy_async('notmuch search '..notmuch.default_query,
+local function notify(container, query)
+  local query = query or container.default_query
+  spawn.easy_async('notmuch search '..query,
     function(stdout, stderr, reason, exit_code)
-      --if exit_code == 0 and stdout ~= '' then
-	notification = naughty.notify {
+      if exit_code == 0 and stdout ~= '' then
+	local notification = naughty.notify {
 	  text = stdout,
-	  title = 'New mail (' .. os.date().. ')',
+	  title = 'New mail',
 	  timeout = 0,
 	  icon = '/usr/share/icons/Adwaita/256x256/emblems/emblem-mail.png',
-	  replaces_id = notmuch.last_id
+	  replaces_id = container.last_id
 	}
-	notmuch.last_id = notification.id
-      --end
+	container.last_id = notification.id
+      end
   end)
 end
 
+notmuch.notify = notify
 notmuch.button1 = notmuch.gui
 notmuch.button3 = notmuch.tui
 notmuch.widget:buttons(awful.util.table.join(
