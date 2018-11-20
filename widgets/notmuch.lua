@@ -50,6 +50,9 @@ local function update(container, force)
       summary = string.sub(stdout, i+1)
       summary = json.decode(summary)
       summary = format_summary(summary)
+    else
+      local notification = naughty.getById(container.last_id)
+      naughty.destroy(notification)
     end
     container.widget:set_markup(markup)
     container.widget.tooltip.markup=summary
