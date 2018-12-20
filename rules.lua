@@ -59,8 +59,10 @@ awful.rules.rules = {
     { rule = { class = "Firefox", instance = "Navigator" },
       properties = { tag = '1' } },
     { rule = { class = "qutebrowser" }, properties = { tag = '1' } },
+
     { rule = { class = "URxvt", instance = "calculator" },
       properties = { floating = true, ontop = true } },
+
     { rule = { instance = "center" },
       properties = { floating = true },
       callback = function(c)
@@ -70,5 +72,9 @@ awful.rules.rules = {
 	local width = screen.width * 3 / 4
 	local height = screen.height * 3 / 4
 	c:geometry({x = x, y = y, width = width, height = height})
-      end }
+      end },
+
+    -- put the prolog help in maximized mode
+    { rule = { instance = "SWI-Prolog help", class = "Pui manual" },
+      properties = { maximized = true } },
 }
