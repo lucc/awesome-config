@@ -42,11 +42,11 @@ local function update(container, force)
     local summary = ""
     local markup = ""
     if count ~= 0 then
-      markup = pango('span rise="-2048"', pango.font('14', symbols.envolope2))
+      markup = pango.iconic(symbols.envolope2)
       if count > 1 then
 	markup = count .. ' ' .. markup
       end
-      markup = pango.color('red', pango.font('Awesome', markup)) .. ' '
+      markup = pango.color('red',  markup) .. ' '
       summary = string.sub(stdout, i+1)
       summary = json.decode(summary)
       summary = format_summary(summary)

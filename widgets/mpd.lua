@@ -28,7 +28,7 @@ widget.format_symbol = function (data)
     color = 'red'
     icon = 'MPD: Error!'
   end
-  return pango.color(color, pango.font('Awesome', icon)) .. ' '
+  return pango.color(color, pango.iconic(icon)) .. ' '
 end
 
 widget.format_text = function (data)

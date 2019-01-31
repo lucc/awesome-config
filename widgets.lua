@@ -52,7 +52,7 @@ vicious.register(baticon, vicious.widgets.bat,
 		       title="Battery low!",
 		       text='Only '..time..' remaining!'})
     end
-    return pango.color(col, pango.font('Awesome 18', icon)) .. ' '
+    return pango.color(col, pango.iconic(icon)) .. ' '
   end,
   67, "BAT0")
 
@@ -61,8 +61,6 @@ local mywifitext = wibox.widget.textbox()
 local wifi_widget_tooltip = awful.tooltip({ objects = {mywifitext},})
 vicious.register(mywifitext, vicious.widgets.wifi,
   function (widget, args)
-  --' <span color="red" font="Awesome 14">'..symbols.wifi..'</span> ${ssid} ',
-  --' <span color="blue">${ssid}</span> ',
     local color = 'red'
     local ssid = args['{ssid}']
     if ssid == 'N/A' then
@@ -75,7 +73,7 @@ vicious.register(mywifitext, vicious.widgets.wifi,
       end
       wifi_widget_tooltip:set_text(ssid)
     end
-    return pango.color(color, pango.font('Awesome 18', symbols.wifi)) .. ' '
+    return pango.color(color, pango.iconic(symbols.wifi)) .. ' '
   end,
   --'ssid: ${ssid}, mode: ${mode}, chan: ${chan}, rate: ${rate}, link: ${link}, linp: ${linp}, sign: ${sign}',
   120,
