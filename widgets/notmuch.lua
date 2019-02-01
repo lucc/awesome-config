@@ -7,7 +7,6 @@ local spawn = require("awful.spawn")
 local shell = spawn.easy_async_with_shell
 local json = require("json")
 local pango = require("pango")
---local vicious = require("vicious")
 local wibox = require("wibox")
 
 local symbols = require("symbols")
@@ -54,8 +53,8 @@ local function update(container, force)
       local notification = naughty.getById(container.last_id)
       naughty.destroy(notification)
     end
-    container.widget:set_markup(markup)
-    container.widget.tooltip.markup=summary
+    container:set_markup(markup)
+    container.tooltip.markup=summary
   end)
 end
 
@@ -76,13 +75,10 @@ local function notify(container, query)
   end)
 end
 
--- Define the contrainer that will hold the widget and all related data.
-local notmuch = {}
-
 -- Define the widget that will hold the info about new mail (summary in
--- tooltip)
-notmuch.widget = wibox.widget.textbox()
-notmuch.widget.tooltip = awful.tooltip({objects = {notmuch.widget}})
+-- tooltip) and all related data.
+local notmuch = wibox.widget.textbox()
+notmuch.tooltip = awful.tooltip({objects = {notmuch}})
 
 -- The default query will be used if no other query is given.
 notmuch.default_query =
@@ -100,7 +96,7 @@ notmuch.notify = notify
 notmuch.update = update
 notmuch.button1 = notmuch.gui
 notmuch.button3 = notmuch.tui
-notmuch.widget:buttons(awful.util.table.join(
+notmuch:buttons(awful.util.table.join(
   awful.button({}, 1, notmuch.button1),
   awful.button({}, 3, notmuch.button3)
 ))
