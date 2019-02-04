@@ -55,5 +55,12 @@ return {
   clock1130 = "\xf0\x9f\x95\xa6", -- 🕦
   clock1230 = "\xf0\x9f\x95\xa7", -- 🕧
 
+  alert1     = "\xe2\x9a\xa0",     -- ⚠
+  alert2     = "\xef\x81\xb1",     -- 
+
+  update     = "",   -- 
+  update2    = "",
+  reboot     = "",
+
   emptystring = '' -- to make it easier to sort the above
 }
