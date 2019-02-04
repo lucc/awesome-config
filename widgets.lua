@@ -121,6 +121,33 @@ local cal = require('cal')
 cal.register(mytextclock)
 
 
+-- systemd failed units
+local systemd = wibox.widget.textbox()
+systemd.tooltip = awful.tooltip({ objects = { systemd } })
+systemd.update = function(widget)
+  async({"systemctl", "list-units",
+         "--state=failed", "--plain", "--no-legend"},
+    function (stdout, stderr, reason, code)
+      local msg = ''
+      local icon = ''
+      if stdout ~= "" then
+	icon = pango.color('red', pango.iconic(symbols.alert2))
+	for line in string.gmatch(stdout, '[^\n]+') do
+	  msg = msg .. '\n' .. string.gsub(line, '^([^ ]+)%.[^. ]+ .*', '%1')
+	end
+	msg = string.sub(msg, 2)
+      end
+      widget:set_markup(icon)
+      widget.tooltip:set_text(msg)
+    end)
+end
+gears.timer{
+  timeout = 100,
+  autostart = true,
+  callback = function() systemd:update() end
+}
+systemd:update()
+
 -- spacing between widgets {{{1
 local space = wibox.widget.textbox()
 space:set_text(" ")
@@ -137,4 +164,5 @@ return {
   space = space,
   kernel_warning = kernel_warning,
   taskwarriror = taskwarriror,
+  systemd = systemd,
 }
