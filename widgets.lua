@@ -115,11 +115,21 @@ updates.update = function (widget)
       end)
   end)
 end
+updates.reboot = function() async({'reboot'}) end
+updates.ask = function(title, text, callback)
+  async({'zenity', '--question', '--title', title, '--text', text},
+	function(_, _, _, code) if code == 0 then callback() end end)
+end
 updates.timer = gears.timer{
   timeout = 30 * 60,
   autostart = true,
   callback = function() updates:update() end,
 }
+updates:buttons(awful.util.table.join(
+    awful.button({}, 1, function()
+      updates.ask('Reboot now?', 'Do you want to reboot now?', updates.reboot)
+    end
+)))
 updates:update()
 
 -- custom calendar and clock {{{1
