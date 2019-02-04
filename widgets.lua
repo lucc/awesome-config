@@ -40,8 +40,8 @@ vicious.register(baticon, vicious.widgets.bat,
       icon = symbols.battery4
     end
     --"<span color='green'>power@$2%=$3</span>"
-    time = args[3]
-    rate = args[5] == 'N/A' and 'N/A' or (args[5]..'W')
+    local time = args[3]
+    local rate = args[5] == 'N/A' and 'N/A' or (args[5]..'W')
     textbat_tooltip:set_text(
       string.format('Connected: %s\nLevel: %s%%\nTime: %s\nRate: %s',
 		    args[1], percent, time, rate))
