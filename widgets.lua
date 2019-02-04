@@ -13,6 +13,7 @@ local async = require("awful.spawn").easy_async
 local music = require("widgets/mpd")
 local mail = require("widgets/notmuch")
 local taskwarriror = require("widgets/taskwarrior")
+local updates = require("widgets/pacman")
 
 local symbols = require("symbols")
 -- battery {{{1
@@ -79,58 +80,6 @@ vicious.register(mywifitext, vicious.widgets.wifi,
   120,
   "wlp3s0" --"wlan0"
   )
-
--- Pacman Widget {{{1
--- originally copied from
--- http://www.jasonmaur.com/awesome-wm-widgets-configuration/
-local updates = wibox.widget.textbox()
-updates.tooltip = awful.tooltip({objects={updates}})
-updates.set = function(widget, icon, tooltip)
-  widget.tooltip:set_markup(tooltip)
-  widget:set_markup(pango.iconic(icon))
-end
-updates.update = function (widget)
-  async({'pacman', '--query', 'linux'},
-    function(stdout)
-      local installed = string.sub(stdout, 7, -2)
-      async({'uname', '-r'},
-	function(stdout2)
-	  local running = string.sub(stdout2, 1, installed:len())
-	  if installed == running then
-	    async({'pacman', '--query', '--upgrades'},
-	      function(text, _, _, code)
-		local icon = ''
-		if code == 0 then
-		  icon = pango.color('green', symbols.update2)
-		end
-		widget:set(icon, text)
-	    end)
-	  else
-	    widget:set(
-	      pango.color('red', symbols.reboot),
-	      pango('b', 'You should reboot')..'\n'..
-	      pango.color('green', 'installed kernel:\t')..installed..'\n'..
-	      pango.color('red', 'running kernel:\t')..running)
-	  end
-      end)
-  end)
-end
-updates.reboot = function() async({'reboot'}) end
-updates.ask = function(title, text, callback)
-  async({'zenity', '--question', '--title', title, '--text', text},
-	function(_, _, _, code) if code == 0 then callback() end end)
-end
-updates.timer = gears.timer{
-  timeout = 30 * 60,
-  autostart = true,
-  callback = function() updates:update() end,
-}
-updates:buttons(awful.util.table.join(
-    awful.button({}, 1, function()
-      updates.ask('Reboot now?', 'Do you want to reboot now?', updates.reboot)
-    end
-)))
-updates:update()
 
 -- custom calendar and clock {{{1
 -- Create a textclock widget
