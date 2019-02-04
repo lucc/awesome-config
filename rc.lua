@@ -189,7 +189,7 @@ awful.screen.connect_for_each_screen(function(s)
 	    widgets.space,
 	    widgets.mail,
 	    widgets.music,
-	    widgets.updates.widget,
+	    widgets.updates,
 	    widgets.space,
 	    widgets.battery,
 	    --widgets.battery_graph,

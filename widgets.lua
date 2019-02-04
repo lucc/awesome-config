@@ -81,11 +81,15 @@ vicious.register(mywifitext, vicious.widgets.wifi,
   )
 
 -- Pacman Widget {{{1
--- copied from http://www.jasonmaur.com/awesome-wm-widgets-configuration/
-local updates = {}
-updates.widget = wibox.widget.textbox()
-updates.tooltip = awful.tooltip({objects={updates.widget}})
-updates.update = function (container)
+-- originally copied from
+-- http://www.jasonmaur.com/awesome-wm-widgets-configuration/
+local updates = wibox.widget.textbox()
+updates.tooltip = awful.tooltip({objects={updates}})
+updates.set = function(widget, icon, tooltip)
+  widget.tooltip:set_markup(tooltip)
+  widget:set_markup(pango.iconic(icon))
+end
+updates.update = function (widget)
   async({'pacman', '--query', 'linux'},
     function(stdout)
       local installed = string.sub(stdout, 7, -2)
@@ -99,21 +103,17 @@ updates.update = function (container)
 		if code == 0 then
 		  icon = pango.color('green', symbols.update2)
 		end
-		container:set(icon, text)
+		widget:set(icon, text)
 	    end)
 	  else
-	    container:set(
+	    widget:set(
 	      pango.color('red', symbols.reboot),
-	      'You should reboot\n'..
+	      pango('b', 'You should reboot')..'\n'..
 	      pango.color('green', 'installed kernel:\t')..installed..'\n'..
 	      pango.color('red', 'running kernel:\t')..running)
 	  end
       end)
   end)
-end
-updates.set = function(container, icon, tooltip)
-  container.tooltip:set_markup(tooltip)
-  container.widget:set_markup(pango.iconic(icon))
 end
 updates.timer = gears.timer{
   timeout = 30 * 60,
