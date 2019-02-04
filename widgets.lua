@@ -86,32 +86,41 @@ local updates = {}
 updates.widget = wibox.widget.textbox()
 updates.tooltip = awful.tooltip({objects={updates.widget}})
 updates.update = function (container)
-  async({'pacman', '--query', '--upgrades'},
-    function (stdout, stderr, reason, code)
-      container.tooltip:set_text(stdout)
-      container.widget:set_markup('Updates available! ')
-    end)
+  async({'pacman', '--query', 'linux'},
+    function(stdout)
+      local installed = string.sub(stdout, 7, -2)
+      async({'uname', '-r'},
+	function(stdout2)
+	  local running = string.sub(stdout2, 1, installed:len())
+	  if installed == running then
+	    async({'pacman', '--query', '--upgrades'},
+	      function(text, _, _, code)
+		local icon = ''
+		if code == 0 then
+		  icon = pango.color('green', symbols.update2)
+		end
+		container:set(icon, text)
+	    end)
+	  else
+	    container:set(
+	      pango.color('red', symbols.reboot),
+	      'You should reboot\n'..
+	      pango.color('green', 'installed kernel:\t')..installed..'\n'..
+	      pango.color('red', 'running kernel:\t')..running)
+	  end
+      end)
+  end)
+end
+updates.set = function(container, icon, tooltip)
+  container.tooltip:set_markup(tooltip)
+  container.widget:set_markup(pango.iconic(icon))
 end
 updates.timer = gears.timer{
   timeout = 30 * 60,
+  autostart = true,
   callback = function() updates:update() end,
 }
-
--- Warning about reboot after kernel update
-local kernel_warning = wibox.widget.textbox()
-local kernel_warning_t = awful.tooltip({ objects = { updates.widget },})
-kernel_warning.refresh = function (widget, args)
-  local installed = string.sub(io.popen('pacman -Q linux'):read(), 7)
-  local running = string.sub(io.popen('uname -r'):read(), 1, string.len(installed))
-  if running == installed then
-    return ''
-  else
-    kernel_warning_t:set_text("Kernel update installed, you should rebot!")
-    return pango.color('red', '!')
-  end
-end
---vicious.register(kernel_warning, kernel_warning.refresh, '$1', 3*3600, nil)
-
+updates:update()
 
 -- custom calendar and clock {{{1
 -- Create a textclock widget
@@ -162,7 +171,6 @@ return {
   wifi = mywifitext,
   --mailbutton = mail.button,
   space = space,
-  kernel_warning = kernel_warning,
   taskwarriror = taskwarriror,
   systemd = systemd,
 }
