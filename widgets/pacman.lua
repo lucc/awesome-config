@@ -54,7 +54,7 @@ pacman:buttons(awful.util.table.join(
     end
 )))
 
-local timer = gears.timer{
+gears.timer{
   timeout = 30 * 60,
   autostart = true,
   callback = function() update() end,
