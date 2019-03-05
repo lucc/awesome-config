@@ -81,7 +81,7 @@ local notmuch = texticon()
 
 -- The default query will be used if no other query is given.
 notmuch.default_query =
-  [[\(query:inbox_notification or query:listbox_notification\)]]
+  [[\(is:inbox AND \(is:unread OR is:todo\)\)]]
 
 -- some nice helper functions
 notmuch.tui = function() terminal("alot") end
