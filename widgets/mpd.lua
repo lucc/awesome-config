@@ -13,7 +13,7 @@ local widget = wibox.widget.textbox()
 widget.get_data = vicious.widgets.mpd
 widget.tooltip = awful.tooltip({ objects = { widget } })
 
-widget.format_symbol = function (data)
+local function format_symbol (data)
   local state = data['{state}']
   local color = 'yellow'
   local icon
@@ -31,7 +31,7 @@ widget.format_symbol = function (data)
   return pango.color(color, pango.iconic(icon)) .. ' '
 end
 
-widget.format_text = function (data)
+local function format_text (data)
   return string.format('Artist: %s\nAlbum: %s\nTitle: %s',
 		       data['{Artist}'], data['{Album}'], data['{Title}'])
 end
@@ -43,9 +43,9 @@ widget.stop = function () awful.spawn('mpc stop') end
 widget.tui = function () run_in_centeral_terminal('ncmpcpp') end
 widget.gui = function () awful.spawn('cantata') end
 
-widget.formatter = function (widget, args)
-  widget.tooltip:set_text(widget.format_text(args))
-  return widget.format_symbol(args)
+widget.formatter = function (self, args)
+  self.tooltip:set_text(format_text(args))
+  return format_symbol(args)
 end
 
 widget.refresh = function (self)
