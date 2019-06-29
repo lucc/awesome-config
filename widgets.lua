@@ -49,9 +49,16 @@ vicious.register(baticon, vicious.widgets.bat,
     if args[1] == '-' and (percent < 10 or
 	time == '00:00' or time == '00:01' or time == '00:02' or
 	time == '00:03' or time == '00:04' or time == '00:05') then
-      naughty.notify({ preset = naughty.config.presets.critical,
-		       title="Battery low!",
-		       text='Only '..time..' remaining!'})
+      local notification = naughty.notify({
+	  preset = naughty.config.presets.critical,
+	  title="Battery low!",
+	  replaces_id = widget.last_id,
+	  text='Only '..time..' remaining!'
+      })
+      widget.last_id = notification.id
+    else
+      local notification = naughty.getById(widget.last_id)
+      naughty.destroy(notification)
     end
     return pango.color(col, pango.iconic(icon)) .. ' '
   end,
