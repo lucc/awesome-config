@@ -15,6 +15,7 @@ local mail = require("widgets/notmuch")
 local music = require("widgets/mpd")
 local taskwarriror = require("widgets/taskwarrior")
 local updates = require("widgets/pacman")
+local weather = require("widgets/weather")
 
 local symbols = require("symbols")
 -- battery {{{1
@@ -135,10 +136,10 @@ return {
   github = github,
   mail = mail,
   music = music,
-  updates = updates,
-  wifi = mywifitext,
-  --mailbutton = mail.button,
   space = space,
-  taskwarriror = taskwarriror,
   systemd = systemd,
+  taskwarriror = taskwarriror,
+  updates = updates,
+  weather = weather,
+  wifi = mywifitext,
 }
