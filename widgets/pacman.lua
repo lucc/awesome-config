@@ -31,6 +31,7 @@ local function update()
 		  icon = pango.color('green', symbols.update2)
 		end
 		set(icon, text)
+		pacman.should_reboot = false
 	    end)
 	  else
 	    set(
@@ -38,6 +39,7 @@ local function update()
 	      pango('b', 'You should reboot')..'\n'..
 	      pango.color('green', 'installed kernel:\t')..installed..'\n'..
 	      pango.color('red', 'running kernel:\t')..running)
+	    pacman.should_reboot = true
 	  end
       end)
   end)
@@ -50,7 +52,11 @@ end
 
 pacman:buttons(awful.util.table.join(
     awful.button({}, 1, function()
-      ask('Reboot now?', 'Do you want to reboot now?', pacman.reboot)
+      if pacman.should_reboot then
+	ask('Reboot now?', 'Do you want to reboot now?', pacman.reboot)
+      else
+	async({'term', '-e', 'zsh -c paci'})
+      end
     end
 )))
 
