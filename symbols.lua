@@ -62,5 +62,7 @@ return {
   update2    = "",
   reboot     = "",
 
+  gtihub = "", -- alternative 
+
   emptystring = '' -- to make it easier to sort the above
 }

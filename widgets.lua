@@ -10,8 +10,9 @@ local naughty = require("naughty")
 local pango = require("pango")
 local async = require("awful.spawn").easy_async
 
-local music = require("widgets/mpd")
+local github = require("widgets/github")
 local mail = require("widgets/notmuch")
+local music = require("widgets/mpd")
 local taskwarriror = require("widgets/taskwarrior")
 local updates = require("widgets/pacman")
 
@@ -131,6 +132,7 @@ space:set_text(" ")
 return {
   battery = baticon,
   clock = mytextclock,
+  github = github,
   mail = mail,
   music = music,
   updates = updates,
