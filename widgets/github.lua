@@ -8,11 +8,21 @@ local symbols = require("symbols")
 local wibox = require("wibox")
 
 local default_url = 'https://github.com/notifications'
+local user = nil
+local password = nil
 
 local function curl (url, callback)
-  local pass = 'pass show www/github.com'
-  local sed = [[sed -n '1h;/^user: /{s/^user: //;s/$/:/;G;s/\n//;p;q;}']]
-  shell('curl --user $('..pass..'|'..sed..') '..url,
+  if password == nil or user == nil then
+    shell([[pass show www/github.com | sed -n '1p;s/^user: //p']],
+      function(stdout, stderr, exitreason, exitcode)
+	local index = string.find(stdout, '\n')
+	if index ~= nil then
+	  password = string.sub(stdout, 1, index - 1)
+	  user = string.sub(stdout, index + 1, -2)
+	end
+      end)
+  end
+  shell('curl --user '..user..':'..password..' '..url,
     function (stdout, stderr, exitreason, exitcode)
       callback(json.decode(stdout))
     end)
