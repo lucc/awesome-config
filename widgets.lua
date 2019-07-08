@@ -18,6 +18,9 @@ local updates = require("widgets/pacman")
 local weather = require("widgets/weather")
 
 local symbols = require("symbols")
+local functions = require("functions")
+local terminal = functions.run_in_centeral_terminal
+local join = functions.join
 -- battery {{{1
 
 local baticon = wibox.widget.textbox()
@@ -100,17 +103,21 @@ cal.register(mytextclock)
 
 -- systemd failed units
 local systemd = wibox.widget.textbox()
+systemd.cache = {}
 systemd.tooltip = awful.tooltip({ objects = { systemd } })
 systemd.update = function(widget)
   async({"systemctl", "list-units",
          "--state=failed", "--plain", "--no-legend"},
-    function (stdout, stderr, reason, code)
+    function (stdout, stderr, reason, _code)
       local msg = ''
       local icon = ''
+      widget.cache = {}
       if stdout ~= "" then
 	icon = pango.color('red', pango.iconic(symbols.alert2))
-	for line in string.gmatch(stdout, '[^\n]+') do
-	  msg = msg .. '\n' .. string.gsub(line, '^([^ ]+)%.[^. ]+ .*', '%1')
+	for i, line in ipairs(string.gmatch(stdout, '[^\n]+')) do
+	  local item = string.gsub(line, '^([^ ]+)%.[^. ]+ .*', '%1')
+	  msg = msg .. '\n' .. item
+	  widget.cache[i] = item
 	end
 	msg = string.sub(msg, 2)
       end
@@ -118,6 +125,13 @@ systemd.update = function(widget)
       widget.tooltip:set_text(msg)
     end)
 end
+
+systemd:buttons(awful.util.table.join(
+  awful.button({}, 1, function ()
+    terminal("systemctl " .. join(systemd.cache, " "))
+  end)
+))
+
 gears.timer{
   timeout = 100,
   autostart = true,
