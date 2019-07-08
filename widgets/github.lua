@@ -51,7 +51,7 @@ local function update(self)
 	  self.url = default_url
 	end
       else
-	self:set_markup()
+	self:set_markup("")
       end
     end)
 end
@@ -60,7 +60,7 @@ local github = wibox.widget.textbox()
 github.tooltip = awful.tooltip({objects = {github}})
 github.update = update
 github.open = function (self) shell('xdg-open ' .. self.url) end
-github.button1 = function () github:open() end
+github.button1 = function () github:open() github:update() end
 
 gears.timer{
   timeout = 5 * 60,
@@ -70,7 +70,5 @@ gears.timer{
 github:buttons(awful.util.table.join(
   awful.button({}, 1, github.button1)
 ))
-
-github:update()
 
 return github
