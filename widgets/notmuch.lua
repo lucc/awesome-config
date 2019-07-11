@@ -86,6 +86,7 @@ notmuch.default_query =
 
 -- some nice helper functions
 notmuch.tui = function() terminal("alot") end
+notmuch.tui2 = function() terminal( "purebred") end
 notmuch.gui = function()
   spawn.with_line_callback(
     "astroid", {exit = function() notmuch:update() end}
@@ -94,7 +95,7 @@ end
 
 notmuch.notify = notify
 notmuch.update = update
-notmuch.button1 = notmuch.gui
+notmuch.button1 = notmuch.tui2
 notmuch.button3 = notmuch.tui
 notmuch:buttons(awful.util.table.join(
   awful.button({}, 1, notmuch.button1),
