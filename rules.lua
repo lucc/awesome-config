@@ -62,19 +62,4 @@ awful.rules.rules = {
 
     { rule = { class = "URxvt", instance = "calculator" },
       properties = { floating = true, ontop = true } },
-
-    { rule = { instance = "center" },
-      properties = { floating = true },
-      callback = function(c)
-	local screen = screen[mouse.screen].geometry
-	local x = screen.width / 8
-	local y = screen.height / 8
-	local width = screen.width * 3 / 4
-	local height = screen.height * 3 / 4
-	c:geometry({x = x, y = y, width = width, height = height})
-      end },
-
-    -- put the prolog help in maximized mode
-    { rule = { instance = "SWI-Prolog help", class = "Pui manual" },
-      properties = { maximized = true } },
 }
