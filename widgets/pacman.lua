@@ -1,5 +1,5 @@
-local async = require("awful.spawn").easy_async
 local awful = require("awful")
+local async = awful.spawn.easy_async
 local gears = require("gears")
 local pango = require("pango")
 local symbols = require("symbols")
@@ -17,32 +17,33 @@ local function set(icon, tooltip)
 end
 
 local function update()
-  async({'pacman', '--query', 'linux'},
-    function(stdout)
-      local installed = string.sub(stdout, 7, -2):gsub('-', '.')
-      async({'uname', '-r'},
-	function(stdout2)
-	  local running = string.sub(stdout2, 1, installed:len()):gsub('-', '.')
-	  if installed == running then
-	    async({'pacman', '--query', '--upgrades'},
-	      function(text, _, _, code)
-		local icon = ''
-		if code == 0 then
-		  icon = pango.color('green', symbols.update2)
-		end
-		set(icon, text)
-		pacman.should_reboot = false
-	    end)
-	  else
-	    set(
-	      pango.color('red', symbols.reboot),
-	      pango('b', 'You should reboot')..'\n'..
-	      pango.color('green', 'installed kernel:\t')..installed..'\n'..
-	      pango.color('red', 'running kernel:\t')..running)
-	    pacman.should_reboot = true
-	  end
-      end)
-  end)
+  async({'pacman', '--query', '--upgrades'},
+    function(text, _, _, code)
+      if code == 0 then
+	set(pango.color('green', symbols.update2), text)
+	pacman.should_reboot = false
+      else
+	awful.spawn.with_line_callback({'needrestart', '-kb'}, {
+	    stdout = function(line)
+	      if string.find(line, '^NEEDRESTART-KCUR: ') ~= nil then
+		pacman.current = string.sub(line, 19)
+	      elseif string.find(line, '^NEEDRESTART-KEXP: ') ~= nil then
+		pacman.expected = string.sub(line, 19)
+	      end
+	    end,
+	    exit = function()
+	      local c, e = pacman.current, pacman.expected
+	      if c ~= nil and e ~= nil and c ~= e then
+		set(
+		  pango.color('red', symbols.reboot),
+		  pango('b', 'You should reboot')..'\n'..
+		  pango.color('green', 'installed kernel:\t')..e..'\n'..
+		  pango.color('red', 'running kernel:\t')..c)
+		pacman.should_reboot = true
+	      end
+	    end})
+      end
+    end)
 end
 
 local function ask(title, text)
