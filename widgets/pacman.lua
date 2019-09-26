@@ -32,14 +32,16 @@ local function update()
 	      end
 	    end,
 	    exit = function()
-	      local c, e = pacman.current, pacman.expected
-	      if c ~= nil and e ~= nil and c ~= e then
+	      local cur, exp = pacman.current, pacman.expected
+	      if cur ~= nil and exp ~= nil and cur ~= exp then
 		set(
 		  pango.color('red', symbols.reboot),
 		  pango('b', 'You should reboot')..'\n'..
-		  pango.color('green', 'installed kernel:\t')..e..'\n'..
-		  pango.color('red', 'running kernel:\t')..c)
+		  pango.color('green', 'installed kernel:\t')..exp..'\n'..
+		  pango.color('red', 'running kernel:\t')..cur)
 		pacman.should_reboot = true
+	      else
+		set("", "")
 	      end
 	    end})
       end
