@@ -64,12 +64,10 @@ pacman:buttons(awful.util.table.join(
 )))
 
 gears.timer{
-  timeout = 30 * 60,
+  timeout = 30 * 60, -- half an hour
   autostart = true,
-  callback = function() update() end,
+  callback = update,
+  call_now = true,
 }
-
--- initialize the widget
-update()
 
 return pacman
