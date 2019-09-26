@@ -58,8 +58,13 @@ awful.rules.rules = {
     -- Set the browser to always map on tags number 1 of screen 1.
     { rule = { class = "Firefox", instance = "Navigator" },
       properties = { tag = '1' } },
-    { rule = { class = "qutebrowser" }, properties = { tag = '1' } },
+    { rule = { class = "qutebrowser" },
+      properties = { --screen = '1',
+		     tag = '1' } },
 
     { rule = { class = "URxvt", instance = "calculator" },
       properties = { floating = true, ontop = true } },
+
+   -- { rule = { class = "Termite", },
+   --   properties = { tag = "2" } },
 }
