@@ -114,10 +114,10 @@ systemd.update = function(widget)
       widget.cache = {}
       if stdout ~= "" then
 	icon = pango.color('red', pango.iconic(symbols.alert2))
-	for i, line in ipairs(string.gmatch(stdout, '[^\n]+')) do
+	for line in string.gmatch(stdout, '[^\n]+') do
 	  local item = string.gsub(line, '^([^ ]+)%.[^. ]+ .*', '%1')
 	  msg = msg .. '\n' .. item
-	  widget.cache[i] = item
+	  table.insert(widget.cache, item)
 	end
 	msg = string.sub(msg, 2)
       end
