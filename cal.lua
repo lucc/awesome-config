@@ -24,6 +24,7 @@
 local string = {format = string.format}
 local os = {date = os.date, time = os.time}
 local awful = require("awful")
+local pango = require("pango")
 
 local run_in_centeral_terminal = require("functions").run_in_centeral_terminal
 
@@ -31,7 +32,7 @@ local cal = {}
 
 local tooltip
 local state = {}
-local current_day_format = "<u>%s</u>"
+local current_day_format = pango.color("red", "%s")
 
 function displayMonth(month,year,weekStart)
 	local t,wkSt=os.time{year=year, month=month+1, day=0},weekStart or 1
