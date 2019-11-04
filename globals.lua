@@ -1,8 +1,6 @@
 -- some global variables
 
 -- This is used later as the default terminal and editor to run.
---awful.util.spawn("urxvtd -q -o -f")
---terminal = "urxvtc"
 terminal = "term"
 editor = os.getenv("EDITOR") or "vim"
 editor_cmd = terminal .. " -e " .. editor
