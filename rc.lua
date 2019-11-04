@@ -9,6 +9,8 @@ local beautiful = require("beautiful")
 -- Notification library
 local naughty = require("naughty")
 local menubar = require("menubar")
+-- declare the global awesome variable for luacheck
+local awesome = awesome  -- luacheck: ignore
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
