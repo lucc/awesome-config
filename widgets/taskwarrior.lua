@@ -7,7 +7,8 @@ local lain = require("lain")
 
 local term = require("functions").run_in_centeral_terminal
 
-local taskicon = '/usr/share/awesome/lib/lain/icons/taskwarrior.png'
+--local taskicon = '/usr/share/awesome/lib/lain/icons/taskwarrior.png'
+local taskicon = os.getenv("HOME")..'/lib/lain/icons/taskwarrior.png' -- nixos
 local taskimg = wibox.widget.imagebox(taskicon)
 lain.widget.contrib.task.attach(taskimg, {
   show_cmd = 'task '..
