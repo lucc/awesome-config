@@ -63,7 +63,7 @@ vicious.register(baticon, vicious.widgets.bat,
     end
     return pango.color(col, pango.iconic(icon)) .. ' '
   end,
-  67, "BAT0")
+  67, "BAT1")
 
 -- wifi info box {{{1
 local mywifitext = wibox.widget.textbox()
@@ -84,9 +84,8 @@ vicious.register(mywifitext, vicious.widgets.wifi,
     end
     return pango.color(color, pango.iconic(symbols.wifi)) .. ' '
   end,
-  --'ssid: ${ssid}, mode: ${mode}, chan: ${chan}, rate: ${rate}, link: ${link}, linp: ${linp}, sign: ${sign}',
   120,
-  "wlp3s0" --"wlan0"
+  "wlp1s0"
   )
 
 -- custom calendar and clock {{{1
