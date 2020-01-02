@@ -5,7 +5,7 @@ local awful = require("awful")
 local naughty = require("naughty")
 local spawn = require("awful.spawn")
 local shell = spawn.easy_async_with_shell
-local json = require("json")
+local json = require("lain.util.dkjson")
 local pango = require("pango")
 local wibox = require("wibox")
 
