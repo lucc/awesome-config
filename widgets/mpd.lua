@@ -2,26 +2,20 @@
 
 local awful = require("awful")
 local naughty = require("naughty")
-local vicious = require("vicious")
-local wibox = require("wibox")
+local lain = require("lain")
 
 local pango = require("pango")
 local symbols = require("symbols")
 local run_in_centeral_terminal = require("functions").run_in_centeral_terminal
 
-local widget = wibox.widget.textbox()
-widget.get_data = vicious.widgets.mpd
-widget.tooltip = awful.tooltip({ objects = { widget } })
-
-local function format_symbol (data)
-  local state = data['{state}']
+local function format_symbol (state)
   local color = 'yellow'
   local icon
-  if state == 'Play' then
+  if state == 'play' then
     icon = symbols.play2
-  elseif state == 'Pause' then
+  elseif state == 'pause' then
     icon = symbols.pause2
-  elseif state == 'Stop' then
+  elseif state == 'stop' then
     color = 'blue'
     icon = symbols.stop2
   else
@@ -31,37 +25,26 @@ local function format_symbol (data)
   return pango.color(color, pango.iconic(icon)) .. ' '
 end
 
-local function format_text (data)
-  return string.format('Artist: %s\nAlbum: %s\nTitle: %s',
-		       data['{Artist}'], data['{Album}'], data['{Title}'])
-end
+local widget = lain.widget.mpd {
+  music_dir = '/media/nas/audio',
+  settings = function ()
+    widget:set_markup(format_symbol(mpd_now.state))
+  end,
+}
 
-widget.toggle = function () awful.spawn("mpc toggle") end
-widget.next = function () awful.spawn("mpc next") end
-widget.previous = function () awful.spawn("mpc prev") end
-widget.stop = function () awful.spawn('mpc stop') end
+widget.toggle = function () awful.spawn("mpc toggle"); widget.update() end
+widget.next = function () awful.spawn("mpc next"); widget.update() end
+widget.previous = function () awful.spawn("mpc prev"); widget.update() end
+widget.stop = function () awful.spawn('mpc stop'); widget.update() end
 widget.tui = function () run_in_centeral_terminal('ncmpcpp') end
 widget.gui = function () awful.spawn('cantata') end
 
-widget.formatter = function (self, args)
-  self.tooltip:set_text(format_text(args))
-  return format_symbol(args)
-end
-
-widget.refresh = function (self)
-  local data = self.get_data()
-  self:set_markup(self.formatter(self, data))
-  --naughty.notify({title = 'MPD', text = self.format_text(data)})
-end
-
-widget:buttons(awful.util.table.join(
-  awful.button({ }, 1, function () widget:toggle(); widget:refresh() end),
+widget.widget:buttons(awful.util.table.join(
+  awful.button({ }, 1, widget.toggle),
   awful.button({ }, 2, widget.tui),
-  awful.button({ }, 3, function () widget:next(); widget:refresh() end)
+  awful.button({ }, 3, widget.next)
   ))
-widget:connect_signal("mouse::enter", function () widget:refresh() end)
-
-vicious.register(widget, widget.get_data, widget.formatter, 101, nil)
+widget.widget:connect_signal("mouse::enter", widget.update)
 
 -- set the default icon size for mpd-notifcation(1)
 naughty.config.defaults.icon_size = 64
