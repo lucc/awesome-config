@@ -8,29 +8,27 @@ local symbols = require("symbols")
 local wibox = require("wibox")
 
 local default_url = 'https://github.com/notifications'
-local user = nil
-local password = nil
+local token = nil
 
-local function curl (url, callback)
-  if password == nil or user == nil then
-    shell([[pass show www/github.com | sed -n '1p;s/^user: //p']],
+local function curl(url, callback)
+  if token == nil then
+    shell('pass show api/awesomewm@api.github.com',
       function(stdout, stderr, exitreason, exitcode)
 	local index = string.find(stdout, '\n')
 	if index ~= nil then
-	  password = string.sub(stdout, 1, index - 1)
-	  user = string.sub(stdout, index + 1, -2)
+	  token = string.sub(stdout, 1, index - 1)
 	end
       end)
   end
-  shell('curl --user '..user..':'..password..' '..url,
-    function (stdout, stderr, exitreason, exitcode)
+  shell('curl --header "Authorization: token '..token..'" '..url,
+    function(stdout, stderr, exitreason, exitcode)
       callback(json.decode(stdout))
     end)
 end
 
 local function update(self)
   curl('https://api.github.com/notifications',
-    function (notifications)
+    function(notifications)
       if notifications ~= nil and #notifications ~= 0 then
 	self:set_markup(pango.color('yellow', pango.iconic(symbols.gtihub)))
 	local lines = {}
@@ -40,7 +38,7 @@ local function update(self)
 	self.tooltip.text = join(lines, '\n')
 	if #notifications == 1 then
 	  curl(notifications[1].subject.latest_comment_url,
-	    function (data)
+	    function(data)
 	      if data ~= nil then
 		self.url = data.html_url
 	      else
@@ -59,8 +57,8 @@ end
 local github = wibox.widget.textbox()
 github.tooltip = awful.tooltip({objects = {github}})
 github.update = update
-github.open = function (self) shell('xdg-open ' .. self.url) end
-github.button1 = function () github:open() github:update() end
+github.open = function() shell('xdg-open ' .. github.url, function() end) end
+github.button1 = function() github:open() github:update() end
 
 gears.timer{
   timeout = 5 * 60,
