@@ -32,6 +32,7 @@ awful.rules.rules = {
 	  "gimp",
 	  "Gpick",
 	  "Kruler",
+	  "lxqt-openssh-askpass",
 	  "MessageWin",  -- kalarm.
 	  "mpv",
 	  "pinentry",
