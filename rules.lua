@@ -16,7 +16,6 @@ awful.rules.rules = {
                      raise = true,
                      keys = clientkeys,
                      buttons = clientbuttons,
-                     --buttons = buttons.client,
                      screen = awful.screen.preferred,
                      placement = awful.placement.no_overlap+awful.placement.no_offscreen
      }
@@ -51,20 +50,8 @@ awful.rules.rules = {
         }
       }, properties = { floating = true }},
 
-    -- Set Firefox to always map on the tag named "2" on screen 1.
-    -- { rule = { class = "Firefox" },
-    --   properties = { screen = 1, tag = "2" } },
-
     -- Set the browser to always map on tags number 1 of screen 1.
-    { rule = { class = "Firefox", instance = "Navigator" },
-      properties = { tag = '1' } },
     { rule = { class = "qutebrowser" },
-      properties = { --screen = '1',
-		     tag = '1' } },
+      properties = { tag = '1' } },
 
-    { rule = { class = "URxvt", instance = "calculator" },
-      properties = { floating = true, ontop = true } },
-
-   -- { rule = { class = "Termite", },
-   --   properties = { tag = "2" } },
 }
