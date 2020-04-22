@@ -54,5 +54,8 @@ awful.rules.rules = {
     -- Set the browser to always map on tags number 1 of screen 1.
     { rule = { class = "qutebrowser" },
       properties = { tag = '1' } },
+    -- put zeal on tag 3
+    { rule = { class = "Zeal" },
+      properties = { tag = '3' } },
 
 }
