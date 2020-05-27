@@ -8,7 +8,7 @@ local wibox = require("wibox")
 local vicious = require("vicious")
 local naughty = require("naughty")
 local pango = require("pango")
-local async = require("awful.spawn").easy_async
+local async = require("awful.spawn").easy_async_with_shell
 
 local github = require("widgets/github")
 local mail = require("widgets/notmuch")
@@ -106,8 +106,8 @@ local systemd = wibox.widget.textbox()
 systemd.cache = {}
 systemd.tooltip = awful.tooltip({ objects = { systemd } })
 systemd.update = function(widget)
-  async({"systemctl", "list-units",
-         "--state=failed", "--plain", "--no-legend"},
+  local args = "list-units --state=failed --plain --no-legend"
+  async("systemctl "..args.."; systemctl --user "..args,
     function (stdout, stderr, reason, _code)
       local msg = ''
       local icon = ''
