@@ -3,24 +3,20 @@
 
 -- required modules {{{1
 local awful = require("awful")
-local gears = require("gears")
 local wibox = require("wibox")
 local vicious = require("vicious")
 local naughty = require("naughty")
 local pango = require("pango")
-local async = require("awful.spawn").easy_async_with_shell
 
 local github = require("widgets/github")
 local mail = require("widgets/notmuch")
 local music = require("widgets/mpd")
+local systemd = require("widgets/systemd")
 local taskwarriror = require("widgets/taskwarrior")
 local updates = require("widgets/pacman")
 local weather = require("widgets/weather")
 
 local symbols = require("symbols")
-local functions = require("functions")
-local terminal = functions.run_in_centeral_terminal
-local join = functions.join
 -- battery {{{1
 
 local baticon = wibox.widget.textbox()
@@ -99,45 +95,6 @@ local mytextclock = wibox.widget.textclock(" %a %b %d, %H:%M:%S " , 1)
 -- Calendar widget to attach to the textclock
 local cal = require('cal')
 cal.register(mytextclock)
-
-
--- systemd failed units
-local systemd = wibox.widget.textbox()
-systemd.cache = {}
-systemd.tooltip = awful.tooltip({ objects = { systemd } })
-systemd.update = function(widget)
-  local args = "list-units --state=failed --plain --no-legend"
-  async("systemctl "..args.."; systemctl --user "..args,
-    function (stdout, stderr, reason, _code)
-      local msg = ''
-      local icon = ''
-      widget.cache = {}
-      if stdout ~= "" then
-	icon = pango.color('red', pango.iconic(symbols.alert2))
-	for line in string.gmatch(stdout, '[^\n]+') do
-	  local item = string.gsub(line, '^([^ ]+)%.[^. ]+ .*', '%1')
-	  msg = msg .. '\n' .. item
-	  table.insert(widget.cache, item)
-	end
-	msg = string.sub(msg, 2)
-      end
-      widget:set_markup(icon)
-      widget.tooltip:set_text(msg)
-    end)
-end
-
-systemd:buttons(awful.util.table.join(
-  awful.button({}, 1, function ()
-    terminal("systemctl " .. join(systemd.cache, " "))
-  end)
-))
-
-gears.timer{
-  timeout = 100,
-  autostart = true,
-  callback = function() systemd:update() end
-}
-systemd:update()
 
 -- spacing between widgets {{{1
 local space = wibox.widget.textbox()
