@@ -12,7 +12,7 @@ local github = require("widgets/github")
 local mail = require("widgets/notmuch")
 local music = require("widgets/mpd")
 local systemd = require("widgets/systemd")
-local taskwarriror = require("widgets/taskwarrior")
+local tasks = require("widgets/taskwarrior")
 local updates = require("widgets/pacman")
 local weather = require("widgets/weather")
 
@@ -109,7 +109,7 @@ return {
   music = music,
   space = space,
   systemd = systemd,
-  taskwarriror = taskwarriror,
+  tasks = tasks,
   updates = updates,
   weather = weather,
   wifi = mywifitext,

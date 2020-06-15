@@ -180,7 +180,7 @@ awful.screen.connect_for_each_screen(function(s)
 	    widgets.space,
 	    widgets.battery,
 	    --widgets.battery_graph,
-	    widgets.taskwarriror,
+	    widgets.tasks,
 	    widgets.wifi,
             wibox.widget.systray(),
 	    widgets.weather,

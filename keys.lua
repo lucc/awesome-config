@@ -27,7 +27,7 @@ local globalkeys = awful.util.table.join(
               {description = "view previous", group = "tag"}),
     awful.key({                   }, "XF86Forward",  awful.tag.viewnext,
               {description = "view next", group = "tag"}),
-    awful.key({ modkey,           }, "F2", widgets.taskwarriror.show,
+    awful.key({ modkey,           }, "F2", widgets.tasks.show,
 	      {description = "show current tasks (taskwarrior)", group = "utils"}),
 
     awful.key({ modkey,           }, "j",
