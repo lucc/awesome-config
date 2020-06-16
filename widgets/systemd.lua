@@ -9,6 +9,7 @@ local functions = require("functions")
 local join = functions.join
 local terminal = functions.run_in_centeral_terminal
 local pango = require("pango")
+local symbols = require("symbols")
 
 local systemd = wibox.widget.textbox()
 systemd.cache = {}
