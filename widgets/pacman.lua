@@ -16,7 +16,7 @@ local function set(icon, tooltip)
   pacman:set_markup(pango.iconic(icon))
 end
 
-local function update()
+function pacman.update()
   async({'pacman', '--query', '--upgrades'},
     function(text, _, _, code)
       if code == 0 then
@@ -25,13 +25,13 @@ local function update()
       else
 	awful.spawn.with_line_callback({'needrestart', '-kb'}, {
 	    stdout = function(line)
-	      if string.find(line, '^NEEDRESTART-KCUR: ') ~= nil then
-		pacman.current = string.sub(line, 19)
-	      elseif string.find(line, '^NEEDRESTART-KEXP: ') ~= nil then
-		pacman.expected = string.sub(line, 19)
+	      if line:find('NEEDRESTART-KCUR: ', 1, true) ~= nil then
+		pacman.current = line:sub(19)
+	      elseif line:find('NEEDRESTART-KEXP: ', 1, true) ~= nil then
+		pacman.expected = line:sub(19)
 	      end
 	    end,
-	    exit = function()
+	    output_done = function()
 	      local cur, exp = pacman.current, pacman.expected
 	      if cur ~= nil and exp ~= nil and cur ~= exp then
 		set(
