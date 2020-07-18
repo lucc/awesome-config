@@ -87,7 +87,38 @@ vicious.register(mywifitext, vicious.widgets.wifi,
   "wlp3s0" --"wlan0"
   )
 
--- custom calendar and clock {{{1
+-- filesystem info
+local disk = wibox.widget.textbox()
+disk.tooltip = awful.tooltip{objects = {disk}}
+vicious.register(disk, vicious.widgets.fs,
+  function (widget, args)
+    local interesting_filesystems = {"/", "/home"}
+    local percent = 100
+    for i, fs in pairs(interesting_filesystems) do
+      local p = args["{"..fs.." avail_p}"]
+      if p ~= nil and p < percent then percent = p end
+    end
+    local color = ""
+    if percent < 3 then color = "red"
+    elseif percent < 5 then color = "yellow"
+    elseif percent < 8 then color = "green"
+    end
+    if color ~= "" then
+      local tooltip = "Free disk space"
+      for i, fs in pairs(interesting_filesystems) do
+	local p = args["{"..fs.." avail_p}"]
+	if p ~= nil then
+	  tooltip = tooltip .. "\n" .. fs .. "\t"
+	  ..  args["{"..fs.." avail_gb}"] .. "GB free (" .. p .. "%)"
+	end
+      end
+      widget.tooltip:set_markup(tooltip)
+      return pango.color(color, pango.iconic(symbols.disk2))
+    end
+    return ""
+  end)
+
+-- custom calendar and clock
 -- Create a textclock widget
 local mytextclock = wibox.widget.textclock(" %a %b %d, %H:%M:%S " , 1)
 -- Calendar widget to attach to the textclock
@@ -102,6 +133,7 @@ space:set_text(" ")
 return {
   battery = baticon,
   clock = mytextclock,
+  disk = disk,
   github = github,
   mail = mail,
   music = music,
