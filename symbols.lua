@@ -62,7 +62,11 @@ return {
   update2    = "",
   reboot     = "",
 
-  gtihub = "", -- alternative 
+  github = "", -- alternative 
+
+  disk1 = "",
+  disk2 = "",
+  disk3 = "",
 
   emptystring = '' -- to make it easier to sort the above
 }
