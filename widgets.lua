@@ -1,7 +1,6 @@
--- widgets for the bar {{{1
--- vim: foldmethod=marker
+-- widgets for the bar
 
--- required modules {{{1
+-- required modules
 local awful = require("awful")
 local wibox = require("wibox")
 local vicious = require("vicious")
@@ -17,11 +16,10 @@ local updates = require("widgets/pacman")
 local weather = require("widgets/weather")
 
 local symbols = require("symbols")
--- battery {{{1
 
+-- battery
 local baticon = wibox.widget.textbox()
 local textbat_tooltip = awful.tooltip({ objects = { baticon } })
-
 vicious.register(baticon, vicious.widgets.bat,
   function (widget, args)
     local icon = symbols.battery0
@@ -65,7 +63,7 @@ vicious.register(baticon, vicious.widgets.bat,
   end,
   67, "BAT1")
 
--- wifi info box {{{1
+-- wifi info box
 local mywifitext = wibox.widget.textbox()
 local wifi_widget_tooltip = awful.tooltip({ objects = {mywifitext},})
 vicious.register(mywifitext, vicious.widgets.wifi,
@@ -95,7 +93,7 @@ local mytextclock = wibox.widget.textclock(" %a %b %d, %H:%M:%S " , 1)
 local cal = require('cal')
 cal.register(mytextclock)
 
--- spacing between widgets {{{1
+-- spacing between widgets
 local space = wibox.widget.textbox()
 space:set_text(" ")
 
