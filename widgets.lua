@@ -98,9 +98,9 @@ vicious.register(disk, vicious.widgets.fs,
       if p ~= nil and p < percent then percent = p end
     end
     local color = ""
-    if percent < 3 then color = "red"
-    elseif percent < 5 then color = "yellow"
-    elseif percent < 8 then color = "green"
+    if percent < 1 then color = "red"
+    elseif percent < 2 then color = "yellow"
+    elseif percent < 5 then color = "green"
     end
     if color ~= "" then
       local tooltip = "Free disk space"
@@ -115,7 +115,7 @@ vicious.register(disk, vicious.widgets.fs,
       return pango.color(color, pango.iconic(symbols.disk2))
     end
     return ""
-  end)
+  end, 307)
 
 -- custom calendar and clock
 -- Create a textclock widget
