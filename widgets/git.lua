@@ -56,8 +56,12 @@ local function update_icon(self)
 end
 
 local function update_tooltip(self)
+  local paths = {}
+  for path, _ in pairs(self.paths) do table.insert(paths, path) end
+  table.sort(paths)
   local text = ""
-  for path, data in pairs(self.paths) do
+  for _, path in ipairs(paths) do
+    local data = self.paths[path]
     local parts = {}
     if data.changed then
       if data.changed.ok and data.changed.data ~= "" then
@@ -108,6 +112,7 @@ git.update_icon = update_icon
 git.update_tooltip = update_tooltip
 
 git:register(
+  {path = "/etc/nixos"},
   {path = "/home/luc/.config", untracked = false},
   {path = "/home/luc/.config/awesome"},
   {path = "/home/luc/.config/nvim"},
