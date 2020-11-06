@@ -173,6 +173,7 @@ awful.screen.connect_for_each_screen(function(s)
 	    widgets.disk,
 	    widgets.space,
 	    widgets.github,
+	    widgets.git,
 	    widgets.space,
 	    widgets.systemd,
 	    widgets.space,
