@@ -20,13 +20,6 @@ local function update(self)
       function(stdout, stderr, exitreason, exitcode)
 	data.untracked_ok = exitreason == "exit" and exitcode == 0
 	data.untracked = select(2, stdout:gsub("\n", ""))
-	if not data.untracked_ok or not data.changed_ok then
-	  self:set_markup(err)
-	elseif data.untracked == "" and data.changed == "" then
-	  self:set_markup(dirty)
-	else
-	  self:set_markup("")
-	end
       end)
     spawn({"git", "-C", path, "diff", "--stat"},
       function(stdout, stderr, exitreason, exitcode)
