@@ -16,15 +16,25 @@ local err = pango.iconic(pango.color("red", symbols.alert2))
 
 local function update(self)
   for path, data in pairs(self.paths) do
-    spawn({"git", "-C", path, "ls-files", "--others", "--exclude-standard"},
-      function(stdout, stderr, exitreason, exitcode)
-	data.untracked_ok = exitreason == "exit" and exitcode == 0
-	data.untracked = select(2, stdout:gsub("\n", ""))
-      end)
+    if data.untracked then
+      spawn({"git", "-C", path, "ls-files", "--others", "--exclude-standard"},
+	function(stdout, stderr, exitreason, exitcode)
+	  data.untracked.ok = exitreason == "exit" and exitcode == 0
+	  if data.untracked.ok then
+	    data.untracked.count = select(2, stdout:gsub("\n", ""))
+	  else
+	    data.untracked.data = stderr
+	  end
+	end)
+    end
     spawn({"git", "-C", path, "diff", "--stat"},
       function(stdout, stderr, exitreason, exitcode)
-	data.changed_ok = exitreason == "exit" and exitcode == 0
-	data.changed = stdout
+	data.changed.ok = exitreason == "exit" and exitcode == 0
+	if data.changed.ok then
+	  data.changed.data = stdout
+	else
+	  data.changed.data = stderr
+	end
       end)
     spawn({"sleep", "2"}, function() self:update_icon() end)
   end
@@ -33,10 +43,12 @@ end
 local function update_icon(self)
   local text = ""
   for path, data in pairs(self.paths) do
-    if not data.untracked_ok or not data.changed_ok then
+    if (data.untracked and not data.untracked.ok)
+    or (data.changed and not data.changed.ok) then
       self:set_markup(err)
       return
-    elseif data.untracked ~= 0 or data.changed ~= "" then
+    elseif (data.untracked and data.untracked.count ~= 0)
+	or (data.changed and data.changed.data ~= "") then
       text = dirty
     end
   end
@@ -46,26 +58,42 @@ end
 local function update_tooltip(self)
   local text = ""
   for path, data in pairs(self.paths) do
-    if (data.changed ~= nil and data.changed ~= "") or
-       (data.untracked ~= nil and data.untracked ~= 0) then
-      text = text .. "\n" .. pango.color("blue", path)
-      if data.changed ~= nil then
-	text = text .. "\n" .. data.changed
+    local parts = {}
+    if data.changed then
+      if data.changed.ok and data.changed.data ~= "" then
+	table.insert(parts, data.changed.data:sub(1,-2))
+      elseif not data.changed.ok then
+	table.insert(parts, pango.color("red", data.changed.data))
       end
-      if data.untracked ~= nil and data.untracked ~= 0 then
-	text = text .. " " .. pango.color("yellow", data.untracked .. " untracked files")
-      end
-      text = text .. "\n"
     end
+    if data.untracked then
+      if data.untracked.ok and data.untracked.count > 0 then
+	table.insert(parts, pango.color("yellow", data.untracked.count ..
+					" untracked files"))
+      elseif not data.untracked.ok then
+	table.insert(parts, pango.color("red", data.untracked.data))
+      end
+    end
+    if #parts > 0 then
+      table.insert(parts, 1, pango.color("blue", path))
+      table.insert(parts, "")
+      text = text .. "\n" .. table.concat(parts, "\n")
+    end
+    data.parts =  parts
+    data.formatted = table.concat(parts, "\n")
   end
   text = text:sub(2)
-  self.tooltip.markup = string.format('<span font_desc="monospace">%s</span>', text)
+  self.tooltip.markup = string.format('<span font_desc="monospace">%s</span>',
+				      text)
 end
 
 -- Register some paths to watch in the widget
 local function register(self, ...)
   for i = 1, select('#', ...) do
-    self.paths[select(i, ...).path] = select(i, ...)
+    local item = select(i, ...)
+    if item.untracked == nil then item.untracked = {} end
+    if item.changed == nil then item.changed = {} end
+    self.paths[item.path] = item
   end
 end
 
@@ -80,20 +108,22 @@ git.update_icon = update_icon
 git.update_tooltip = update_tooltip
 
 git:register(
+  {path = "/home/luc/.config", untracked = false},
+  {path = "/home/luc/.config/awesome"},
+  {path = "/home/luc/.config/nvim"},
   {path = "/home/luc/.config/pass"},
   {path = "/home/luc/.config/zsh"},
-  {path = "/home/luc/.config/nvim"},
-  {path = "/home/luc/.config/awesome"},
-  {path = "/home/luc/.config"},
+  {path = "/home/luc/src/khard"},
+  {path = "/home/luc/src/nvimpager"},
+  {path = "/home/luc/src/sys"},
   {path = "/home/luc/uni/master"},
-  {path = "/home/luc/uni/master/ulang"},
-  {path = "/home/luc/src/sys"}
+  {path = "/home/luc/uni/master/ulang"}
 )
 
 gears.timer{
   timeout = 500,
   autostart = true,
-  callback = function() git:update_data() end,
+  callback = function() git:update() end,
 }
 git:connect_signal("mouse::enter", function()
   git:update_icon()
