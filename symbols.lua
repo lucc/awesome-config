@@ -64,6 +64,9 @@ return {
 
   github = "", -- alternative 
 
+  git1 = "",
+  git2 = "",
+
   disk1 = "",
   disk2 = "",
   disk3 = "",

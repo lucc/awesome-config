@@ -8,6 +8,7 @@ local naughty = require("naughty")
 local pango = require("pango")
 
 local github = require("widgets/github")
+local git = require("widgets/git")
 local mail = require("widgets/notmuch")
 local music = require("widgets/mpd")
 local systemd = require("widgets/systemd")
@@ -134,6 +135,7 @@ return {
   clock = mytextclock,
   disk = disk,
   github = github,
+  git = git,
   mail = mail,
   music = music,
   space = space,
