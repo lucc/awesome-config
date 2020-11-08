@@ -24,7 +24,8 @@ pango.font = function (font, text)
   return markup('span font="' ..font.. '"', text)
 end
 pango.iconic = function (text)
-  return pango.font('DejaVuSans Nerd Font 18', text)
+  return markup('span font_desc="monospace"',
+    pango.font('DejaVuSansMono Nerd Font 9', text).." ")
 end
 
 return setmetatable(pango, { __call = function(_, ...) return markup(...) end })
