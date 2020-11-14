@@ -120,7 +120,7 @@ vicious.register(disk, vicious.widgets.fs,
 
 -- custom calendar and clock
 -- Create a textclock widget
-local mytextclock = wibox.widget.textclock(" %a %b %d, %H:%M:%S " , 1)
+local mytextclock = wibox.widget.textclock(" %a %b %d, %H:%M:%S ", 1)
 -- Calendar widget to attach to the textclock
 local cal = require('cal')
 cal.register(mytextclock)
