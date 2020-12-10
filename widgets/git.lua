@@ -14,28 +14,31 @@ local symbols = require("symbols")
 local dirty = pango.iconic(pango.color("yellow", symbols.git1))
 local err = pango.iconic(pango.color("red", symbols.alert2))
 
+-- Create a closure to use in spawn() and save output to a destination table.
+local function save_output(destination, filter)
+  return function(stdout, stderr, exitreason, exitcode)
+    destination.ok = exitreason == "exit" and exitcode == 0
+    if destination.ok then
+      destination.data = (filter and filter(stdout)) or stdout
+    else
+      destination.data = stderr
+    end
+  end
+end
+
 local function update(self)
   for path, data in pairs(self.paths) do
     if data.untracked then
       spawn({"git", "-C", path, "ls-files", "--others", "--exclude-standard"},
-	function(stdout, stderr, exitreason, exitcode)
-	  data.untracked.ok = exitreason == "exit" and exitcode == 0
-	  if data.untracked.ok then
-	    data.untracked.count = select(2, stdout:gsub("\n", ""))
-	  else
-	    data.untracked.data = stderr
-	  end
-	end)
+	save_output(data.untracked, function (stdout)
+	  return select(2, stdout:gsub("\n", ""))
+	end))
     end
-    spawn({"git", "-C", path, "diff", "--stat"},
-      function(stdout, stderr, exitreason, exitcode)
-	data.changed.ok = exitreason == "exit" and exitcode == 0
-	if data.changed.ok then
-	  data.changed.data = stdout
-	else
-	  data.changed.data = stderr
-	end
-      end)
+    spawn({"git", "-C", path, "branch", "--show-current"},
+      save_output(data.branch, function(stdout)
+	return stdout:gsub("%s+", "")
+      end))
+    spawn({"git", "-C", path, "diff", "--stat"}, save_output(data.changed))
     spawn({"sleep", "2"}, function() self:update_icon() end)
   end
 end
@@ -47,7 +50,7 @@ local function update_icon(self)
     or (data.changed and not data.changed.ok) then
       self:set_markup(err)
       return
-    elseif (data.untracked and data.untracked.count ~= 0)
+    elseif (data.untracked and data.untracked.data ~= 0)
 	or (data.changed and data.changed.data ~= "") then
       text = dirty
     end
@@ -71,19 +74,19 @@ local function update_tooltip(self)
       end
     end
     if data.untracked then
-      if data.untracked.ok and data.untracked.count > 0 then
-	table.insert(parts, pango.color("yellow", data.untracked.count ..
+      if data.untracked.ok and data.untracked.data > 0 then
+	table.insert(parts, pango.color("yellow", data.untracked.data ..
 					" untracked files"))
       elseif not data.untracked.ok then
 	table.insert(parts, pango.color("red", data.untracked.data))
       end
     end
     if #parts > 0 then
-      table.insert(parts, 1, pango.color("blue", path))
+      table.insert(parts, 1, pango.color("blue", path) .. " @ " .. pango.color("green", data.branch.data))
       table.insert(parts, "")
       text = text .. "\n" .. table.concat(parts, "\n")
     end
-    data.parts =  parts
+    data.parts = parts
     data.formatted = table.concat(parts, "\n")
   end
   text = text:sub(2)
@@ -97,6 +100,7 @@ local function register(self, ...)
     local item = select(i, ...)
     if item.untracked == nil then item.untracked = {} end
     if item.changed == nil then item.changed = {} end
+    if item.branch == nil then item.branch = {} end
     self.paths[item.path] = item
   end
 end
