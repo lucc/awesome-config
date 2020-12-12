@@ -171,6 +171,10 @@ local globalkeys = awful.util.table.join(
 	      --function () awful.screen.focused().mypromptbox:run() end,
 	      function () awful.spawn('rofi -show combi') end,
               {description = "run prompt", group = "launcher"}),
+    awful.key({ }, "KP_Insert",
+	      --function () awful.screen.focused().mypromptbox:run() end,
+	      function () awful.spawn('rofi -show combi') end,
+              {description = "run prompt", group = "launcher"}),
     --awful.key({modkey}, "c", function () run_in_centeral_terminal('bc') end, 'open calculator'),
     awful.key({ modkey }, "d",
 	      function ()
