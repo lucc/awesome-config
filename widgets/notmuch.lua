@@ -11,6 +11,7 @@ local wibox = require("wibox")
 
 local symbols = require("symbols")
 local terminal = require("functions").run_in_centeral_terminal
+local texticon = require("widgets/texticon")
 
 local function format_summary (summary)
   local str = pango('b', pango.color('green', 'Summary of new mail:'))
@@ -77,8 +78,7 @@ end
 
 -- Define the widget that will hold the info about new mail (summary in
 -- tooltip) and all related data.
-local notmuch = wibox.widget.textbox()
-notmuch.tooltip = awful.tooltip({objects = {notmuch}})
+local notmuch = texticon()
 
 -- The default query will be used if no other query is given.
 notmuch.default_query =

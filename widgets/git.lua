@@ -10,6 +10,7 @@ local naughty = require("naughty")
 
 local pango = require("pango")
 local symbols = require("symbols")
+local texticon = require("widgets/texticon")
 
 local dirty = pango.iconic(pango.color("yellow", symbols.git1))
 local err = pango.iconic(pango.color("red", symbols.alert2))
@@ -105,8 +106,7 @@ local function register(self, ...)
   end
 end
 
-local git = wibox.widget.textbox()
-git.tooltip = awful.tooltip({objects = {git}})
+local git = texticon()
 
 -- the paths to watch
 git.paths = {}
