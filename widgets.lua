@@ -13,14 +13,14 @@ local mail = require("widgets/notmuch")
 local music = require("widgets/mpd")
 local systemd = require("widgets/systemd")
 local tasks = require("widgets/taskwarrior")
+local texticon = require("widgets/texticon")
 local updates = require("widgets/pacman")
 local weather = require("widgets/weather")
 
 local symbols = require("symbols")
 
 -- battery
-local baticon = wibox.widget.textbox()
-local textbat_tooltip = awful.tooltip({ objects = { baticon } })
+local baticon = texticon()
 vicious.register(baticon, vicious.widgets.bat,
   function (widget, args)
     local icon = symbols.battery0
@@ -43,7 +43,7 @@ vicious.register(baticon, vicious.widgets.bat,
     --"<span color='green'>power@$2%=$3</span>"
     local time = args[3]
     local rate = args[5] == 'N/A' and 'N/A' or (args[5]..'W')
-    textbat_tooltip:set_text(
+    baticon.tooltip:set_text(
       string.format('Connected: %s\nLevel: %s%%\nTime: %s\nRate: %s',
 		    args[1], percent, time, rate))
     if args[1] == '-' and (percent < 10 or
@@ -65,21 +65,20 @@ vicious.register(baticon, vicious.widgets.bat,
   67, "BAT1")
 
 -- wifi info box
-local mywifitext = wibox.widget.textbox()
-local wifi_widget_tooltip = awful.tooltip({ objects = {mywifitext},})
+local mywifitext = texticon()
 vicious.register(mywifitext, vicious.widgets.wifi,
   function (widget, args)
     local color = 'red'
     local ssid = args['{ssid}']
     if ssid == 'N/A' then
-      wifi_widget_tooltip:set_text('\n Not connected! \n')
+      mywifitext.tooltip:set_text('\n Not connected! \n')
     else
       if args['{linp}'] >= 50 then
 	color = 'green'
       else
 	color = 'yellow'
       end
-      wifi_widget_tooltip:set_text(ssid)
+      mywifitext.tooltip:set_text(ssid)
     end
     return pango.color(color, pango.iconic(symbols.wifi)) .. ' '
   end,
@@ -88,8 +87,7 @@ vicious.register(mywifitext, vicious.widgets.wifi,
   )
 
 -- filesystem info
-local disk = wibox.widget.textbox()
-disk.tooltip = awful.tooltip{objects = {disk}}
+local disk = texticon()
 vicious.register(disk, vicious.widgets.fs,
   function (widget, args)
     local interesting_filesystems = {"/", "/home"}
