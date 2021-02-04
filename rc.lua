@@ -136,12 +136,16 @@ widgets.git:register(
   {path = "/home/luc/.config/nvim"},
   {path = "/home/luc/.config/pass"},
   {path = "/home/luc/.config/zsh"},
-  {path = "/home/luc/.config/alot", commits = false},
-  {path = "/home/luc/src/alot"},
-  {path = "/home/luc/src/khard"},
-  {path = "/home/luc/src/nvimpager"},
-  {path = "/home/luc/src/shell"},
-  {path = "/home/luc/src/sys"}
+  {path = "/home/luc/dev.vm/api"},
+  {path = "/home/luc/dev.vm/elternportal"},
+  {path = "/home/luc/dev.vm/infoportal"},
+  {path = "/home/luc/dev.vm/infoscreen"},
+  {path = "/home/luc/dev.vm/jitsi-meet"},
+  {path = "/home/luc/dev.vm/kfv-portal"},
+  {path = "/home/luc/dev.vm/polite"},
+  {path = "/home/luc/dev.vm/xxs"},
+  {path = "/home/luc/prod-infra"},
+  {path = "/home/luc/vm-infra"}
 )
 
 awful.screen.connect_for_each_screen(function(s)
