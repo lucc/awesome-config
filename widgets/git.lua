@@ -112,17 +112,21 @@ git.update_icon = update_icon
 git.update_tooltip = update_tooltip
 
 git:register(
-  {path = "/etc/nixos"},
   {path = "/home/luc/.config", untracked = false},
   {path = "/home/luc/.config/awesome"},
   {path = "/home/luc/.config/nvim"},
   {path = "/home/luc/.config/pass"},
   {path = "/home/luc/.config/zsh"},
-  {path = "/home/luc/src/khard"},
-  {path = "/home/luc/src/nvimpager"},
-  {path = "/home/luc/src/sys"},
-  {path = "/home/luc/uni/master"},
-  {path = "/home/luc/uni/master/ulang"}
+  {path = "/home/luc/dev.vm/api"},
+  {path = "/home/luc/dev.vm/elternportal"},
+  {path = "/home/luc/dev.vm/infoportal"},
+  {path = "/home/luc/dev.vm/infoscreen"},
+  {path = "/home/luc/dev.vm/jitsi-meet"},
+  {path = "/home/luc/dev.vm/kfv-portal"},
+  {path = "/home/luc/dev.vm/polite"},
+  {path = "/home/luc/dev.vm/xxs"},
+  {path = "/home/luc/prod-infra"},
+  {path = "/home/luc/vm-infra"}
 )
 
 gears.timer{
