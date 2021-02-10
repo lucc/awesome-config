@@ -21,8 +21,8 @@ local function format_summary (summary)
     if #authors >= 100 then
       authors = string.sub(authors, 1, 99) .. '…'
     end
-    str = str..'\n'..pango.color('blue', authors)..':\t'..pango.color(
-      'red', entry['subject'])
+    str = str..'\n'..pango.color('blue', pango.escape(authors))..':\t'..pango.color(
+      'red', pango.escape(entry['subject']))
   end
   return str
 end
