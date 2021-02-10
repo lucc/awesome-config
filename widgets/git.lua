@@ -122,6 +122,7 @@ git:register(
   {path = "/home/luc/.config/nvim"},
   {path = "/home/luc/.config/pass"},
   {path = "/home/luc/.config/zsh"},
+  {path = "/home/luc/.config/alot"},
   {path = "/home/luc/src/khard"},
   {path = "/home/luc/src/nvimpager"},
   {path = "/home/luc/src/sys"},
