@@ -13,6 +13,17 @@ local markup = function (tag, text)
   return '<' .. tag .. '>' .. text .. '</' .. first .. '>'
 end
 
+function pango.escape(text)
+  local replacements = {
+    ["&"] = "&amp;",
+    ["<"] = "&lt;",
+    [">"] = "&gt;",
+    ["\""] = "&quot;",
+    ["'"] = "&apos;",
+  }
+  return string.gsub(text, "[&<>'\"]", replacements)
+end
+
 pango.color = function (col, text)
   if theme.colors[col] then
     col = theme.colors[col]
