@@ -130,6 +130,20 @@ end
 -- Re-set wallpaper when a screen's geometry changes (e.g. different resolution)
 screen.connect_signal("property::geometry", set_wallpaper)
 
+widgets.git:register(
+  {path = "/home/luc/.config", untracked = false},
+  {path = "/home/luc/.config/awesome"},
+  {path = "/home/luc/.config/nvim"},
+  {path = "/home/luc/.config/pass"},
+  {path = "/home/luc/.config/zsh"},
+  {path = "/home/luc/.config/alot", commits = false},
+  {path = "/home/luc/src/khard"},
+  {path = "/home/luc/src/nixos"},
+  {path = "/home/luc/src/nvimpager"},
+  {path = "/home/luc/src/sys"},
+  {path = "/home/luc/uni/master"},
+  {path = "/home/luc/uni/master/ulang"}
+)
 
 awful.screen.connect_for_each_screen(function(s)
     -- Wallpaper
