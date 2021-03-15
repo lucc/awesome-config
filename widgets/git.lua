@@ -1,10 +1,7 @@
 -- Watch some local  git repositories for changed or untraced files to report
 -- them in a widget.
-local awful = require("awful")
-local shell = require("awful.spawn").easy_async_with_shell
 local spawn = require("awful.spawn").easy_async
 local gears = require("gears")
-local wibox = require("wibox")
 
 local naughty = require("naughty")
 
@@ -40,6 +37,10 @@ local function update(self)
 	return stdout:gsub("%s+", "")
       end))
     spawn({"git", "-C", path, "diff", "--stat"}, save_output(data.changed))
+    if data.commits then
+      spawn({"git", "-C", path, "rev-list", "--right-only", "--count",
+	"@{upstream}...HEAD"}, save_output(data.commits, tonumber))
+    end
     spawn({"sleep", "2"}, function() self:update_icon() end)
   end
 end
@@ -82,6 +83,14 @@ local function update_tooltip(self)
 	table.insert(parts, pango.color("red", data.untracked.data))
       end
     end
+    if data.commits then
+      if data.commits.ok and data.commits.data > 0 then
+	table.insert(parts, pango.color("yellow", data.commits.data ..
+					" unpused commits"))
+      elseif not data.commits.ok then
+	table.insert(parts, pango.color("red", data.commits.data))
+      end
+    end
     if #parts > 0 then
       table.insert(parts, 1, pango.color("blue", path) .. " @ " .. pango.color("green", data.branch.data))
       table.insert(parts, "")
@@ -102,6 +111,7 @@ local function register(self, ...)
     if item.untracked == nil then item.untracked = {} end
     if item.changed == nil then item.changed = {} end
     if item.branch == nil then item.branch = {} end
+    if item.commits == nil then item.commits = {} end
     self.paths[item.path] = item
   end
 end
@@ -114,21 +124,6 @@ git.register = register
 git.update = update
 git.update_icon = update_icon
 git.update_tooltip = update_tooltip
-
-git:register(
-  {path = "/etc/nixos"},
-  {path = "/home/luc/.config", untracked = false},
-  {path = "/home/luc/.config/awesome"},
-  {path = "/home/luc/.config/nvim"},
-  {path = "/home/luc/.config/pass"},
-  {path = "/home/luc/.config/zsh"},
-  {path = "/home/luc/.config/alot"},
-  {path = "/home/luc/src/khard"},
-  {path = "/home/luc/src/nvimpager"},
-  {path = "/home/luc/src/sys"},
-  {path = "/home/luc/uni/master"},
-  {path = "/home/luc/uni/master/ulang"}
-)
 
 gears.timer{
   timeout = 500,
