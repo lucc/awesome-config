@@ -26,20 +26,20 @@ end
 
 local function update(self)
   for path, data in pairs(self.paths) do
-    if data.untracked then
-      spawn({"git", "-C", path, "ls-files", "--others", "--exclude-standard"},
-	save_output(data.untracked, function (stdout)
-	  return select(2, stdout:gsub("\n", ""))
-	end))
+    local function git(args, destination, filter)
+      spawn({"git", "-C", path, table.unpack(args)},
+	save_output(destination, filter))
     end
-    spawn({"git", "-C", path, "branch", "--show-current"},
-      save_output(data.branch, function(stdout)
-	return stdout:gsub("%s+", "")
-      end))
-    spawn({"git", "-C", path, "diff", "--stat"}, save_output(data.changed))
+    if data.untracked then
+      git({"ls-files", "--others", "--exclude-standard"}, data.untracked,
+	function (stdout) return select(2, stdout:gsub("\n", "")) end)
+    end
+    git({"branch", "--show-current"},data.branch,
+      function(stdout) return stdout:gsub("%s+", "") end)
+    git({"diff", "--stat"}, data.changed)
     if data.commits then
-      spawn({"git", "-C", path, "rev-list", "--right-only", "--count",
-	"@{upstream}...HEAD"}, save_output(data.commits, tonumber))
+      git({"rev-list", "--right-only", "--count", "@{upstream}...HEAD"},
+	data.commits, tonumber)
     end
     spawn({"sleep", "2"}, function() self:update_icon() end)
   end
@@ -92,7 +92,8 @@ local function update_tooltip(self)
       end
     end
     if #parts > 0 then
-      table.insert(parts, 1, pango.color("blue", path) .. " @ " .. pango.color("green", data.branch.data))
+      table.insert(parts, 1, pango.color("blue", path) .. " @ " ..
+			     pango.color("green", data.branch.data))
       table.insert(parts, "")
       text = text .. "\n" .. table.concat(parts, "\n")
     end
