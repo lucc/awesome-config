@@ -4,20 +4,8 @@ local beautiful = require("beautiful") -- Theme handling library
 local getdir = require("awful").util.getdir
 local gears = require("gears")
 
-local theme = os.getenv("theme") or "solarized"
-local tone = os.getenv("tone") or "dark"
-
--- Themes define colours, icons, font and wallpapers.
-if theme == "solarized" then
-  beautiful.init(getdir("config") .. "/themes/awesome-solarized/" .. tone .. "/theme.lua")
-  beautiful.border_width = 1
-  --beautiful.border_normal = beautiful.colors.base01
-elseif theme == "zenburn" then
-  beautiful.init("/usr/share/awesome/themes/zenburn/theme.lua")
-else
-  --beautiful.init("/usr/share/awesome/themes/sky/theme.lua")
-  beautiful.init("/usr/share/awesome/themes/default/theme.lua")
-end
+beautiful.init(gears.filesystem.get_xdg_config_home() .. "awesome/themes/awesome-solarized/dark/theme.lua")
+beautiful.border_width = 1
 
 -- Wallpaper {{{1
 if beautiful.wallpaper then
@@ -25,6 +13,3 @@ if beautiful.wallpaper then
         gears.wallpaper.maximized(beautiful.wallpaper, s, true)
     end
 end
-
---package.path = package.path .. ';/usr/lib/python3.4/site-packages/powerline/bindings/awesome/?.lua'
---require('powerline')
