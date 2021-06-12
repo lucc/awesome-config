@@ -170,6 +170,9 @@ local globalkeys = awful.util.table.join(
     awful.key({ }, "Print",
 	      function () awful.spawn('rofi -show combi') end,
               {description = "run prompt", group = "launcher"}),
+    awful.key({ "Control" }, "Print",
+	      function () awful.spawn(terminal) end,
+              {description = "open a terminal", group = "launcher"}),
     --awful.key({modkey}, "c", function () run_in_centeral_terminal('bc') end, 'open calculator'),
     awful.key({ modkey }, "d",
 	      function ()
