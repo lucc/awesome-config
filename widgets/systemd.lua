@@ -7,7 +7,7 @@ local wibox = require("wibox")
 
 local functions = require("functions")
 local join = functions.join
-local terminal = functions.run_in_centeral_terminal
+local terminal = functions.run_in_central_terminal
 local pango = require("pango")
 local symbols = require("symbols")
 

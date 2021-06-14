@@ -6,7 +6,7 @@ local lain = require("lain")
 
 local pango = require("pango")
 local symbols = require("symbols")
-local run_in_centeral_terminal = require("functions").run_in_centeral_terminal
+local run_in_central_terminal = require("functions").run_in_central_terminal
 
 local function format_symbol (state)
   local color = 'yellow'
@@ -36,7 +36,7 @@ widget.toggle = function () awful.spawn("mpc toggle"); widget.update() end
 widget.next = function () awful.spawn("mpc next"); widget.update() end
 widget.previous = function () awful.spawn("mpc prev"); widget.update() end
 widget.stop = function () awful.spawn('mpc stop'); widget.update() end
-widget.tui = function () run_in_centeral_terminal('ncmpcpp') end
+widget.tui = function () run_in_central_terminal('ncmpcpp') end
 widget.gui = function () awful.spawn('cantata') end
 
 widget.widget:buttons(awful.util.table.join(

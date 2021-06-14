@@ -36,6 +36,6 @@ local function join(array, glue)
 end
 
 return {
-  run_in_centeral_terminal = floating_terminal,
-  join = join
+  join = join,
+  run_in_central_terminal = floating_terminal,
 }

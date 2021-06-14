@@ -26,7 +26,7 @@ local os = {date = os.date, time = os.time}
 local awful = require("awful")
 local pango = require("pango")
 
-local run_in_centeral_terminal = require("functions").run_in_centeral_terminal
+local run_in_central_terminal = require("functions").run_in_central_terminal
 
 local cal = {}
 
@@ -128,7 +128,7 @@ function cal.register(mywidget, custom_current_day_format)
 end
 
 function cal.gui()
-    run_in_centeral_terminal("calendar-window.sh")
+    run_in_central_terminal("calendar-window.sh")
 end
 
 function switchMonth(delta)
