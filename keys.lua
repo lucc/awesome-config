@@ -173,7 +173,8 @@ local globalkeys = awful.util.table.join(
     awful.key({ "Control" }, "Print",
 	      function () awful.spawn(terminal) end,
               {description = "open a terminal", group = "launcher"}),
-    --awful.key({modkey}, "c", function () run_in_centeral_terminal('bc') end, 'open calculator'),
+    awful.key({modkey}, "c", function () term('ghci') end,
+              {description = "open calculator", group = "launcher"}),
     awful.key({ modkey }, "d",
 	      function ()
 		  awful.prompt.run {

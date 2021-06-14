@@ -19,6 +19,7 @@ local function floating_terminal(...)
       local width = screen.width * 3 / 4
       local height = screen.height * 3 / 4
       c:geometry({x = x, y = y, width = width, height = height})
+      c:jump_to()
     end
   }
   awful.spawn(cmd, prop)
