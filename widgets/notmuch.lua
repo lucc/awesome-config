@@ -10,7 +10,7 @@ local pango = require("pango")
 local wibox = require("wibox")
 
 local symbols = require("symbols")
-local terminal = require("functions").run_in_centeral_terminal
+local terminal = require("functions").run_in_central_terminal
 local texticon = require("widgets/texticon")
 
 local function format_summary (summary)

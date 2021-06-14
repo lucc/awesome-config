@@ -8,7 +8,7 @@ local widgets = require("widgets")
 local menubar = require("menubar")
 local hotkeys_popup = require("awful.hotkeys_popup").widget
 
-local term = require("functions").run_in_centeral_terminal
+local term = require("functions").run_in_central_terminal
 
 -- other environment
 local modkey, terminal, client, awesome = modkey, terminal, client, awesome

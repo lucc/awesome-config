@@ -5,7 +5,7 @@ local shell = require("awful.spawn").easy_async_with_shell
 
 local lain = require("lain")
 
-local term = require("functions").run_in_centeral_terminal
+local term = require("functions").run_in_central_terminal
 
 --local taskicon = '/usr/share/awesome/lib/lain/icons/taskwarrior.png'
 local taskicon = os.getenv("HOME")..'/lib/lain/icons/taskwarrior.png' -- nixos
