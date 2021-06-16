@@ -15,7 +15,7 @@ local systemd = require("widgets/systemd")
 local tasks = require("widgets/taskwarrior")
 local texticon = require("widgets/texticon")
 local updates = require("widgets/pacman")
-local weather = require("widgets/weather")
+--local weather = require("widgets/weather")
 
 local symbols = require("symbols")
 
@@ -140,6 +140,6 @@ return {
   systemd = systemd,
   tasks = tasks,
   updates = updates,
-  weather = weather,
+  --weather = weather,
   wifi = mywifitext,
 }

@@ -200,7 +200,7 @@ awful.screen.connect_for_each_screen(function(s)
 	    widgets.tasks,
 	    widgets.wifi,
             wibox.widget.systray(),
-	    widgets.weather,
+	    --widgets.weather,
 	    widgets.clock,
             s.mylayoutbox,
         },
