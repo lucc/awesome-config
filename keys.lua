@@ -136,7 +136,7 @@ local globalkeys = awful.util.table.join(
     awful.key({ modkey }, "p", menubar.show,
               {description = "show the menubar", group = "launcher"}),
     -- some more keys
-    awful.key({ }, "XF86ScreenSaver", function () os.execute('slock') end,
+    awful.key({ }, "XF86ScreenSaver", function () awful.spawn('slock') end,
 	      {description = "lock the screen", group = "screen" }),
     awful.key({ }, "XF86AudioMute", audio.mute,
 	      {description = "mute", group = "audio" }),
@@ -158,7 +158,7 @@ local globalkeys = awful.util.table.join(
 	      {description = "prev song", group = "audio" }),
     awful.key({ modkey }, "XF86AudioPlay", widgets.music.tui,
               {description = "open the TUI", group = "audio" }),
-    awful.key({ }, "XF86Display", function () os.execute('auto-xrandr') end,
+    awful.key({ }, "XF86Display", function () awful.spawn('auto-xrandr') end,
 	      {description = "reset monitor settings", group = "screen" }),
     awful.key({ }, "XF86Mail", widgets.mail.gui,
 	      {description = "start mail client", group = "launcher" }),
