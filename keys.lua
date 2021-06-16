@@ -9,6 +9,7 @@ local menubar = require("menubar")
 local hotkeys_popup = require("awful.hotkeys_popup").widget
 
 local term = require("functions").run_in_central_terminal
+local audio = require("env/pulseaudio")
 
 -- other environment
 local modkey, terminal, client, awesome = modkey, terminal, client, awesome
@@ -137,18 +138,12 @@ local globalkeys = awful.util.table.join(
     -- some more keys
     awful.key({ }, "XF86ScreenSaver", function () os.execute('slock') end,
 	      {description = "lock the screen", group = "screen" }),
-    awful.key({ }, "XF86AudioMute",
-	      function () os.execute('pactl set-sink-mute 0 toggle') end,
+    awful.key({ }, "XF86AudioMute", audio.mute,
 	      {description = "mute", group = "audio" }),
-	      --awful.util.spawn("amixer set Master toggle")
-    awful.key({ }, "XF86AudioRaiseVolume",
-	      function () os.execute('pactl set-sink-volume 0 +3%') end,
+    awful.key({ }, "XF86AudioRaiseVolume", audio.inc,
 	      {description = "increase volume", group = "audio" }),
-	      --awful.util.spawn("amixer set Master playback 1%+")
-    awful.key({ }, "XF86AudioLowerVolume",
-	      function () os.execute('pactl set-sink-volume 0 -3%') end,
+    awful.key({ }, "XF86AudioLowerVolume", audio.dec,
 	      {description = "decrease volume", group = "audio" }),
-	      --awful.util.spawn("amixer set Master playback 1%-")
     awful.key({ }, "XF86AudioPlay",
 	      function () widgets.music.toggle(); widgets.music:refresh() end,
 	      {description = "play/pause mpd", group = "audio" }),
