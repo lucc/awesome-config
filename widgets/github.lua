@@ -1,43 +1,27 @@
 local awful = require("awful")
 local gears = require("gears")
-local join = require("functions").join
 local json = require("lain.util.dkjson")
 local pango = require("pango")
-local shell = require("awful.spawn").easy_async_with_shell
+local spawn = require("awful").spawn
 local symbols = require("symbols")
 local wibox = require("wibox")
+local functions = require("functions")
 
 local default_url = 'https://github.com/notifications'
-local token = nil
-
-local function curl(url, callback)
-  if token == nil then
-    shell('pass show api/awesomewm@api.github.com',
-      function(stdout, stderr, exitreason, exitcode)
-	local index = string.find(stdout, '\n')
-	if index ~= nil then
-	  token = string.sub(stdout, 1, index - 1)
-	end
-      end)
-  end
-  shell('curl --header "Authorization: token '..token..'" '..url,
-    function(stdout, stderr, exitreason, exitcode)
-      callback(json.decode(stdout))
-    end)
-end
+local api = functions.api({ key = 'api/awesomewm@api.github.com' })
 
 local function update(self)
-  curl('https://api.github.com/notifications',
+  api('https://api.github.com/notifications',
     function(notifications)
       if notifications ~= nil and #notifications ~= 0 then
-	self:set_markup(pango.color('yellow', pango.iconic(symbols.gtihub)))
+	self:set_markup(pango.color('yellow', pango.iconic(symbols.github)))
 	local lines = {}
 	for i, n in pairs(notifications) do
 	  lines[i] = n.repository.full_name ..': ' .. n.subject.title
 	end
-	self.tooltip.text = join(lines, '\n')
+	self.tooltip.text = functions.join(lines, '\n')
 	if #notifications == 1 then
-	  curl(notifications[1].subject.latest_comment_url,
+	  api(notifications[1].subject.latest_comment_url,
 	    function(data)
 	      if data ~= nil then
 		self.url = data.html_url
@@ -57,7 +41,7 @@ end
 local github = wibox.widget.textbox()
 github.tooltip = awful.tooltip({objects = {github}})
 github.update = update
-github.open = function() shell('xdg-open ' .. github.url, function() end) end
+github.open = function() spawn({'xdg-open', github.url}) end
 github.button1 = function() github:open() github:update() end
 
 gears.timer{
