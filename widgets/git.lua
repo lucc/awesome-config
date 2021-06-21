@@ -101,8 +101,7 @@ local function update_tooltip(self)
     data.formatted = table.concat(parts, "\n")
   end
   text = text:sub(2)
-  self.tooltip.markup = string.format('<span font_desc="monospace">%s</span>',
-				      text)
+  self.tooltip.markup = pango.mono(text)
 end
 
 -- Register some paths to watch in the widget
