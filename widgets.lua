@@ -14,7 +14,7 @@ local music = require("widgets/mpd")
 local systemd = require("widgets/systemd")
 local tasks = require("widgets/taskwarrior")
 local texticon = require("widgets/texticon")
-local updates = require("widgets/pacman")
+local updates = require("widgets/nixos")
 --local weather = require("widgets/weather")
 
 local symbols = require("symbols")
