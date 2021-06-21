@@ -12,6 +12,11 @@ local function set_markup(widget, markup)
   --end
   original_set_markup(widget, " "..markup.." ")
 end
+local function set_tooltip(self, text, markup)
+  if markup then self.tooltip.markup = text
+  else self.tooltip:set_text(text)
+  end
+end
 
 local function texticon(options)
   options = options or {}
@@ -23,6 +28,7 @@ local function texticon(options)
   local widget = wibox.widget(options)
   if options.tooltip then
     widget.tooltip = awful.tooltip{ objects = { widget } }
+    widget.set_tooltip = set_tooltip
   end
   --widget._width = options.forced_width
   return widget

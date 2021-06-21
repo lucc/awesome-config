@@ -2,13 +2,14 @@
 local awful = require("awful")
 local wibox = require("wibox")
 local shell = require("awful.spawn").easy_async_with_shell
+local gears = require("gears")
 
 local lain = require("lain")
 
 local term = require("functions").run_in_central_terminal
 
 --local taskicon = '/usr/share/awesome/lib/lain/icons/taskwarrior.png'
-local taskicon = os.getenv("HOME")..'/lib/lain/icons/taskwarrior.png' -- nixos
+local taskicon = gears.filesystem.get_xdg_config_home() .. 'awesome/lain/icons/taskwarrior.png' -- nixos
 local taskimg = wibox.widget.imagebox(taskicon)
 lain.widget.contrib.task.attach(taskimg, {
   show_cmd = 'task '..

@@ -40,7 +40,8 @@ local function join(array, glue)
 end
 
 local function var_dump(data, title)
-  naughty.notify({title=title or "Debug", text=inspect(data), timeout=-1})
+  local data = type(data) == "string" and data or inspect(data)
+  naughty.notify({title=title or "Debug", text=data, timeout=-1})
 end
 
 local function password(key, callback)

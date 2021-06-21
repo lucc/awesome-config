@@ -63,6 +63,7 @@ return {
   reboot     = "",
 
   github = "", -- alternative 
+  nixos = "",
 
   git1 = "",
   git2 = "",
