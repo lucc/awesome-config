@@ -25,19 +25,14 @@ lain.widget.contrib.task.attach(taskimg, {
   },
 })
 
-local function show()
-  term("task-window.sh")
-end
-local function add()
+function taskimg.show() term("task-window.sh") end
+function taskimg.add()
   shell([[x=$(zenity --entry --title=taskwarrior --text="New task") ]]..
         [[&& [ -n "$x" ] && task add $x]])
 end
-taskimg.show = show
-taskimg.button1 = show
-taskimg.button3 = add
 taskimg:buttons(awful.util.table.join(
-  awful.button({}, 1, taskimg.button1),
-  awful.button({}, 3, taskimg.button3)
+  awful.button({}, 1, taskimg.show),
+  awful.button({}, 3, taskimg.add)
 ))
 
 return taskimg

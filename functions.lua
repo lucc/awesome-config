@@ -4,6 +4,7 @@ local awful = require("awful")
 local json = require("lain.util.dkjson")
 local naughty = require("naughty")
 local inspect = require("inspect").inspect
+local terminal = require("globals").terminal
 
 local function floating_terminal(...)
   if select('#', ...) == 0 then
@@ -12,7 +13,7 @@ local function floating_terminal(...)
   end
   local path = os.getenv('PATH')
   path = path .. ':' .. os.getenv('HOME') .. '/.config/awesome/bin'
-  local cmd = {'env', 'PATH='..path, 'term', '-e', ...}
+  local cmd = {'env', 'PATH='..path, terminal, '-e', ...}
   local prop = {
     floating = true,
     callback = function(c)
