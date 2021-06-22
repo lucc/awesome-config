@@ -14,10 +14,10 @@ local function update(self)
   api('https://api.github.com/notifications',
     function(notifications)
       if notifications ~= nil and #notifications ~= 0 then
-	self:set_markup(pango.color('yellow', pango.iconic(symbols.github)))
+	self:set_markup(pango.color('yellow', pango.iconic(symbols.github)).." ")
 	local lines = {}
 	for i, n in pairs(notifications) do
-	  lines[i] = n.repository.full_name ..': ' .. n.subject.title
+	  lines[i] = n.repository.full_name .. ': ' .. n.subject.title
 	end
 	self.tooltip.text = functions.join(lines, '\n')
 	if #notifications == 1 then
@@ -42,7 +42,7 @@ local github = wibox.widget.textbox()
 github.tooltip = awful.tooltip({objects = {github}})
 github.update = update
 github.open = function() spawn({'xdg-open', github.url}) end
-github.button1 = function() github:open() github:update() end
+github.button1 = function() github.open() github:update() end
 
 gears.timer{
   timeout = 5 * 60,
