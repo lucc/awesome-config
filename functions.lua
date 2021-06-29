@@ -78,9 +78,16 @@ local function api(options)
   return setmetatable(api, { __call = api_update })
 end
 
+local function keys(t)
+  local keys = {}
+  for k, _ in pairs(t) do table.insert(keys, k) end
+  return keys
+end
+
 return {
   api = api,
   join = join,
+  keys = keys,
   run_in_central_terminal = floating_terminal,
   var_dump = var_dump,
 }
