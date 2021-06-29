@@ -23,7 +23,7 @@ function systemd.update(widget)
       local icon = ''
       widget.cache = {}
       if stdout ~= "" then
-	icon = pango.color('red', pango.iconic(symbols.alert2))
+	icon = pango.color('red', pango.iconic(symbols.alert2)) .. ' '
 	for line in string.gmatch(stdout, '[^\n]+') do
 	  local item = string.gsub(line, '^([^ ]+)%.[^. ]+ .*', '%1')
 	  msg = msg .. '\n' .. item
