@@ -4,7 +4,7 @@ local awful = require("awful")
 local json = require("lain.util.dkjson")
 local naughty = require("naughty")
 local inspect = require("inspect").inspect
-local terminal = require("globals").terminal
+require("globals")
 
 local function floating_terminal(...)
   if select('#', ...) == 0 then
