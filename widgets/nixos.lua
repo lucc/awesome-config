@@ -12,7 +12,7 @@ local nixos = texticon()
 local system_flake = os.getenv("HOME") .. '/src/nixos'
 local icon = pango.color("blue", pango.iconic(symbols.nixos)) .. " "
 
-local function update()
+function nixos.update()
   local script = [[set -e
 	  dir=$(mktemp -d)
 	  trap 'rm -fr "$dir"' EXIT
