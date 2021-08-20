@@ -62,7 +62,7 @@ vicious.register(baticon, vicious.widgets.bat,
     end
     return pango.color(col, pango.iconic(icon)) .. ' '
   end,
-  67, "BAT1")
+  67, "BAT0")
 
 -- wifi info box
 local mywifitext = texticon()
@@ -82,8 +82,9 @@ vicious.register(mywifitext, vicious.widgets.wifi,
     end
     return pango.color(color, pango.iconic(symbols.wifi)) .. ' '
   end,
+  --'ssid: ${ssid}, mode: ${mode}, chan: ${chan}, rate: ${rate}, link: ${link}, linp: ${linp}, sign: ${sign}',
   120,
-  "wlp1s0"
+  "wlp3s0" --"wlan0"
   )
 
 -- filesystem info
