@@ -86,7 +86,7 @@ notmuch.default_query =
 
 -- some nice helper functions
 notmuch.tui = function() terminal("alot") end
-notmuch.tui2 = function() terminal( "purebred") end
+notmuch.tui2 = function() terminal([[purebred; awesome-client 'require("widgets/notmuch"):update()']]) end
 notmuch.gui = function()
   spawn.with_line_callback(
     "astroid", {exit = function() notmuch:update() end}
