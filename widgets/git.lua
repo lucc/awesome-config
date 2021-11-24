@@ -12,6 +12,10 @@ local texticon = require("widgets/texticon")
 local dirty = pango.iconic(pango.color("yellow", symbols.git1))
 local err = pango.iconic(pango.color("red", symbols.alert2))
 
+local function count_lines(text)
+  return select(2, text:gsub("\n", ""))
+end
+
 -- Create a closure to use in spawn() and save output to a destination table.
 local function save_output(destination, filter)
   return function(stdout, stderr, exitreason, exitcode)
@@ -32,10 +36,11 @@ local function update(self)
     end
     if data.untracked then
       git({"ls-files", "--others", "--exclude-standard"}, data.untracked,
-	function (stdout) return select(2, stdout:gsub("\n", "")) end)
+	count_lines)
     end
-    git({"branch", "--show-current"},data.branch,
+    git({"branch", "--show-current"}, data.branch,
       function(stdout) return stdout:gsub("%s+", "") end)
+    git({"branch"}, data.branch_count, count_lines)
     git({"diff", "--stat"}, data.changed)
     if data.commits then
       git({"rev-list", "--right-only", "--count", "@{upstream}...HEAD"},
@@ -91,6 +96,13 @@ local function update_tooltip(self)
 	table.insert(parts, pango.color("red", data.commits.data))
       end
     end
+    if data.branch_count then
+      if data.branch_count.ok and data.branch_count.data > 1 then
+	table.insert(parts, pango.color("yellow", data.branch_count.data .. " branches"))
+      elseif not data.branch_count.ok then
+	table.insert(parts, pango.color("red", data.branch_count.data))
+      end
+    end
     if #parts > 0 then
       table.insert(parts, 1, pango.color("blue", path) .. " @ " ..
 			     pango.color("green", data.branch.data))
@@ -112,6 +124,7 @@ local function register(self, ...)
     if item.changed == nil then item.changed = {} end
     if item.branch == nil then item.branch = {} end
     if item.commits == nil then item.commits = {} end
+    if item.branch_count == nil then item.branch_count = {} end
     self.paths[item.path] = item
   end
 end
