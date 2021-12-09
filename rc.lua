@@ -131,11 +131,11 @@ end
 screen.connect_signal("property::geometry", set_wallpaper)
 
 widgets.git:register(
-  {path = "/home/luc/.config", untracked = false},
-  {path = "/home/luc/.config/awesome"},
-  {path = "/home/luc/.config/nvim"},
+  {path = "/home/luc/.config", untracked = false, branch_count = false},
+  {path = "/home/luc/.config/awesome", branch_count = false},
+  {path = "/home/luc/.config/nvim", branch_count = false},
   {path = "/home/luc/.config/pass"},
-  {path = "/home/luc/.config/zsh"},
+  {path = "/home/luc/.config/zsh", branch_count = false},
   {path = "/home/luc/dev.vm/api"},
   {path = "/home/luc/dev.vm/elternportal"},
   {path = "/home/luc/dev.vm/infoportal"},
