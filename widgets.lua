@@ -90,7 +90,7 @@ vicious.register(mywifitext, vicious.widgets.wifi,
 local disk = texticon()
 vicious.register(disk, vicious.widgets.fs,
   function (widget, args)
-    local interesting_filesystems = {"/", "/home"}
+    local interesting_filesystems = {"/", "/boot", "/home"}
     local percent = 100
     for i, fs in pairs(interesting_filesystems) do
       local p = args["{"..fs.." avail_p}"]
