@@ -144,8 +144,8 @@ widgets.git:register(
   {path = "/home/luc/dev.vm/kfv-portal"},
   {path = "/home/luc/dev.vm/polite"},
   {path = "/home/luc/dev.vm/xxs"},
-  {path = "/home/luc/prod-infra"},
-  {path = "/home/luc/vm-infra"}
+  {path = "/home/luc/src/prod-infra"},
+  {path = "/home/luc/src/vm-infra"}
 )
 
 awful.screen.connect_for_each_screen(function(s)
