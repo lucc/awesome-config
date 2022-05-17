@@ -37,7 +37,7 @@ function systemd.update(widget)
 end
 
 function systemd.gui()
-  terminal("systemctl " .. join(systemd.cache, " ") .. "|less")
+  terminal("sh", "-c", "systemctl status "..join(systemd.cache, " ").." | less")
 end
 
 systemd:buttons(awful.util.table.join(
