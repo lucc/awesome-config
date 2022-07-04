@@ -11,6 +11,7 @@ local naughty = require("naughty")
 local menubar = require("menubar")
 -- declare the global awesome variable for luacheck
 local awesome = awesome  -- luacheck: ignore
+local spawn = require("awful.spawn").with_line_callback
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -135,18 +136,13 @@ widgets.git:register(
   {path = "/home/luc/.config/awesome", branch_count = false},
   {path = "/home/luc/.config/nvim", branch_count = false},
   {path = "/home/luc/.config/pass"},
-  {path = "/home/luc/.config/zsh", branch_count = false},
-  {path = "/home/luc/dev.vm/api"},
-  {path = "/home/luc/dev.vm/elternportal"},
-  {path = "/home/luc/dev.vm/infoportal"},
-  {path = "/home/luc/dev.vm/infoscreen"},
-  {path = "/home/luc/dev.vm/jitsi-meet"},
-  {path = "/home/luc/dev.vm/kfv-portal"},
-  {path = "/home/luc/dev.vm/polite"},
-  {path = "/home/luc/dev.vm/xxs"},
-  {path = "/home/luc/src/prod-infra"},
-  {path = "/home/luc/src/vm-infra"}
+  {path = "/home/luc/.config/zsh", branch_count = false}
 )
+spawn({"sh", "-c", "ls -d ~/dev.vm/*/.git ~/src/*/.git"}, {
+  stdout = function(out)
+    widgets.git:register({path=out:gsub("/.git$", "")})
+  end
+})
 
 awful.screen.connect_for_each_screen(function(s)
     -- Wallpaper
