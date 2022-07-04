@@ -131,18 +131,20 @@ end
 -- Re-set wallpaper when a screen's geometry changes (e.g. different resolution)
 screen.connect_signal("property::geometry", set_wallpaper)
 
-widgets.git:register(
-  {path = "/home/luc/.config", untracked = false, branch_count = false},
-  {path = "/home/luc/.config/awesome", branch_count = false},
-  {path = "/home/luc/.config/nvim", branch_count = false},
-  {path = "/home/luc/.config/pass"},
-  {path = "/home/luc/.config/zsh", branch_count = false}
-)
 spawn({"sh", "-c", "ls -d ~/dev.vm/*/.git ~/src/*/.git"}, {
   stdout = function(out)
     widgets.git:register({path=out:gsub("/.git$", "")})
   end
 })
+widgets.git:register(
+  {path = "/home/luc/.config", untracked = false, branch_count = false},
+  {path = "/home/luc/.config/awesome", branch_count = false},
+  {path = "/home/luc/.config/nvim", branch_count = false},
+  {path = "/home/luc/.config/pass"},
+  {path = "/home/luc/.config/zsh", branch_count = false},
+  -- overwrite options from globbing above
+  {path = "/home/luc/src/sys", untracked = false, branch_count = false}
+)
 
 awful.screen.connect_for_each_screen(function(s)
     -- Wallpaper
