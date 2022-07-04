@@ -23,7 +23,7 @@ local function save_output(destination, filter)
     if destination.ok then
       destination.data = (filter and filter(stdout)) or stdout
     else
-      destination.data = stderr
+      destination.data = pango.escape(stderr)
     end
   end
 end
