@@ -137,11 +137,11 @@ spawn({"sh", "-c", "ls -d ~/dev.vm/*/.git ~/src/*/.git"}, {
   end
 })
 widgets.git:register(
-  {path = "/home/luc/.config", untracked = false, branch_count = false},
-  {path = "/home/luc/.config/awesome", branch_count = false},
-  {path = "/home/luc/.config/nvim", branch_count = false},
+  {path = "/home/luc/.config", untracked = false},
+  {path = "/home/luc/.config/awesome"},
+  {path = "/home/luc/.config/nvim"},
   {path = "/home/luc/.config/pass"},
-  {path = "/home/luc/.config/zsh", branch_count = false},
+  {path = "/home/luc/.config/zsh"},
   -- overwrite options from globbing above
   {path = "/home/luc/src/sys", untracked = false, branch_count = false}
 )
