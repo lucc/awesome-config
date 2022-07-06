@@ -137,12 +137,11 @@ widgets.git:register(
   {path = "/home/luc/.config/pass"},
   {path = "/home/luc/.config/zsh"},
   {path = "/home/luc/.config/alot", commits = false},
+  {path = "/home/luc/src/alot"},
   {path = "/home/luc/src/khard"},
-  {path = "/home/luc/src/nixos"},
   {path = "/home/luc/src/nvimpager"},
-  {path = "/home/luc/src/sys"},
-  {path = "/home/luc/uni/master"},
-  {path = "/home/luc/uni/master/ulang"}
+  {path = "/home/luc/src/shell"},
+  {path = "/home/luc/src/sys"}
 )
 
 awful.screen.connect_for_each_screen(function(s)
