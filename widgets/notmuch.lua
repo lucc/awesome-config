@@ -7,7 +7,6 @@ local spawn = require("awful.spawn")
 local shell = spawn.easy_async_with_shell
 local json = require("lain.util.dkjson")
 local pango = require("pango")
-local wibox = require("wibox")
 
 local symbols = require("symbols")
 local terminal = require("functions").run_in_central_terminal
