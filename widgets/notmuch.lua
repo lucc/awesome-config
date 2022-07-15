@@ -67,7 +67,7 @@ local function notify(container, query)
 	  text = stdout,
 	  title = 'New mail',
 	  timeout = 0,
-	  icon = '/usr/share/icons/Adwaita/256x256/emblems/emblem-mail.png',
+	  icon = '/run/current-system/sw/share/icons/Adwaita/256x256/legacy/emblem-mail.png',
 	  replaces_id = container.last_id
 	}
 	container.last_id = notification.id
